@@ -1,4 +1,4 @@
-drop schema weight_tracker cascade;
+drop schema if exists weight_tracker cascade;
 create schema weight_tracker;
 create table weight_tracker.users
 (
@@ -12,8 +12,10 @@ create table weight_tracker.users
     lastname  varchar(128)
 );
 
-alter table weight_tracker.users
+alter table weight_tracker.passwords
     owner to flzosjpj;
+-- alter table weight_tracker.users
+--     owner to wiiyhvmb;
 
 create table weight_tracker.passwords
 (
@@ -28,4 +30,5 @@ create table weight_tracker.passwords
 
 alter table weight_tracker.passwords
     owner to flzosjpj;
-
+-- alter table weight_tracker.passwords
+--     owner to wiiyhvmb;
