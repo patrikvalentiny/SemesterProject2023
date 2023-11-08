@@ -1,6 +1,5 @@
-using Serilog;
-using service;
 using infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +13,8 @@ Log.Information("Starting web application");
 
 builder.Host.UseSerilog();
 
+builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString(Environment.GetEnvironmentVariable("databaseEnvVariableKey")!),
+    dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 
 // Add services to the container.
 builder.Services.AddControllers();

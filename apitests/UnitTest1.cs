@@ -4,14 +4,13 @@ namespace apitests;
 
 public class Tests
 {
-
     [Test]
     public async Task Test1()
     {
         var _httpClient = new HttpClient();
-        
+
         var url = "http://localhost:5000/api/v1/login";
-        
+
         HttpResponseMessage response;
         try
         {
@@ -28,6 +27,5 @@ public class Tests
         {
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
-
     }
 }

@@ -17,15 +17,15 @@ alter table weight_tracker.users
 
 create table weight_tracker.passwords
 (
-    userid            integer not null
+    userid        integer     not null
         constraint passwords_users_userid_fk
-            references  weight_tracker.users
+            references weight_tracker.users
             on update cascade on delete cascade,
-    password_hash     varchar not null,
-    salt              varchar not null,
-    algorithm         varchar(64) not null
+    password_hash varchar     not null,
+    salt          varchar     not null,
+    algorithm     varchar(64) not null
 );
 
-alter table  weight_tracker.passwords
+alter table weight_tracker.passwords
     owner to flzosjpj;
 
