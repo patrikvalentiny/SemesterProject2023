@@ -6,19 +6,20 @@ namespace infrastructure.Repositories;
 
 public class PasswordRepository(DbDataSource dataSource)
 {
-    public PasswordHash Update(PasswordHash entity)
+    public PasswordHash GetByEmail(string email)
     {
-        throw new NotImplementedException();
-    }
-
-    public PasswordHash Delete(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public PasswordHash GetByEmail(string modelEmail)
-    {
-        throw new NotImplementedException();
+        const string sql = $@"
+SELECT 
+    user_id as {nameof(PasswordHash.UserId)},
+    password_hash as {nameof(PasswordHash.Hash)},
+    salt as {nameof(PasswordHash.Salt)},
+    algorithm as {nameof(PasswordHash.Algorithm)}
+FROM weight_tracker.passwords
+JOIN weight_tracker.users ON passwords.user_id = users.id
+WHERE email = @email;
+";
+        using var connection = dataSource.OpenConnection();
+        return connection.QuerySingle<PasswordHash>(sql, new { email });
     }
 
     public void Create(int userId, string hash, string salt, string algorithm)
@@ -29,5 +30,15 @@ VALUES (@userId, @hash, @salt, @algorithm)
 ";
         using var connection = dataSource.OpenConnection();
         connection.Execute(sql, new { userId, hash, salt, algorithm });
+    }
+    
+    public PasswordHash Update(PasswordHash entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public PasswordHash Delete(int id)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -6,7 +6,7 @@ using service.Password;
 
 namespace service.Services;
 
-public class AccountService(IRepository<User> _userRepository,
+public class AccountService(IRepository<User> userRepository,
     PasswordRepository passwordRepository)
 {
     public User? Authenticate(LoginCommandModel model)
@@ -16,7 +16,7 @@ public class AccountService(IRepository<User> _userRepository,
             var passwordHash = passwordRepository.GetByEmail(model.Email);
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm);
             var isValid = hashAlgorithm.VerifyHashedPassword(model.Password, passwordHash.Hash, passwordHash.Salt);
-            if (isValid) return _userRepository.GetById(passwordHash.UserId);
+            if (isValid) return userRepository.GetById(passwordHash.UserId);
         }
         catch (Exception e)
         {
@@ -31,7 +31,7 @@ public class AccountService(IRepository<User> _userRepository,
         var hashAlgorithm = PasswordHashAlgorithm.Create();
         var salt = hashAlgorithm.GenerateSalt();
         var hash = hashAlgorithm.HashPassword(model.Password, salt);
-        var user = _userRepository.Create(new User()
+        var user = userRepository.Create(new User()
         {
             Username = model.Username,
             Email = model.Email,
