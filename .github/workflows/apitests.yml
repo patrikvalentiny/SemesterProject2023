@@ -38,7 +38,7 @@ jobs:
           sleep 20
           
           # Change directory to ApiTests and run tests
-          cd ../apiTests/
+          cd ../apitests/
           dotnet test
           
           # Kill the API process running on port 5000
