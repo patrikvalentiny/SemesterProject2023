@@ -1,4 +1,4 @@
-﻿namespace infrastructure.repositories;
+﻿namespace infrastructure.Repositories;
 
 public interface IRepository<T>
 {

@@ -1,7 +1,8 @@
 using infrastructure;
 using infrastructure.DataModels;
-using infrastructure.repositories;
+using infrastructure.Repositories;
 using Serilog;
+using service.Password;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Host.UseSerilog();
 builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString(Environment.GetEnvironmentVariable("databaseEnvVariableKey")!),
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddSingleton<IRepository<User>, UserRepository>();
+builder.Services.AddSingleton<PasswordRepository>();
+builder.Services.AddSingleton<PasswordHashAlgorithm>();
 
 // Add services to the container.
 builder.Services.AddControllers();

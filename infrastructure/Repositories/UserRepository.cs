@@ -1,10 +1,10 @@
-﻿using Dapper;
+﻿using System.Data.Common;
+using Dapper;
 using infrastructure.DataModels;
-using Npgsql;
 
-namespace infrastructure.repositories;
+namespace infrastructure.Repositories;
 
-public class UserRepository(NpgsqlDataSource _dataSource) : IRepository<User>
+public class UserRepository(DbDataSource dataSource) : IRepository<User>
 {
     
     public User Create(User user)
@@ -20,11 +20,11 @@ RETURNING
     lastname as {nameof(User.Lastname)}
     ;
 ";
-        using var connection = _dataSource.OpenConnection();
+        using var connection = dataSource.OpenConnection();
         return connection.QueryFirst<User>(sql, new { uusername = user.Username, email = user.Email, firstname= user.Firstname, lastname = user.Lastname });
     }
     
-    public User GetById(int id)
+    public User? GetById(int id)
     {
         const string sql = $@"
 SELECT
@@ -36,7 +36,7 @@ SELECT
 FROM weight_tracker.users
 WHERE id = @id;
 ";
-        using var connection = _dataSource.OpenConnection();
+        using var connection = dataSource.OpenConnection();
         return connection.QueryFirstOrDefault<User>(sql, new { id });
     }
     
@@ -51,7 +51,7 @@ SELECT
     lastname as {nameof(User.Lastname)}
 FROM users
 ";
-        using var connection = _dataSource.OpenConnection();
+        using var connection = dataSource.OpenConnection();
         return connection.Query<User>(sql);
     }
     
@@ -73,7 +73,7 @@ RETURNING
     lastname AS {nameof(User.Lastname)}
 ;";
 
-        using var connection = _dataSource.OpenConnection();
+        using var connection = dataSource.OpenConnection();
         return connection.QueryFirst<User>(sql, new {userId = user.Id, username = user.Username, email = user.Email, firstname= user.Firstname, lastname = user.Lastname});
     }
     
@@ -90,7 +90,7 @@ RETURNING
     lastname AS {nameof(User.Lastname)}
 ;";
 
-        using var connection = _dataSource.OpenConnection();
+        using var connection = dataSource.OpenConnection();
         return connection.QueryFirst<User>(sql, new {id});
     }
     
