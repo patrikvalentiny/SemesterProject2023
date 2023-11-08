@@ -1,7 +1,6 @@
 ﻿using System.Data.Common;
 using Dapper;
 using infrastructure.DataModels;
-using Npgsql;
 
 namespace infrastructure.Repositories;
 

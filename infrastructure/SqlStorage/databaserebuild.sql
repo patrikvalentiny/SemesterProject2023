@@ -5,7 +5,7 @@ create table weight_tracker.users
     id    SERIAL
         primary key,
     username  varchar(64) not null,
-    email     integer
+    email     varchar(128) not null
         constraint users_pk2
             unique,
     firstname varchar(128),

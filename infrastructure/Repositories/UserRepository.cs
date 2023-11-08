@@ -10,7 +10,7 @@ public class UserRepository(DbDataSource dataSource) : IRepository<User>
     public User Create(User user)
     {
         const string sql = $@"
-INSERT INTO weight_tracker.users (username, email, fistname, lastname)
+INSERT INTO weight_tracker.users (username, email, firstname, lastname)
 VALUES (@username, @email, @firstname, @lastname)
 RETURNING
     id as {nameof(User.Id)},
@@ -21,7 +21,7 @@ RETURNING
     ;
 ";
         using var connection = dataSource.OpenConnection();
-        return connection.QueryFirst<User>(sql, new { uusername = user.Username, email = user.Email, firstname= user.Firstname, lastname = user.Lastname });
+        return connection.QueryFirst<User>(sql, new { username = user.Username, email = user.Email, firstname= user.Firstname, lastname = user.Lastname });
     }
     
     public User? GetById(int id)
