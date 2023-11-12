@@ -19,8 +19,10 @@ create table weight_tracker.users
     id        serial
         primary key,
     username  varchar(64)  not null,
+        constraint username_uk
+            unique,
     email     varchar(128)
-        constraint users_pk2
+        constraint email_uk
             unique,
     firstname varchar(128),
     lastname  varchar(128)

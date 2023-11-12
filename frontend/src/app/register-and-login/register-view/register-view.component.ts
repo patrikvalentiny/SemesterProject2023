@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {FormBuilder, FormsModule, Validators} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {AccountService} from "../account.service";
 
 @Component({
@@ -8,8 +8,8 @@ import {AccountService} from "../account.service";
   styleUrls: ['./register-view.component.css']
 })
 export class RegisterViewComponent implements OnInit{
-  readonly accountService:AccountService = inject(AccountService);
-  readonly fb: FormBuilder = inject(FormBuilder);
+  private readonly accountService:AccountService = inject(AccountService);
+  private readonly fb: FormBuilder = inject(FormBuilder);
 
   registerForm = this.fb.group({
     username:[null, Validators.required],

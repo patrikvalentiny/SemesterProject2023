@@ -1,4 +1,6 @@
 ﻿using api.Filters;
+using infrastructure.DataModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using service;
 using service.Models;
@@ -14,7 +16,27 @@ public class AccountController(AccountService accountService, JwtService jwtServ
     [Route("register")]
     public IActionResult Register([FromBody] RegisterCommandModel model)
     {
-        var user = accountService.Register(model);
+        User user;
+        try
+        {
+            user = accountService.Register(model);
+        }
+        catch (Exception e)
+        {
+            if (e.Message.Contains("username_uk"))
+            {
+                return BadRequest("Username already exists");
+            }
+            else if (e.Message.Contains("email_uk"))
+            {
+                return BadRequest("Email already exists");
+            } 
+            else
+            {
+                return BadRequest("Unknown error");
+            }
+            
+        }
         var token = jwtService.IssueToken(SessionData.FromUser(user));
         Response.Headers.Append("Authorization", $"Bearer {token}");
         return Ok(new {user, token});
