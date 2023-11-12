@@ -43,3 +43,8 @@ jobs:
           
           # Kill the API process running on port 5000
           kill -9 $(lsof -t -i:5000)
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          ASPNETCORE_ConnectionStrings__WebApiDatabase: ${{ secrets.WEBAPIDATABASE }}
+          ASPNETCORE_JWT__Secret: ${{ secrets.JWTSECRET }}
+          ASPNETCORE_JWT__Lifetime: ${{ secrets.JWTLIFETIME }}

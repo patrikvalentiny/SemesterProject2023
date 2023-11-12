@@ -1,6 +1,10 @@
+using api;
+using api.Middleware;
+using infrastructure;
+using infrastructure.DataModels;
+using infrastructure.Repositories;
 using Serilog;
 using service;
-using infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +17,13 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("Starting web application");
 
 builder.Host.UseSerilog();
-
+builder.Services.AddNpgsqlDataSource(Utilities.FormatConnectionString(Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!),
+    dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
+builder.Services.AddJwtService();
+builder.Services.AddSwaggerGenWithBearerJWT();
+builder.Services.AddSingleton<IRepository<User>, UserRepository>();
+builder.Services.AddSingleton<PasswordRepository>();
+builder.Services.AddSingleton<AccountService>();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -34,6 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 app.UseSecurityHeaders();
 
 app.UseHttpsRedirection();
@@ -41,5 +53,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseMiddleware<JwtBearerHandler>();
+    
 app.Run();
