@@ -27,7 +27,7 @@ public class AccountController(AccountService accountService, JwtService jwtServ
         
         var token = jwtService.IssueToken(SessionData.FromUser(user));
         Response.Headers.Append("Authorization", $"Bearer {token}");
-        return Ok(user);
+        return Ok(new {user, token});
     }
     
     [RequireAuthentication]

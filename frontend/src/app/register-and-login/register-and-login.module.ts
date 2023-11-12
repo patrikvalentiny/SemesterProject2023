@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginViewComponent } from './login-view/login-view.component';
-
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -12,7 +12,8 @@ import { LoginViewComponent } from './login-view/login-view.component';
     LoginViewComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
   ]
 })
 export class RegisterAndLoginModule { }

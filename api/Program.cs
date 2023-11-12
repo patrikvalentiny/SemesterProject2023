@@ -44,7 +44,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+var allowedOrigins = new List<string>{"http://localhost:4200"};
+app.UseCors(policyBuilder => policyBuilder.SetIsOriginAllowed(origin => allowedOrigins.Contains(origin))
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.UseSecurityHeaders();
 

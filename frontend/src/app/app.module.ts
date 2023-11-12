@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {RegisterAndLoginModule} from "./register-and-login/register-and-login.module";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {RegisterAndLoginModule} from "./register-and-login/register-and-login.mo
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RegisterAndLoginModule
+    RegisterAndLoginModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
