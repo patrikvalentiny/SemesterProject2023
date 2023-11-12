@@ -1,3 +1,4 @@
+using api;
 using infrastructure;
 using infrastructure.DataModels;
 using infrastructure.Repositories;
@@ -16,8 +17,9 @@ Log.Information("Starting web application");
 
 builder.Host.UseSerilog();
 
-builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString(Environment.GetEnvironmentVariable("databaseEnvVariableKey")!),
+builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString(builder.Configuration.GetConnectionString("WebApiDatabase")!),
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
+builder.Services.AddJwtService();
 builder.Services.AddSingleton<IRepository<User>, UserRepository>();
 builder.Services.AddSingleton<PasswordRepository>();
 builder.Services.AddSingleton<AccountService>();
