@@ -31,7 +31,7 @@ public class AccountController(AccountService accountService, JwtService jwtServ
     
     [RequireAuthentication]
     [HttpGet]
-    [Route("/api/account/whoami")]
+    [Route("whoami")]
     public IActionResult WhoAmI()
     {
         var data = HttpContext.GetSessionData();

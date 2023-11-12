@@ -4,7 +4,7 @@ using Serilog;
 using service.Models;
 using service.Password;
 
-namespace service.Services;
+namespace service;
 
 public class AccountService(IRepository<User> userRepository,
     PasswordRepository passwordRepository)
