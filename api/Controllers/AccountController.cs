@@ -24,7 +24,8 @@ public class AccountController(AccountService accountService, JwtService jwtServ
     {
         var user = accountService.Authenticate(model);
         if (user == null) return Unauthorized();
-        var token = jwtService.IssueToken(SessionData.FromUser(user!));
+        
+        var token = jwtService.IssueToken(SessionData.FromUser(user));
         Response.Headers.Append("Authorization", $"Bearer {token}");
         return Ok(user);
     }

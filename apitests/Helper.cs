@@ -19,7 +19,7 @@ create table weight_tracker.users
     id        serial
         primary key,
     username  varchar(64)  not null,
-    email     varchar(128) not null
+    email     varchar(128)
         constraint users_pk2
             unique,
     firstname varchar(128),
@@ -56,5 +56,10 @@ create table weight_tracker.passwords
         {
             throw new Exception(@"THERE WAS AN ERROR REBUILDING THE DATABASE", e);
         }
+    }
+
+    public static DbConnection OpenConnection()
+    {
+        return DataSource.OpenConnection();
     }
 }

@@ -13,7 +13,7 @@ public class AccountService(IRepository<User> userRepository,
     {
         try
         {
-            var passwordHash = passwordRepository.GetByEmail(model.Email);
+            var passwordHash = passwordRepository.GetByUsername(model.Username);
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm);
             var isValid = hashAlgorithm.VerifyHashedPassword(model.Password, passwordHash.Hash, passwordHash.Salt);
             if (isValid) return userRepository.GetById(passwordHash.UserId);
