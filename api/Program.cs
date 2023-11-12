@@ -1,4 +1,5 @@
 using api;
+using api.Middleware;
 using infrastructure;
 using infrastructure.DataModels;
 using infrastructure.Repositories;
@@ -20,6 +21,7 @@ builder.Host.UseSerilog();
 builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString(builder.Configuration.GetConnectionString("WebApiDatabase")!),
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddJwtService();
+builder.Services.AddSwaggerGenWithBearerJWT();
 builder.Services.AddSingleton<IRepository<User>, UserRepository>();
 builder.Services.AddSingleton<PasswordRepository>();
 builder.Services.AddSingleton<AccountService>();
@@ -43,6 +45,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 app.UseSecurityHeaders();
 
 app.UseHttpsRedirection();
@@ -50,5 +54,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseMiddleware<JwtBearerHandler>();
+    
 app.Run();

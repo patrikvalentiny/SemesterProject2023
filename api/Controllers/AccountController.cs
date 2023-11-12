@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using service;
 using service.Models;
 using service.Services;
 
@@ -6,7 +7,7 @@ namespace api.Controllers;
 
 [ApiController]
 [Route("api/v1/account")]
-public class AccountController(AccountService accountService) : Controller
+public class AccountController(AccountService accountService, JwtService jwtService) : Controller
 {
     [HttpPost]
     [Route("register")]
@@ -22,7 +23,8 @@ public class AccountController(AccountService accountService) : Controller
     {
         var user = accountService.Authenticate(model);
         if (user == null) return Unauthorized();
-        //var token = _jwtService.IssueToken(SessionData.FromUser(user!));
+        var token = jwtService.IssueToken(SessionData.FromUser(user!));
+        Response.Headers.Append("Authorization", $"Bearer {token}");
         return Ok(user);
     }
 }
