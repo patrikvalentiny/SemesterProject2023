@@ -15,7 +15,9 @@ public class AccountController(AccountService accountService, JwtService jwtServ
     public IActionResult Register([FromBody] RegisterCommandModel model)
     {
         var user = accountService.Register(model);
-        return Ok(user);
+        var token = jwtService.IssueToken(SessionData.FromUser(user));
+        Response.Headers.Append("Authorization", $"Bearer {token}");
+        return Ok(new {user, token});
     }
     
     [HttpPost]

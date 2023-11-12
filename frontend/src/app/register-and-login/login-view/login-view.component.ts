@@ -8,8 +8,8 @@ import {FormBuilder, Validators} from "@angular/forms";
   styleUrls: ['./login-view.component.css']
 })
 export class LoginViewComponent {
-  accountService:AccountService = inject(AccountService);
-  fb:FormBuilder = inject(FormBuilder);
+  readonly accountService:AccountService = inject(AccountService);
+  readonly fb:FormBuilder = inject(FormBuilder);
   loginForm = this.fb.group({
     username:[null, Validators.required],
     password:[null, Validators.required]

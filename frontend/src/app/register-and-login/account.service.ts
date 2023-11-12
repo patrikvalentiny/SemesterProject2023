@@ -4,6 +4,8 @@ import {environment} from "../../environments/environment.development";
 import {firstValueFrom} from "rxjs";
 import {User} from "../user";
 import {TokenService} from "../token.service";
+import {FormControl, FormGroup} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +13,27 @@ import {TokenService} from "../token.service";
 export class AccountService {
 
   httpClient: HttpClient = inject(HttpClient);
-  tokenService:TokenService = inject(TokenService)
-  constructor() { }
+  tokenService:TokenService = inject(TokenService);
+  router:Router = inject(Router);
 
   async login(username:string, password:string){
     const call = this.httpClient.post<{token:string, user:User}>(environment.baseUrl + "/account/login",  { username: username, password:password });
     const response = await firstValueFrom<{token:string, user:User}>(call);
     this.tokenService.setToken(response.token);
 
+  }
+
+  async register(value:FormGroup){
+    try {
+      const call = this.httpClient.post<{
+        token: string,
+        user: User
+      }>(environment.baseUrl + "/account/register", value.value);
+      const response = await firstValueFrom<{ token: string, user: User }>(call);
+      this.tokenService.setToken(response.token);
+      await this.router.navigate(["/"])
+    } catch (e) {
+
+    }
   }
 }
