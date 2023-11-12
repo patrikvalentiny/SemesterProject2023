@@ -42,7 +42,7 @@ create table weight_tracker.passwords
     static Helper()
     {
         DataSource =
-        new NpgsqlDataSourceBuilder(Utilities.FormatConnectionString(Environment.GetEnvironmentVariable("WT_DB")!)).Build();
+        new NpgsqlDataSourceBuilder(Utilities.FormatConnectionString(Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!)).Build();
         DataSource.OpenConnection().Close();
     }
     public static void TriggerRebuild()

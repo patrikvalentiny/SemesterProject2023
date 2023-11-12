@@ -7,13 +7,17 @@ using service.Models;
 
 namespace apitests;
 
-public class AccountTests
+public class RegisterTests
 {
+    [SetUp]
+    public void Setup()
+    {
+        Helper.TriggerRebuild();
+    }
     
     [Test]
     public async Task TestAllFieldsRegister()
     {
-        Helper.TriggerRebuild();   
         var httpClient = new HttpClient();
         var userFaker = new Faker<RegisterCommandModel>()
             .RuleFor(u => u.Username, f => f.Person.UserName)

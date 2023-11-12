@@ -4,9 +4,7 @@ using infrastructure;
 using infrastructure.DataModels;
 using infrastructure.Repositories;
 using Serilog;
-using Serilog.Events;
 using service;
-using service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +17,6 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("Starting web application");
 
 builder.Host.UseSerilog();
-
 builder.Services.AddNpgsqlDataSource(Utilities.FormatConnectionString(builder.Configuration.GetConnectionString("WebApiDatabase")!),
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddJwtService();
