@@ -206,4 +206,10 @@ public class LoginTest
             responseObject!.Username.Should().Be(user.Username);
         }
     }
+    
+    [TearDown]
+    public void TearDown()
+    {
+        Helper.TriggerRebuild();
+    }
 }

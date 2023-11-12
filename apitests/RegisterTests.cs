@@ -60,4 +60,10 @@ public class RegisterTests
             user.Should().BeEquivalentTo(responseObject, options => options.Excluding(o => o.Id));
         }
     }
+    
+    [TearDown]
+    public void TearDown()
+    {
+        Helper.TriggerRebuild();
+    }
 }
