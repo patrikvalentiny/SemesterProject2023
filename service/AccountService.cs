@@ -42,8 +42,8 @@ public class AccountService(IRepository<User> userRepository,
         return user;
     }
     
-    // public User? Get(SessionData data)
-    // {
-    //     return _userRepository.GetById(data.UserId);
-    // }
+    public User? Get(SessionData data)
+    {
+        return userRepository.GetById(data.UserId);
+    }
 }

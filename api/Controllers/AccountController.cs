@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using api.Filters;
+using Microsoft.AspNetCore.Mvc;
 using service;
 using service.Models;
 using service.Services;
@@ -25,6 +26,16 @@ public class AccountController(AccountService accountService, JwtService jwtServ
         if (user == null) return Unauthorized();
         var token = jwtService.IssueToken(SessionData.FromUser(user!));
         Response.Headers.Append("Authorization", $"Bearer {token}");
+        return Ok(user);
+    }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/account/whoami")]
+    public IActionResult WhoAmI()
+    {
+        var data = HttpContext.GetSessionData();
+        var user = accountService.Get(data!);
         return Ok(user);
     }
 }
