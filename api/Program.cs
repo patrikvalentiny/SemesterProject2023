@@ -17,7 +17,7 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("Starting web application");
 
 builder.Host.UseSerilog();
-builder.Services.AddNpgsqlDataSource(Utilities.FormatConnectionString(builder.Configuration.GetConnectionString("WebApiDatabase")!),
+builder.Services.AddNpgsqlDataSource(Utilities.FormatConnectionString(Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!),
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
