@@ -9,6 +9,7 @@ import {AuthHttpInterceptor} from "./interceptors/auth-http-interceptor";
 import {TokenService} from "./token.service";
 import {provideHotToastConfig} from '@ngneat/hot-toast';
 import {ErrorHttpInterceptor} from "./interceptors/error-http-interceptor";
+import {HomeModule} from "./home/home.module";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import {ErrorHttpInterceptor} from "./interceptors/error-http-interceptor";
     AppRoutingModule,
     RegisterAndLoginModule,
     HttpClientModule,
+    HomeModule,
   ],
   providers: [TokenService,
     {

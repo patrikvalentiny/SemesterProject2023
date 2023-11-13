@@ -42,4 +42,9 @@ export class AccountService {
 
     }
   }
+
+  async logout() {
+    this.tokenService.clearToken();
+    await this.router.navigate(["/login"])
+  }
 }

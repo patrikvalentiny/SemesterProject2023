@@ -1,0 +1,46 @@
+<div>
+  <div *ngIf="this.accountService.tokenService.getToken();" class="navbar bg-base-200">
+    <div class="flex-none">
+      <label class="btn btn-square btn-ghost drawer-button lg:hidden" for="my-drawer-2">
+        <svg class="inline-block w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+        </svg>
+      </label>
+    </div>
+    <div class="flex-1">
+      <a class="btn btn-ghost text-xl">daisyUI</a>
+    </div>
+    <div class="flex-none">
+      <button class="btn btn-square btn-ghost" (click)="logout()">
+        <svg class="inline-block w-5 h-5 stroke-current fill-base-content" fxmlns="http://www.w3.org/2000/svg"
+             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             viewBox="0 0 384.971 384.971">
+          <g>
+            <path d="M180.455,360.91H24.061V24.061h156.394c6.641,0,12.03-5.39,12.03-12.03s-5.39-12.03-12.03-12.03H12.03
+			C5.39,0.001,0,5.39,0,12.031V372.94c0,6.641,5.39,12.03,12.03,12.03h168.424c6.641,0,12.03-5.39,12.03-12.03
+			C192.485,366.299,187.095,360.91,180.455,360.91z"/>
+            <path d="M381.481,184.088l-83.009-84.2c-4.704-4.752-12.319-4.74-17.011,0c-4.704,4.74-4.704,12.439,0,17.179l62.558,63.46H96.279
+			c-6.641,0-12.03,5.438-12.03,12.151c0,6.713,5.39,12.151,12.03,12.151h247.74l-62.558,63.46c-4.704,4.752-4.704,12.439,0,17.179
+			c4.704,4.752,12.319,4.752,17.011,0l82.997-84.2C386.113,196.588,386.161,188.756,381.481,184.088z"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="drawer lg:drawer-open">
+    <input class="drawer-toggle" id="my-drawer-2" type="checkbox"/>
+    <div class="drawer-content flex flex-col items-center justify-center w-full">
+      <!-- Page content here -->
+      <router-outlet></router-outlet>
+    </div>
+    <div *ngIf="this.accountService.tokenService.getToken();" class="drawer-side">
+      <label aria-label="close sidebar" class="drawer-overlay" for="my-drawer-2"></label>
+      <ul class="menu p-4 w-40 min-h-full bg-base-200 text-base-content">
+        <!-- Sidebar content here -->
+        <li><a>Sidebar Item 1</a></li>
+        <li><a>Sidebar Item 2</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

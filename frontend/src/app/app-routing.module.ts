@@ -1,10 +1,9 @@
-import {inject, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {LoginViewComponent} from "./register-and-login/login-view/login-view.component";
 import {RegisterViewComponent} from "./register-and-login/register-view/register-view.component";
-import {HomeViewComponent} from "./home/home-view/home-view.component";
-import {TokenService} from "./token.service";
 import {AuthGuardService} from "./auth-guard.service";
+import {HomeViewComponent} from "./home/home-view/home-view.component";
 
 const routes: Routes = [
   {
