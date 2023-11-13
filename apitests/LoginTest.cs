@@ -63,10 +63,10 @@ public class LoginTest
             throw new Exception(e.Message);
         }
 
-        User? responseObject;
+        TokenUserModel? responseObject;
         try
         {
-            responseObject = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+            responseObject = JsonConvert.DeserializeObject<TokenUserModel>(await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
         {
@@ -79,7 +79,7 @@ public class LoginTest
             response.IsSuccessStatusCode.Should().BeTrue();
             response.Headers.Should().ContainKey("Authorization");
             responseObject.Should().NotBeNull();
-            responseObject!.Username.Should().Be(user.Username);
+            responseObject!.User.Username.Should().Be(user.Username);
         }
     }
     
@@ -158,10 +158,10 @@ public class LoginTest
             throw new Exception(e.Message);
         }
 
-        User? responseObject;
+        TokenUserModel? responseObjectLogin;
         try
         {
-            responseObject = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+            responseObjectLogin = JsonConvert.DeserializeObject<TokenUserModel>(await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
         {
@@ -173,8 +173,8 @@ public class LoginTest
         {
             response.IsSuccessStatusCode.Should().BeTrue();
             response.Headers.Should().ContainKey("Authorization");
-            responseObject.Should().NotBeNull();
-            responseObject!.Username.Should().Be(user.Username);
+            responseObjectLogin.Should().NotBeNull();
+            responseObjectLogin!.User.Username.Should().Be(user.Username);
         }
         
         var token = response.Headers.GetValues("authorization").First();
@@ -189,10 +189,10 @@ public class LoginTest
         {
             throw new Exception(e.Message);
         }
-        
+        User? responseObjectWhoAmI;
         try
         {
-            responseObject = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+            responseObjectWhoAmI = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
         {
@@ -202,8 +202,8 @@ public class LoginTest
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Should().NotBeNull();
-            responseObject!.Username.Should().Be(user.Username);
+            responseObjectWhoAmI.Should().NotBeNull();
+            responseObjectWhoAmI!.Username.Should().Be(user.Username);
         }
     }
     
