@@ -1,0 +1,13 @@
+<!-- Input Number -->
+<div class="py-4 px-6  inline-block bg-base-200 rounded-full">
+  <div class="flex items-center justify-between gap-x-1.5 w-60">
+    <button (click)="decrement()" class="btn btn-accent inline-flex justify-center items-center " data-hs-input-number-decrement>
+      <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+    </button>
+    <input [formControl]="numberInput" class="p-0 w-full text-3xl text-center bg-transparent border-0 base-content" type="text" value="0">
+    <button (click)="increment()" class="btn btn-accent inline-flex justify-center items-center">
+      <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+    </button>
+  </div>
+</div>
+<!-- End Input Number -->

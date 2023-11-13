@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HomeSkeletonComponent } from './home-skeleton/home-skeleton.component';
 import {RouterOutlet} from "@angular/router";
 import { HomeViewComponent } from './home-view/home-view.component';
+import {WeightInputModule} from "../weight-input/weight-input.module";
 
 
 
@@ -14,9 +15,10 @@ import { HomeViewComponent } from './home-view/home-view.component';
   exports: [
     HomeSkeletonComponent
   ],
-  imports: [
-    CommonModule,
-    RouterOutlet
-  ]
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        WeightInputModule
+    ]
 })
 export class HomeModule { }
