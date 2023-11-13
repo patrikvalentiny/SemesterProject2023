@@ -2,6 +2,7 @@
 using infrastructure.DataModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using service;
 using service.Models;
 using service.Services;
@@ -23,8 +24,10 @@ public class AccountController(AccountService accountService, JwtService jwtServ
         }
         catch (Exception e)
         {
+            Log.Error(e.Message);
             if (e.Message.Contains("username_uk"))
             {
+                
                 return BadRequest("Username already exists");
             }
             else if (e.Message.Contains("email_uk"))
