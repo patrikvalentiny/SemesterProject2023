@@ -1,7 +1,5 @@
-using System.Data.Common;
 using System.Net.Http.Json;
 using Bogus;
-using infrastructure.DataModels;
 using Newtonsoft.Json;
 using service.Models;
 
@@ -43,10 +41,10 @@ public class RegisterTests
             throw new Exception(e.Message);
         }
 
-        User? responseObject;
+        TokenUserModel? responseObject;
         try
         {
-            responseObject = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+            responseObject = JsonConvert.DeserializeObject<TokenUserModel>(await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
         {
@@ -57,7 +55,7 @@ public class RegisterTests
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            user.Should().BeEquivalentTo(responseObject, options => options.Excluding(o => o.Id));
+            user.Should().BeEquivalentTo(responseObject!.User, options => options.Excluding(o => o.Id));
         }
     }
     
