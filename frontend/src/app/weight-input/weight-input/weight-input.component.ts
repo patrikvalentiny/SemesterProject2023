@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {FormControl, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-weight-input',
@@ -7,7 +7,7 @@ import {FormControl} from "@angular/forms";
   styleUrls: ['./weight-input.component.css']
 })
 export class WeightInputComponent {
-  numberInput = new FormControl(20.0);
+  numberInput = new FormControl(65.0,[Validators.required, Validators.min(0.0), Validators.max(600.0)]);
 
   decrement() {
     this.numberInput.setValue(Number((this.numberInput.value! - 0.1).toFixed(1)))
@@ -15,5 +15,9 @@ export class WeightInputComponent {
 
   increment() {
     this.numberInput.setValue(Number((this.numberInput.value! + 0.1).toFixed(1)))
+  }
+
+  saveWeight() {
+    console.log(this.numberInput.value);
   }
 }
