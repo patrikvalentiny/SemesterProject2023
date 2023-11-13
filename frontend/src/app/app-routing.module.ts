@@ -4,6 +4,7 @@ import {LoginViewComponent} from "./register-and-login/login-view/login-view.com
 import {RegisterViewComponent} from "./register-and-login/register-view/register-view.component";
 import {AuthGuardService} from "./auth-guard.service";
 import {HomeViewComponent} from "./home/home-view/home-view.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 const routes: Routes = [
   {
@@ -23,7 +24,9 @@ const routes: Routes = [
   {
     path:"register",
     component: RegisterViewComponent,
-  }
+  },
+  {path: '404', component: NotFoundComponent},
+  {path: '**', redirectTo: '/404'}
 ];
 
 @NgModule({

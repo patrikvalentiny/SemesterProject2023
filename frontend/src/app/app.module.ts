@@ -10,10 +10,12 @@ import {TokenService} from "./token.service";
 import {provideHotToastConfig} from '@ngneat/hot-toast';
 import {ErrorHttpInterceptor} from "./interceptors/error-http-interceptor";
 import {HomeModule} from "./home/home.module";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 @NgModule({
   declarations: [
     AppComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
