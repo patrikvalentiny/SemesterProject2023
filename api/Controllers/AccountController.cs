@@ -1,6 +1,5 @@
 ﻿using api.Filters;
 using infrastructure.DataModels;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using service;

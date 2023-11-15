@@ -1,23 +1,22 @@
+<div class="drawer lg:drawer-open">
+  <input class="drawer-toggle" id="my-drawer-2" type="checkbox"/>
+  <div class="drawer-content flex flex-col items-center justify-start">
+    <!-- Page content here -->
+    <router-outlet></router-outlet>
 
-  <div class="drawer lg:drawer-open">
-    <input class="drawer-toggle" id="my-drawer-2" type="checkbox"/>
-    <div class="drawer-content flex flex-col items-center justify-start">
-      <!-- Page content here -->
-        <router-outlet></router-outlet>
-
-    </div>
-    <div *ngIf="this.accountService.tokenService.getToken();" class="drawer-side">
-      <label aria-label="close sidebar" class="drawer-overlay" for="my-drawer-2"></label>
-      <ul class="menu p-4 w-40 h-full bg-base-200 text-base-content justify-between">
-        <div>
+  </div>
+  <div *ngIf="this.accountService.tokenService.getToken();" class="drawer-side">
+    <label aria-label="close sidebar" class="drawer-overlay" for="my-drawer-2"></label>
+    <ul class="menu p-4 w-40 h-full bg-base-200 text-base-content justify-between">
+      <div>
         <!-- Sidebar content here -->
         <li><a>Sidebar Item 1</a></li>
         <li><a>Sidebar Item 2</a></li>
-        </div>
-        <div class="flex flex-col w-full items-center justify-center">
-          <button class="btn btn-outline btn-accent" (click)="logout()">Logout</button>
-        </div>
-      </ul>
+      </div>
+      <div class="flex flex-col w-full items-center justify-center">
+        <button (click)="logout()" class="btn btn-outline btn-accent">Logout</button>
+      </div>
+    </ul>
 
-    </div>
   </div>
+</div>

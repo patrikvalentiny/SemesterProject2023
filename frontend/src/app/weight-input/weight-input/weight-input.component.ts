@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
+import {WeightService} from "../weight.service";
 
 @Component({
   selector: 'app-weight-input',
@@ -7,6 +8,7 @@ import {FormControl, Validators} from "@angular/forms";
   styleUrls: ['./weight-input.component.css']
 })
 export class WeightInputComponent {
+  weightService: WeightService = inject(WeightService);
   numberInput = new FormControl(65.0,[Validators.required, Validators.min(0.0), Validators.max(600.0)]);
 
   decrement() {
@@ -19,5 +21,6 @@ export class WeightInputComponent {
 
   saveWeight() {
     console.log(this.numberInput.value);
+    this.weightService.postWeight(this.numberInput.value!);
   }
 }

@@ -5,6 +5,7 @@ using infrastructure.DataModels;
 using infrastructure.Repositories;
 using Serilog;
 using service;
+using service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services.AddNpgsqlDataSource(Utilities.FormatConnectionString(Environmen
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
 builder.Services.AddSingleton<IRepository<User>, UserRepository>();
+builder.Services.AddSingleton<WeightService>();
+builder.Services.AddSingleton<WeightRepository>();
 builder.Services.AddSingleton<PasswordRepository>();
 builder.Services.AddSingleton<AccountService>();
 

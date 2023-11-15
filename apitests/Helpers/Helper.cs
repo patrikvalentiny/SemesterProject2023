@@ -39,6 +39,19 @@ create table weight_tracker.passwords
     algorithm     varchar(64) not null
 );
 
+create table weight_tracker.weights
+(
+    id      serial
+        constraint user_weights_pk
+            primary key,
+    weight  real not null,
+    date    timestamp,
+    user_id integer
+        constraint user_weights_users_id_fk
+            references weight_tracker.users
+            on update cascade on delete cascade
+);
+
 ";
 
     static Helper()
