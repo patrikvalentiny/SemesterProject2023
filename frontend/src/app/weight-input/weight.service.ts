@@ -1,25 +1,25 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {TokenService} from "../token.service";
-import {Router} from "@angular/router";
 import {firstValueFrom} from "rxjs";
-import {User} from "../user";
-import {environment} from "../../environments/environment.development";
+import {environment} from "../../environments/environment";
+import {HotToastService} from "@ngneat/hot-toast";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeightService {
+  private readonly toastService = inject(HotToastService);
+  private readonly httpClient: HttpClient = inject(HttpClient);
 
-  httpClient: HttpClient = inject(HttpClient);
-  tokenService:TokenService = inject(TokenService);
-  router:Router = inject(Router);
   constructor() { }
 
   async postWeight(value: number) {
     try {
       const call = this.httpClient.post(environment.baseUrl + "/weight",  { weight: value, date: new Date()});
       const response = await firstValueFrom(call);
+      if (call.subscribe()) {
+        this.toastService.success("Weight successfully added")
+      }
     } catch (e) {
 
     }
