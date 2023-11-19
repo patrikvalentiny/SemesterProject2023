@@ -16,10 +16,12 @@ export class WeightService {
 
   async postWeight(value: number) {
     try {
-      const call = this.httpClient.post(environment.baseUrl + "/weight",  { weight: value, date: new Date()});
-      const response = await firstValueFrom(call);
+      const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight",  { weight: value, date: new Date()});
+      const response = await firstValueFrom<WeightDto>(call);
+
       if (call.subscribe()) {
         this.toastService.success("Weight successfully added")
+        this.weights.push(response)
       }
     } catch (e) {
 
