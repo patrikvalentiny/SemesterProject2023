@@ -19,10 +19,9 @@ export class WeightService {
       const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight",  { weight: value, date: new Date()});
       const response = await firstValueFrom<WeightDto>(call);
 
-      if (call.subscribe()) {
-        this.toastService.success("Weight successfully added")
-        this.weights.push(response)
-      }
+      this.toastService.success("Weight successfully added")
+      this.weights.unshift(response)
+
     } catch (e) {
 
     }
@@ -35,6 +34,17 @@ export class WeightService {
       return this.weights;
     } catch (e) {
       return;
+    }
+  }
+
+  async deleteWeight(weight: WeightDto) {
+    try {
+    const call = this.httpClient.delete<WeightDto>(environment.baseUrl + `/weight/${weight.id}`);
+    await firstValueFrom<WeightDto>(call);
+    this.weights = this.weights.filter(i => i.id !== weight.id)
+    this.toastService.success("Item deleted")
+    } catch (e) {
+
     }
   }
 }

@@ -15,4 +15,9 @@ public class WeightService(WeightRepository weightRepository)
     {
         return weightRepository.GetAllWeightsForUser(dataUserId);
     }
+
+    public WeightInput DeleteWeight(int id, int dataUserId)
+    {
+        return weightRepository.Delete(id, dataUserId);
+    }
 }

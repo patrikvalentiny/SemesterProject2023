@@ -1,7 +1,7 @@
-<div class="overflow-x-auto h-96">
+<div class="overflow-x-auto w-full h-96 no-scrollbar">
     <table class="table table-zebra">
         <!-- head -->
-        <thead>
+        <thead class="file-input-xs">
         <tr>
             <th>Weight</th>
             <th>Date</th>
@@ -10,10 +10,10 @@
         </thead>
         <tbody>
         <tr *ngFor="let weight of weightService.weights">
-            <td>{{weight.weight}}</td>
+            <td>{{weight.weight.toFixed(1)}} kg</td>
             <td>{{weight.date | date: 'dd MMM yyyy'}}</td>
             <td>
-                <button class="btn btn-ghost btn-circle">
+                <button class="btn btn-ghost btn-circle" (click)="deleteWeight(weight)">
                     <svg class="bi bi-trash" fill="currentColor" height="24" viewBox="0 0 16 16"
                          width="24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>

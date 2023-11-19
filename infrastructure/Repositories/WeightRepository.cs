@@ -35,9 +35,15 @@ RETURNING
         throw new NotImplementedException();
     }
 
-    public WeightInput Delete(int id)
+    public WeightInput Delete(int id, int userId)
     {
-        throw new NotImplementedException();
+        var sql = $@"DELETE FROM weight_tracker.weights WHERE id = @id AND user_id = @user_id RETURNING 
+id as {nameof(WeightInput.Id)}, 
+    weight as {nameof(WeightInput.Weight)}, 
+    date as {nameof(WeightInput.Date)}, 
+    user_id as {nameof(WeightInput.UserId)};";
+        using var conn = dataSource.OpenConnection();
+        return conn.QueryFirst<WeightInput>(sql, new { id, user_id = userId });
     }
 
     public IEnumerable<WeightInput> GetAllWeightsForUser(int dataUserId)
@@ -47,7 +53,7 @@ id as {nameof(WeightInput.Id)},
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)}
-FROM weight_tracker.weights WHERE user_id = @user_id;";
+FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date DESC;";
 
         using var conn = dataSource.OpenConnection();
         return conn.Query<WeightInput>(sql, new { user_id = dataUserId });

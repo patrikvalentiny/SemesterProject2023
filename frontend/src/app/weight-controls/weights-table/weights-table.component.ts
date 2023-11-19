@@ -15,4 +15,8 @@ export class WeightsTableComponent implements OnInit{
   async ngOnInit() {
     await this.weightService.getWeights();
   }
+
+  async deleteWeight(weight: WeightDto) {
+    await this.weightService.deleteWeight(weight);
+  }
 }

@@ -27,4 +27,13 @@ public class WeightController(WeightService weightService) : Controller
         if (data == null) return Unauthorized();
         return Ok(weightService.GetAllWeightForUser(data.UserId));
     }
+    
+    [RequireAuthentication]
+    [HttpDelete("{id}")]
+    public IActionResult DeleteWeight([FromRoute] int id)
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        return Ok(weightService.DeleteWeight(id, data.UserId));
+    }
 }

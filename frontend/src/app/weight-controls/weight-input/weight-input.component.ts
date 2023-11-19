@@ -19,8 +19,7 @@ export class WeightInputComponent {
     this.numberInput.setValue(Number((this.numberInput.value! + 0.1).toFixed(1)))
   }
 
-  saveWeight() {
-    console.log(this.numberInput.value);
-    this.weightService.postWeight(this.numberInput.value!);
+  async saveWeight() {
+    await this.weightService.postWeight(this.numberInput.value!);
   }
 }
