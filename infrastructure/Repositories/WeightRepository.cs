@@ -39,4 +39,17 @@ RETURNING
     {
         throw new NotImplementedException();
     }
+
+    public IEnumerable<WeightInput> GetAllWeightsForUser(int dataUserId)
+    {
+        var sql = $@"SELECT
+id as {nameof(WeightInput.Id)}, 
+    weight as {nameof(WeightInput.Weight)}, 
+    date as {nameof(WeightInput.Date)}, 
+    user_id as {nameof(WeightInput.UserId)}
+FROM weight_tracker.weights WHERE user_id = @user_id;";
+
+        using var conn = dataSource.OpenConnection();
+        return conn.Query<WeightInput>(sql, new { user_id = dataUserId });
+    }
 }

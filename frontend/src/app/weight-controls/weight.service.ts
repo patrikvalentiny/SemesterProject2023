@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HotToastService} from "@ngneat/hot-toast";
+import {WeightDto} from "./weight-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import {HotToastService} from "@ngneat/hot-toast";
 export class WeightService {
   private readonly toastService = inject(HotToastService);
   private readonly httpClient: HttpClient = inject(HttpClient);
-
+  weights: WeightDto[] = [];
   constructor() { }
 
   async postWeight(value: number) {
@@ -22,6 +23,16 @@ export class WeightService {
       }
     } catch (e) {
 
+    }
+  }
+
+  async getWeights() {
+    try {
+      const call = this.httpClient.get<WeightDto[]>(environment.baseUrl + "/weight");
+      this.weights = await firstValueFrom<WeightDto[]>(call);
+      return this.weights;
+    } catch (e) {
+      return;
     }
   }
 }

@@ -10,4 +10,9 @@ public class WeightService(WeightRepository weightRepository)
     {
         return weightRepository.Create(model.Weight, model.Date, userId);
     }
+
+    public IEnumerable<WeightInput> GetAllWeightForUser(int dataUserId)
+    {
+        return weightRepository.GetAllWeightsForUser(dataUserId);
+    }
 }

@@ -18,4 +18,13 @@ public class WeightController(WeightService weightService) : Controller
         if (data == null) return Unauthorized();
         return Ok(weightService.AddWeight(model, data.UserId));
     }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    public IActionResult GetWeightsForUser()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        return Ok(weightService.GetAllWeightForUser(data.UserId));
+    }
 }
