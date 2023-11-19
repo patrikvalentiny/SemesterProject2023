@@ -17,4 +17,4 @@ import {ReactiveFormsModule} from "@angular/forms";
     ReactiveFormsModule
   ]
 })
-export class WeightInputModule { }
+export class WeightControlsModule { }
