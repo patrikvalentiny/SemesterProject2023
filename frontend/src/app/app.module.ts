@@ -11,6 +11,7 @@ import {provideHotToastConfig} from '@ngneat/hot-toast';
 import {ErrorHttpInterceptor} from "./interceptors/error-http-interceptor";
 import {HomeModule} from "./home/home.module";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,8 @@ import {NotFoundComponent} from "./not-found/not-found.component";
     RegisterAndLoginModule,
     HttpClientModule,
     HomeModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [TokenService,
     {
