@@ -14,9 +14,9 @@ export class WeightService {
   weights: WeightDto[] = [];
   constructor() { }
 
-  async postWeight(value: number) {
+  async postWeight(value: number, date:Date) {
     try {
-      const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight",  { weight: value, date: new Date()});
+      const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight",  { weight: value, date: date ?? new Date()});
       const response = await firstValueFrom<WeightDto>(call);
 
       this.toastService.success("Weight successfully added")

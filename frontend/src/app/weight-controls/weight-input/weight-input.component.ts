@@ -10,6 +10,7 @@ import {WeightService} from "../weight.service";
 export class WeightInputComponent {
   weightService: WeightService = inject(WeightService);
   numberInput = new FormControl(65.0,[Validators.required, Validators.min(0.0), Validators.max(600.0)]);
+  dateInput = new FormControl(new Date().toISOString().substring(0,10),[Validators.required]);
 
   decrement() {
     this.numberInput.setValue(Number((this.numberInput.value! - 0.1).toFixed(1)))
@@ -20,6 +21,6 @@ export class WeightInputComponent {
   }
 
   async saveWeight() {
-    await this.weightService.postWeight(this.numberInput.value!);
+    await this.weightService.postWeight(this.numberInput.value!, new Date(this.dateInput.value!));
   }
 }
