@@ -47,4 +47,13 @@ export class WeightService {
 
     }
   }
+
+    async getLatestWeight() {
+        try {
+            const call = this.httpClient.get<WeightDto>(environment.baseUrl + "/weight/latest");
+            return await firstValueFrom<WeightDto>(call);
+        } catch (e) {
+            return;
+        }
+    }
 }

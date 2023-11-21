@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {WeightService} from "../weight.service";
 
@@ -7,9 +7,9 @@ import {WeightService} from "../weight.service";
   templateUrl: './weight-input.component.html',
   styleUrls: ['./weight-input.component.css']
 })
-export class WeightInputComponent {
+export class WeightInputComponent implements OnInit{
   weightService: WeightService = inject(WeightService);
-  numberInput = new FormControl(65.0,[Validators.required, Validators.min(0.0), Validators.max(600.0)]);
+  numberInput: FormControl<number | null> = new FormControl(0,[Validators.required, Validators.min(0.0), Validators.max(600.0)]);
   dateInput = new FormControl(new Date().toISOString().substring(0,10),[Validators.required]);
 
   decrement() {
@@ -23,4 +23,9 @@ export class WeightInputComponent {
   async saveWeight() {
     await this.weightService.postWeight(this.numberInput.value!, new Date(this.dateInput.value!));
   }
+
+    async ngOnInit() {
+        const weightDto = await this.weightService.getLatestWeight();
+        this.numberInput.setValue(weightDto?.weight ?? 0.0);
+    }
 }

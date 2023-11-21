@@ -15,6 +15,7 @@ export class AccountService {
   httpClient: HttpClient = inject(HttpClient);
   tokenService:TokenService = inject(TokenService);
   router:Router = inject(Router);
+  user:User | null = null;
 
   async login(username:string, password:string){
     try {
@@ -22,6 +23,7 @@ export class AccountService {
       const response = await firstValueFrom<{token:string, user:User}>(call);
       this.tokenService.setToken(response.token);
       await this.router.navigate(["/"])
+      this.user = response.user;
     } catch (e) {
 
     }
