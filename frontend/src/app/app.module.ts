@@ -12,6 +12,7 @@ import {ErrorHttpInterceptor} from "./interceptors/error-http-interceptor";
 import {HomeModule} from "./home/home.module";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {PagesModule} from "./pages/pages.module";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     HomeModule,
     ReactiveFormsModule,
     FormsModule,
+    PagesModule,
   ],
   providers: [TokenService,
     {

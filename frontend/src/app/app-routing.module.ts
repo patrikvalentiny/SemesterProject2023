@@ -5,6 +5,7 @@ import {RegisterViewComponent} from "./register-and-login/register-view/register
 import {AuthGuardService} from "./auth-guard.service";
 import {HomeViewComponent} from "./home/home-view/home-view.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import {RecordsEditorComponent} from "./pages/records-editor/records-editor.component";
 
 const routes: Routes = [
   {
@@ -25,8 +26,14 @@ const routes: Routes = [
     path:"register",
     component: RegisterViewComponent,
   },
+  {
+    path:"editor",
+    component:RecordsEditorComponent,
+    canActivate: [AuthGuardService]
+  },
   {path: '404', component: NotFoundComponent},
-  {path: '**', redirectTo: '/404'}
+  {path: '**', redirectTo: '404'},
+
 ];
 
 @NgModule({
