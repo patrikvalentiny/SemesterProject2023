@@ -1,4 +1,4 @@
-<div class="drawer lg:drawer-open w-screen h-max">
+<div class="drawer lg:drawer-open w-screen h-screen">
   <input class="drawer-toggle" id="my-drawer-2" type="checkbox"/>
   <!--    navbar-->
   <div *ngIf="this.accountService.tokenService.getToken();" class="navbar bg-base-100 drop-shadow-md fixed lg:pr-8 z-40 ">
@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="drawer-content flex flex-col items-center justify-start w-full h-full" [ngClass]="this.accountService.tokenService.getToken() ? 'pt-16' : ''">
+  <div class="drawer-content flex flex-col items-center justify-center w-full h-full" [ngClass]="this.accountService.tokenService.getToken() ? 'pt-16' : ''">
     <!-- Page content here -->
     <div class="w-full">
       <router-outlet class="h-fit w-full"></router-outlet>
