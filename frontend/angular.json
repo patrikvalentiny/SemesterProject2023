@@ -67,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "WeightTracker:build:production"
+              "buildTarget": "WeightTracker:build:production"
             },
             "development": {
-              "browserTarget": "WeightTracker:build:development"
+              "buildTarget": "WeightTracker:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "WeightTracker:build"
+            "buildTarget": "WeightTracker:build"
           }
         },
         "test": {
