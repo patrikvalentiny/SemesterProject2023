@@ -32,7 +32,14 @@ RETURNING
 
     public WeightInput Update(WeightInput entity)
     {
-        throw new NotImplementedException();
+        var sql = $@"UPDATE weight_tracker.weights SET weight = @weight, date = @date WHERE id = @id AND user_id = @user_id RETURNING
+                                                                 id as {nameof(WeightInput.Id)}, 
+    weight as {nameof(WeightInput.Weight)}, 
+    date as {nameof(WeightInput.Date)}, 
+    user_id as {nameof(WeightInput.UserId)};";
+            
+        using var conn = dataSource.OpenConnection();
+        return conn.QueryFirst<WeightInput>(sql, new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId, id = entity.Id });
     }
 
     public WeightInput Delete(int id, int userId)

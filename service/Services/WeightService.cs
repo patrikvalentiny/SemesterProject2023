@@ -24,4 +24,9 @@ public class WeightService(WeightRepository weightRepository)
     {
         return weightRepository.Delete(id, dataUserId);
     }
+
+    public WeightInput UpdateWeight(WeightInput model)
+    {
+        return weightRepository.Update(model);
+    }
 }

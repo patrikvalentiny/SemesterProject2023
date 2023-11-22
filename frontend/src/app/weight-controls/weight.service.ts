@@ -12,6 +12,7 @@ export class WeightService {
   private readonly toastService = inject(HotToastService);
   private readonly httpClient: HttpClient = inject(HttpClient);
   weights: WeightDto[] = [];
+  editingWeight:WeightDto | null = null;
   constructor() { }
 
   async postWeight(value: number, date:string, time:string) {
@@ -56,4 +57,22 @@ export class WeightService {
             return;
         }
     }
+
+  async putWeight(id: number, weight:number, date: string, time: string) {
+    try {
+      const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight",  { id: id, weight: weight, date: new Date(`${date}T${time}:00`)});
+      const response = await firstValueFrom<WeightDto>(call);
+
+      this.toastService.success("Weight successfully updated")
+      await this.getWeights();
+
+    } catch (e) {
+
+    }
+  }
+
+  setEditingWeight(id: number) {
+    this.editingWeight = this.weights.find(i => i.id === id)!;
+    console.log(this.editingWeight!)
+  }
 }

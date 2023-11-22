@@ -7,11 +7,11 @@ import {WeightService} from "../weight.service";
   templateUrl: './weight-input.component.html',
   styleUrls: ['./weight-input.component.css']
 })
-export class WeightInputComponent implements OnInit{
+export class WeightInputComponent implements OnInit {
   weightService: WeightService = inject(WeightService);
-  numberInput: FormControl<number | null> = new FormControl(0,[Validators.required, Validators.min(0.0), Validators.max(600.0)]);
-  dateInput = new FormControl(new Date().toISOString().substring(0,10),[Validators.required]);
-  timeInput = new FormControl(new Date().toISOString().substring(11,16),[Validators.required]);
+  numberInput: FormControl<number | null> = new FormControl(0, [Validators.required, Validators.min(0.0), Validators.max(600.0)]);
+  dateInput = new FormControl(new Date().toISOString().substring(0, 10), [Validators.required]);
+  timeInput = new FormControl(new Date().toISOString().substring(11, 16), [Validators.required]);
 
 
   decrement() {
@@ -26,8 +26,8 @@ export class WeightInputComponent implements OnInit{
     await this.weightService.postWeight(this.numberInput.value!, this.dateInput.value!, this.timeInput.value!);
   }
 
-    async ngOnInit() {
-        const weightDto = await this.weightService.getLatestWeight();
-        this.numberInput.setValue(weightDto?.weight ?? 0.0);
-    }
+  async ngOnInit() {
+    const weightDto = await this.weightService.getLatestWeight();
+    this.numberInput.setValue(weightDto?.weight ?? 0.0);
+  }
 }

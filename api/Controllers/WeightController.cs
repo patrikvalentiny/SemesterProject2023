@@ -1,4 +1,6 @@
-﻿using api.Filters;
+﻿using api.Dtos;
+using api.Filters;
+using infrastructure.DataModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using service.Models;
@@ -6,11 +8,11 @@ using service.Services;
 
 namespace api.Controllers;
 
+[RequireAuthentication]
 [ApiController]
 [Route("api/v1/weight")]
 public class WeightController(WeightService weightService) : Controller
 {
-    [RequireAuthentication]
     [HttpPost]
     public IActionResult AddWeight([FromBody] WeightInputCommandModel model)
     {
@@ -19,7 +21,22 @@ public class WeightController(WeightService weightService) : Controller
         return Ok(weightService.AddWeight(model, data.UserId));
     }
     
-    [RequireAuthentication]
+    [HttpPut]
+    public IActionResult UpdateWeight([FromBody] WeightDto model)
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        var input = new WeightInput()
+        {
+            Id = model.Id,
+            Weight = model.Weight,
+            Date = model.Date,
+            UserId = data.UserId
+        };
+        return Ok(weightService.UpdateWeight(input));
+    }
+    
+    
     [HttpGet]
     public IActionResult GetWeightsForUser()
     {
@@ -28,7 +45,6 @@ public class WeightController(WeightService weightService) : Controller
         return Ok(weightService.GetAllWeightForUser(data.UserId));
     }
     
-    [RequireAuthentication]
     [HttpGet("latest")]
     public IActionResult GetLatestWeightForUser()
     {
@@ -37,7 +53,6 @@ public class WeightController(WeightService weightService) : Controller
         return Ok(weightService.GetLatestWeightForUser(data.UserId));
     }
     
-    [RequireAuthentication]
     [HttpDelete("{id}")]
     public IActionResult DeleteWeight([FromRoute] int id)
     {

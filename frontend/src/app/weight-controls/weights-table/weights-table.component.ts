@@ -9,7 +9,6 @@ import {WeightDto} from "../weight-dto";
 })
 export class WeightsTableComponent implements OnInit{
   public readonly weightService = inject(WeightService);
-  weights: WeightDto[] = [];
   constructor() { }
 
   async ngOnInit() {
@@ -18,5 +17,9 @@ export class WeightsTableComponent implements OnInit{
 
   async deleteWeight(weight: WeightDto) {
     await this.weightService.deleteWeight(weight);
+  }
+
+  setEditingWeight(id: number) {
+    this.weightService.setEditingWeight(id);
   }
 }
