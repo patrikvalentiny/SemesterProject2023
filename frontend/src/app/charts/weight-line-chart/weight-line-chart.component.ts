@@ -34,7 +34,7 @@ export class WeightLineChartComponent implements OnInit {
       series: [
         {
           name: "My-series",
-          data: [1]
+          data: [0]
         }
       ],
       chart: {
@@ -43,9 +43,6 @@ export class WeightLineChartComponent implements OnInit {
       },
       title: {
         text: "Your weight history"
-      },
-      xaxis: {
-        categories: ["1"]
       }
     };
   }
