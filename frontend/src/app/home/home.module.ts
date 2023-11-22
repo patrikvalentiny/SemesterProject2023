@@ -4,6 +4,7 @@ import { HomeSkeletonComponent } from './home-skeleton/home-skeleton.component';
 import {RouterOutlet} from "@angular/router";
 import { HomeViewComponent } from './home-view/home-view.component';
 import { WeightControlsModule } from '../weight-controls/weight-controls.module';
+import {WeightLineChartComponent} from "../charts/weight-line-chart/weight-line-chart.component";
 
 
 
@@ -18,7 +19,8 @@ import { WeightControlsModule } from '../weight-controls/weight-controls.module'
     imports: [
         CommonModule,
         RouterOutlet,
-        WeightControlsModule
+        WeightControlsModule,
+        WeightLineChartComponent
     ]
 })
 export class HomeModule { }

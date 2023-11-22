@@ -13,6 +13,7 @@ import {HomeModule} from "./home/home.module";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PagesModule} from "./pages/pages.module";
+import {NgApexchartsModule} from "ng-apexcharts";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {PagesModule} from "./pages/pages.module";
     ReactiveFormsModule,
     FormsModule,
     PagesModule,
+    NgApexchartsModule
   ],
   providers: [TokenService,
     {
