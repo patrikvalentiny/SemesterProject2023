@@ -28,28 +28,26 @@ public class LoginTest
             .RuleFor(u => u.Password, f => f.Internet.Password());
         var user = userFaker.Generate();
 
-        using (var conn = Helper.OpenConnection())
+        await using (var conn = Helper.OpenConnection())
         {
             var sql = "insert into weight_tracker.users (username, email) values (@Username, @Email) returning id";
             var id = await conn.QueryFirstAsync<int>(sql, user);
             sql =
                 "insert into weight_tracker.passwords (user_id, password_hash, salt, algorithm) values (@Id, @Password, @Salt, 'argon2id')";
-            using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(user.Password))
-            {
-                Salt = RandomNumberGenerator.GetBytes(128),
-                MemorySize = 12288,
-                Iterations = 3,
-                DegreeOfParallelism = 1
-            };
+            using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(user.Password));
+            hashAlgo.Salt = RandomNumberGenerator.GetBytes(128);
+            hashAlgo.MemorySize = 12288;
+            hashAlgo.Iterations = 3;
+            hashAlgo.DegreeOfParallelism = 1;
             await conn.ExecuteAsync(sql, new
             {
                 Id = id,
-                Password = Convert.ToBase64String(hashAlgo.GetBytes(256)),
+                Password = Convert.ToBase64String(await hashAlgo.GetBytesAsync(256)),
                 Salt = Convert.ToBase64String(hashAlgo.Salt)
             });
         }
 
-        var url = "http://localhost:5000/api/v1/account/login";
+        const string url = "http://localhost:5000/api/v1/account/login";
 
 
         HttpResponseMessage response;
@@ -93,7 +91,7 @@ public class LoginTest
             Password = password
         };
 
-        var url = "http://localhost:5000/api/v1/account/login";
+        const string url = "http://localhost:5000/api/v1/account/login";
 
         HttpResponseMessage response;
         try
@@ -123,23 +121,21 @@ public class LoginTest
             .RuleFor(u => u.Password, f => f.Internet.Password());
         var user = userFaker.Generate();
 
-        using (var conn = Helper.OpenConnection())
+        await using (var conn = Helper.OpenConnection())
         {
             var sql = "insert into weight_tracker.users (username, email) values (@Username, @Email) returning id";
             var id = await conn.QueryFirstAsync<int>(sql, user);
             sql =
                 "insert into weight_tracker.passwords (user_id, password_hash, salt, algorithm) values (@Id, @Password, @Salt, 'argon2id')";
-            using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(user.Password))
-            {
-                Salt = RandomNumberGenerator.GetBytes(128),
-                MemorySize = 12288,
-                Iterations = 3,
-                DegreeOfParallelism = 1
-            };
+            using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(user.Password));
+            hashAlgo.Salt = RandomNumberGenerator.GetBytes(128);
+            hashAlgo.MemorySize = 12288;
+            hashAlgo.Iterations = 3;
+            hashAlgo.DegreeOfParallelism = 1;
             await conn.ExecuteAsync(sql, new
             {
                 Id = id,
-                Password = Convert.ToBase64String(hashAlgo.GetBytes(256)),
+                Password = Convert.ToBase64String(await hashAlgo.GetBytesAsync(256)),
                 Salt = Convert.ToBase64String(hashAlgo.Salt)
             });
         }
