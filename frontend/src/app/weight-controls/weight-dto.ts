@@ -1,6 +1,6 @@
 export interface WeightDto {
     id: number
     weight: number
-    date: string
+    date: Date
     userId: number
 }

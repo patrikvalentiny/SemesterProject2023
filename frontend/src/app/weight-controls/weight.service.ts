@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {firstValueFrom} from "rxjs";
+import {firstValueFrom, Subject} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HotToastService} from "@ngneat/hot-toast";
 import {WeightDto} from "./weight-dto";
@@ -12,7 +12,7 @@ export class WeightService {
   private readonly toastService = inject(HotToastService);
   private readonly httpClient: HttpClient = inject(HttpClient);
   weights: WeightDto[] = [];
-  editingWeight:WeightDto | null = null;
+  editingWeight = new Subject<WeightDto>();
   constructor() { }
 
   async postWeight(value: number, date:string, time:string) {
@@ -72,7 +72,6 @@ export class WeightService {
   }
 
   setEditingWeight(id: number) {
-    this.editingWeight = this.weights.find(i => i.id === id)!;
-    console.log(this.editingWeight!)
+    this.editingWeight.next(this.weights.find(i => i.id === id)!);
   }
 }

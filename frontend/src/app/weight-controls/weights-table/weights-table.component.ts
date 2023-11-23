@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
 import {WeightService} from "../weight.service";
 import {WeightDto} from "../weight-dto";
 
@@ -9,6 +9,7 @@ import {WeightDto} from "../weight-dto";
 })
 export class WeightsTableComponent implements OnInit{
   public readonly weightService = inject(WeightService);
+  selectedId = 0;
   constructor() { }
 
   async ngOnInit() {
@@ -20,6 +21,7 @@ export class WeightsTableComponent implements OnInit{
   }
 
   setEditingWeight(id: number) {
+    this.selectedId = id;
     this.weightService.setEditingWeight(id);
   }
 }

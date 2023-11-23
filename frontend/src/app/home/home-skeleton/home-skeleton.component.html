@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="drawer-content flex flex-col items-center justify-center w-full h-full" [ngClass]="this.accountService.tokenService.getToken() ? 'pt-16' : ''">
+  <div class="drawer-content flex flex-col items-center lg:justify-start justify-center w-full h-full" [ngClass]="this.accountService.tokenService.getToken() ? 'pt-16' : ''">
     <!-- Page content here -->
     <div class="w-full">
       <router-outlet class="h-fit w-full"></router-outlet>

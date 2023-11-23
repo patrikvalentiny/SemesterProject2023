@@ -1,8 +1,11 @@
 <div  class="text-center w-full">
-  <apx-chart
+  <apx-chart class="overflow-auto"
     [series]="chartOptions.series!"
     [chart]="chartOptions.chart!"
     [xaxis]="chartOptions.xaxis!"
     [title]="chartOptions.title!"
+    [theme]="chartOptions.theme!"
+    [stroke]="chartOptions.stroke!"
+    [dataLabels]="chartOptions.dataLabels!"
   ></apx-chart>
 </div>
