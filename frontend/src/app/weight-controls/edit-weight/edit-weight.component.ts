@@ -19,7 +19,7 @@ export class EditWeightComponent implements OnInit {
     // timeInput = new FormControl('', [Validators.required]);
 
     constructor() {
-        this.weightService.editingWeight.subscribe(i => this.processData(i));
+
     }
 
 
@@ -45,6 +45,6 @@ export class EditWeightComponent implements OnInit {
     }
 
     async ngOnInit() {
-
+        this.weightService.editingWeight.subscribe(i => this.processData(i));
     }
 }

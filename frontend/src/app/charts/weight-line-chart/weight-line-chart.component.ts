@@ -112,9 +112,9 @@ export class WeightLineChartComponent implements OnInit {
                 yaxis: [
                     {
                         y: targetWeight,
-                        y2: targetWeight + 0.1,
-                        borderColor: "#00E396",
-                        fillColor: "#00E396",
+                        y2: targetWeight + 0.2,
+                        borderColor: "#00dbe3",
+                        fillColor: "#00dbe3",
                         opacity: 1,
                         label: {
                             position: "left",
@@ -124,7 +124,7 @@ export class WeightLineChartComponent implements OnInit {
                             style: {
                                 fontSize: "10px",
                                 color: "#333",
-                                background: "#00E396"
+                                background: "#00dbe3"
                             },
                             text: "Target weight"
                         }
@@ -203,7 +203,7 @@ export class WeightLineChartComponent implements OnInit {
     async ngOnInit() {
         await this.weightService.getWeights();
         const weights: number[] = this.weightService.weights.map(weight => weight.weight).reverse();
-        const dates: string[] = this.weightService.weights.map(weight => new Date(weight.date).toLocaleString()).reverse();
+        const dates: string[] = this.weightService.weights.map(weight => weight.date.toString()).reverse();
         const maxWeight = Math.max(...weights) + 5;
         this.chartOptions.yaxis![0].max = maxWeight;
         this.chartOptions.yaxis![1].max = maxWeight / (this.height * this.height);
@@ -219,6 +219,12 @@ export class WeightLineChartComponent implements OnInit {
         ];
         this.chartOptions.xaxis = {
             type: "datetime",
+            labels: {
+                format: "dd/MM/yy",
+              datetimeUTC: false,
+
+            },
+
             categories: dates
         };
 

@@ -19,7 +19,7 @@ export class WeightService {
 
     async postWeight(value: number, date: string, time: string = "00:00") {
         try {
-            const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight", {weight: value, date: new Date(`${date}T${time}:00`)});
+            const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight", {weight: value, date: date});
             const response = await firstValueFrom<WeightDto>(call);
 
             this.toastService.success("Weight successfully added")
@@ -62,7 +62,7 @@ export class WeightService {
 
     async putWeight(id: number, weight: number, date: string, time: string = "00:00") {
         try {
-            const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", {id: id, weight: weight, date: new Date(`${date}T${time}:00`)});
+            const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", {id: id, weight: weight, date: new Date(`${date}T${time}:00`).getUTCDate()});
             const response = await firstValueFrom<WeightDto>(call);
 
             this.toastService.success("Weight successfully updated")
