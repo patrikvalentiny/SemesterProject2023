@@ -15,7 +15,7 @@ export class WeightService {
   editingWeight = new Subject<WeightDto>();
   constructor() { }
 
-  async postWeight(value: number, date:string, time:string) {
+  async postWeight(value: number, date:string, time:string = "00:00") {
     try {
       const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight",  { weight: value, date: new Date(`${date}T${time}:00`)});
       const response = await firstValueFrom<WeightDto>(call);
