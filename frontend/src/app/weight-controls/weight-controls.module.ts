@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { WeightInputComponent } from './weight-input/weight-input.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {WeightInputComponent} from './weight-input/weight-input.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { WeightsTableComponent } from './weights-table/weights-table.component';
-import { EditWeightComponent } from './edit-weight/edit-weight.component';
+import {WeightsTableComponent} from './weights-table/weights-table.component';
+import {EditWeightComponent} from './edit-weight/edit-weight.component';
 
 
 @NgModule({
@@ -12,15 +12,16 @@ import { EditWeightComponent } from './edit-weight/edit-weight.component';
         WeightsTableComponent,
         EditWeightComponent
     ],
-  exports: [
-    WeightInputComponent,
-    WeightsTableComponent,
-    EditWeightComponent
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-  ]
+    exports: [
+        WeightInputComponent,
+        WeightsTableComponent,
+        EditWeightComponent
+    ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+    ]
 })
-export class WeightControlsModule { }
+export class WeightControlsModule {
+}

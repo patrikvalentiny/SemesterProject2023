@@ -3,17 +3,18 @@ import {Router} from "@angular/router";
 import {TokenService} from "./token.service";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthGuardService {
-  tokenService: TokenService = inject(TokenService);
-  router = inject(Router);
-  canActivate(){
-    if(this.tokenService.getToken() === null){
-      this.router.navigate(["/login"]);
-      return false;
+    tokenService: TokenService = inject(TokenService);
+    router = inject(Router);
+
+    canActivate() {
+        if (this.tokenService.getToken() === null) {
+            this.router.navigate(["/login"]);
+            return false;
+        }
+        return true;
     }
-    return true;
-  }
 
 }

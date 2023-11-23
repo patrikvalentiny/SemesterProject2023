@@ -1,14 +1,14 @@
-<div  class="text-center w-full">
-  <apx-chart class="overflow-auto"
-    [series]="chartOptions.series!"
-    [chart]="chartOptions.chart!"
-    [xaxis]="chartOptions.xaxis!"
-    [yaxis]="chartOptions.yaxis!"
-    [title]="chartOptions.title!"
-    [theme]="chartOptions.theme!"
-    [stroke]="chartOptions.stroke!"
-    [dataLabels]="chartOptions.dataLabels!"
-    [annotations]="chartOptions.annotations!"
-    [colors]="chartOptions.colors!"
-  ></apx-chart>
+<div class="text-center w-full">
+    <apx-chart [annotations]="chartOptions.annotations!"
+               [chart]="chartOptions.chart!"
+               [colors]="chartOptions.colors!"
+               [dataLabels]="chartOptions.dataLabels!"
+               [series]="chartOptions.series!"
+               [stroke]="chartOptions.stroke!"
+               [theme]="chartOptions.theme!"
+               [title]="chartOptions.title!"
+               [xaxis]="chartOptions.xaxis!"
+               [yaxis]="chartOptions.yaxis!"
+               class="overflow-auto"
+    ></apx-chart>
 </div>

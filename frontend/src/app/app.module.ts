@@ -16,38 +16,39 @@ import {PagesModule} from "./pages/pages.module";
 import {NgApexchartsModule} from "ng-apexcharts";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NotFoundComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    RegisterAndLoginModule,
-    HttpClientModule,
-    HomeModule,
-    ReactiveFormsModule,
-    FormsModule,
-    PagesModule,
-    NgApexchartsModule
-  ],
-  providers: [TokenService,
-    {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthHttpInterceptor,
-    multi: true
-    },
-    provideHotToastConfig(
-      {position: 'bottom-center',
-        theme: "snackbar"
-      }),
-    {
-    provide: HTTP_INTERCEPTORS,
-    useClass: ErrorHttpInterceptor,
-    multi: true
-    }
+    declarations: [
+        AppComponent,
+        NotFoundComponent,
     ],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        RegisterAndLoginModule,
+        HttpClientModule,
+        HomeModule,
+        ReactiveFormsModule,
+        FormsModule,
+        PagesModule,
+        NgApexchartsModule
+    ],
+    providers: [TokenService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthHttpInterceptor,
+            multi: true
+        },
+        provideHotToastConfig(
+            {
+                position: 'bottom-center',
+                theme: "snackbar"
+            }),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorHttpInterceptor,
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

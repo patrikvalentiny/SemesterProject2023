@@ -3,36 +3,35 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {AccountService} from "../account.service";
 
 @Component({
-  selector: 'app-register-view',
-  templateUrl: './register-view.component.html',
-  styleUrls: ['./register-view.component.css']
+    selector: 'app-register-view',
+    templateUrl: './register-view.component.html',
+    styleUrls: ['./register-view.component.css']
 })
-export class RegisterViewComponent implements OnInit{
-  private readonly accountService:AccountService = inject(AccountService);
-  private readonly fb: FormBuilder = inject(FormBuilder);
+export class RegisterViewComponent implements OnInit {
+    passwordMatching: boolean = true;
+    private readonly accountService: AccountService = inject(AccountService);
+    private readonly fb: FormBuilder = inject(FormBuilder);
+    registerForm = this.fb.group({
+        username: [null, Validators.required],
+        password: [null, Validators.required],
+        confirmPassword: [null, Validators.required],
+        email: [null, Validators.email],
+        firstName: [null],
+        lastName: [null],
+    });
 
-  registerForm = this.fb.group({
-    username:[null, Validators.required],
-    password:[null, Validators.required],
-    confirmPassword:[null, Validators.required],
-    email:[null, Validators.email],
-    firstName:[null],
-    lastName:[null],
-  });
+    register() {
+        if (this.registerForm.value.confirmPassword !== this.registerForm.value.password) {
+            this.passwordMatching = false;
+            this.registerForm.controls.confirmPassword.reset();
+            return
+        }
 
-  passwordMatching:boolean = true;
-  register() {
-    if (this.registerForm.value.confirmPassword !== this.registerForm.value.password){
-      this.passwordMatching = false;
-      this.registerForm.controls.confirmPassword.reset();
-      return
+        this.accountService.register(this.registerForm);
+
     }
 
-    this.accountService.register(this.registerForm);
+    ngOnInit(): void {
 
-  }
-
-  ngOnInit(): void {
-
-  }
+    }
 }

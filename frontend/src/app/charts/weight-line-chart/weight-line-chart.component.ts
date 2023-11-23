@@ -117,7 +117,7 @@ export class WeightLineChartComponent implements OnInit {
                         fillColor: "#00E396",
                         opacity: 1,
                         label: {
-                            position:"left",
+                            position: "left",
                             textAnchor: "start",
                             offsetX: 10,
                             borderColor: "#333",
@@ -148,7 +148,7 @@ export class WeightLineChartComponent implements OnInit {
                     },
                     {
                         yAxisIndex: 1,
-                        y:  29.99,
+                        y: 29.99,
                         y2: 25,
                         borderColor: "#000",
                         fillColor: "#FEB019",
@@ -165,7 +165,7 @@ export class WeightLineChartComponent implements OnInit {
                     },
                     {
                         yAxisIndex: 1,
-                        y:  24.99,
+                        y: 24.99,
                         y2: 18.5,
                         borderColor: "#000",
                         fillColor: "#00E396",

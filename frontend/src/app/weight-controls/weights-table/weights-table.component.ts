@@ -1,27 +1,29 @@
-import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../weight.service";
 import {WeightDto} from "../weight-dto";
 
 @Component({
-  selector: 'app-weights-table',
-  templateUrl: './weights-table.component.html',
-  styleUrls: ['./weights-table.component.css']
+    selector: 'app-weights-table',
+    templateUrl: './weights-table.component.html',
+    styleUrls: ['./weights-table.component.css']
 })
-export class WeightsTableComponent implements OnInit{
-  public readonly weightService = inject(WeightService);
-  selectedId = 0;
-  constructor() { }
+export class WeightsTableComponent implements OnInit {
+    public readonly weightService = inject(WeightService);
+    selectedId = 0;
 
-  async ngOnInit() {
-    await this.weightService.getWeights();
-  }
+    constructor() {
+    }
 
-  async deleteWeight(weight: WeightDto) {
-    await this.weightService.deleteWeight(weight);
-  }
+    async ngOnInit() {
+        await this.weightService.getWeights();
+    }
 
-  setEditingWeight(id: number) {
-    this.selectedId = id;
-    this.weightService.setEditingWeight(id);
-  }
+    async deleteWeight(weight: WeightDto) {
+        await this.weightService.deleteWeight(weight);
+    }
+
+    setEditingWeight(id: number) {
+        this.selectedId = id;
+        this.weightService.setEditingWeight(id);
+    }
 }
