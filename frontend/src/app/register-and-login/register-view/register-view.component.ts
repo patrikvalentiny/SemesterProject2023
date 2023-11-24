@@ -15,8 +15,8 @@ export class RegisterViewComponent implements OnInit {
     private readonly toastService = inject(HotToastService);
     registerForm = this.fb.group({
         username: [null, Validators.required],
-        password: [null, Validators.required, Validators.minLength(4)],
-        confirmPassword: [null, Validators.required, Validators.minLength(4)],
+        password: [null, Validators.required],
+        confirmPassword: [null, Validators.required],
         email: [null, Validators.email],
         firstName: [null],
         lastName: [null],
