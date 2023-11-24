@@ -52,6 +52,16 @@ create table weight_tracker.weights
             on update cascade on delete cascade
 );
 
+create table weight_tracker.user_details
+(
+    user_id          integer
+        constraint user_details_users_id_fk
+            references weight_tracker.users
+            on update cascade on delete cascade,
+    height_cm        integer,
+    target_weight_kg real,
+    target_date      date
+);
 ";
 
     static Helper()
