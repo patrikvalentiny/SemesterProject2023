@@ -7,6 +7,7 @@ import {HomeViewComponent} from "./home/home-view/home-view.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {RecordsEditorComponent} from "./pages/records-editor/records-editor.component";
 import {AccountDetailsComponent} from "./user-details/account-details/account-details.component";
+import {WeightInputComponent} from "./weight-controls/weight-input/weight-input.component";
 
 const routes: Routes = [
     {
@@ -36,6 +37,10 @@ const routes: Routes = [
       path: "profile",
       component: AccountDetailsComponent,
     },
+  {
+    path: "input",
+    component: WeightInputComponent,
+  },
     {path: '404', component: NotFoundComponent},
     {path: '**', redirectTo: '404'},
 

@@ -14,6 +14,7 @@ import {
     NgApexchartsModule
 } from "ng-apexcharts";
 import {WeightService} from "../../weight-controls/weight.service";
+import {UserDetailsService} from "../../user-details/user-details.service";
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -39,15 +40,14 @@ export class WeightLineChartComponent implements OnInit {
     @ViewChild("chart") chart!: ChartComponent;
     public chartOptions: Partial<ChartOptions>;
     private readonly weightService: WeightService = inject(WeightService);
-    private height = 1.87;
+    private readonly userService: UserDetailsService = inject(UserDetailsService);
 
     constructor() {
-        const targetWeight = 87.3;
 
         const maxWeight = 140;
-        const minWeight = 80;
-        const maxBmi = maxWeight / (this.height * this.height);
-        const minBmi = minWeight / (this.height * this.height);
+        const minWeight = 0;
+        const maxBmi = 40;
+        const minBmi = 0;
         this.chartOptions = {
             series: [
                 {
@@ -111,8 +111,9 @@ export class WeightLineChartComponent implements OnInit {
             annotations: {
                 yaxis: [
                     {
-                        y: targetWeight,
-                        y2: targetWeight + 0.2,
+                        yAxisIndex: 0,
+                        y: 0,
+                        y2: 0,
                         borderColor: "#00dbe3",
                         fillColor: "#00dbe3",
                         opacity: 1,
@@ -181,7 +182,9 @@ export class WeightLineChartComponent implements OnInit {
                         }
                     },
                     {
-                        y: this.height * this.height * 18.49,
+                        yAxisIndex: 1,
+                        y: 18.49,
+                        y2: 0,
                         borderColor: "#000",
                         fillColor: "#008FFB",
                         opacity: 0.1,
@@ -202,11 +205,24 @@ export class WeightLineChartComponent implements OnInit {
 
     async ngOnInit() {
         await this.weightService.getWeights();
+        await this.userService.getProfile();
+        const height = this.userService.user!.height / 100;
+        const targetWeight = this.userService.user!.targetWeight;
+        const targetDate = this.userService.user!.targetDate;
+
         const weights: number[] = this.weightService.weights.map(weight => weight.weight).reverse();
         const dates: string[] = this.weightService.weights.map(weight => weight.date.toString()).reverse();
-        const maxWeight = Math.max(...weights) + 5;
+        dates.push(targetDate.toString());
+        const maxWeight = Math.max(...weights) + 2;
+        const minWeight = targetWeight - 2;
         this.chartOptions.yaxis![0].max = maxWeight;
-        this.chartOptions.yaxis![1].max = maxWeight / (this.height * this.height);
+        this.chartOptions.yaxis![0].min = minWeight;
+
+        const maxBmi = maxWeight / (height * height);
+        const minBmi = minWeight / (height * height);
+        this.chartOptions.yaxis![1].max = maxBmi;
+        this.chartOptions.yaxis![1].min = minBmi;
+
         this.chartOptions.series = [
             {
                 name: "Weight",
@@ -214,7 +230,7 @@ export class WeightLineChartComponent implements OnInit {
             },
             {
                 name: "BMI",
-                data: weights.map(weight => +((weight / (1.87 * 1.87)).toFixed(2)))
+                data: weights.map(weight => +((weight / (height * height)).toFixed(2)))
             }
         ];
         this.chartOptions.xaxis = {
@@ -227,6 +243,10 @@ export class WeightLineChartComponent implements OnInit {
 
             categories: dates
         };
+
+      this.chartOptions.annotations!.yaxis![0].y= targetWeight;
+      this.chartOptions.annotations!.yaxis![0].y2= targetWeight - 0.2;
+      this.chartOptions.annotations!.yaxis![1].y2 = maxBmi;
 
     }
 
