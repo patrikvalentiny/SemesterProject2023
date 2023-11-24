@@ -5,7 +5,7 @@ namespace service.Services;
 
 public class UserDetailsService(IRepository<UserDetails> userDetailsRepository)
 {
-    public UserDetails GetUserDetails(int dataUserId)
+    public UserDetails? GetUserDetails(int dataUserId)
     {
         return userDetailsRepository.GetById(dataUserId);
     }

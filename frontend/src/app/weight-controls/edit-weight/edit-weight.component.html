@@ -1,12 +1,13 @@
 <!-- Input Number -->
-<div class="flex flex-col gap-4 items-center justify-center">
+<div class="flex flex-row w-full items-center justify-center">
+<div class="flex flex-col gap-4 items-center justify-center w-72">
 
-    <div class="flex flex-row flex-wrap justify-center items-center gap-2 w-56 ">
+    <div class="flex flex-row flex-wrap justify-center items-center gap-2 w-full ">
         <input [formControl]="dateInput"  class="input input-bordered w-full" type="date"/>
         <!--    <input [formControl]="timeInput"  type="time" class = "input input-bordered w-5/6 max-w-xs"/>-->
     </div>
-    <div class="py-4 px-6  inline-block bg-base-200 rounded-full">
-        <div class="flex items-center justify-between gap-x-1.5 w-56 ">
+    <div class="py-4 px-6 w-full inline-block bg-base-200 rounded-full">
+        <div class="flex items-center justify-between gap-x-1.5 w-full ">
             <button (click)="decrement()" class="btn btn-active btn-neutral rounded-full justify-center items-center "
                     data-hs-input-number-decrement>
                 <svg class="flex-shrink-0 w-3.5 h-3.5" fill="none" height="24" stroke="currentColor"
@@ -31,8 +32,9 @@
             </button>
         </div>
     </div>
-    <button (click)="saveWeight()" [disabled]="numberInput.invalid || weightId === 0" class="btn btn-primary w-56 h-2">
+    <button (click)="saveWeight()" [disabled]="numberInput.invalid || weightId === 0" class="btn btn-primary w-full">
         Save
     </button>
 </div>
 <!-- End Input Number -->
+</div>

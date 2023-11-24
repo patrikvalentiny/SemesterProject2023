@@ -19,7 +19,7 @@ public class WeightRepository(DbDataSource dataSource)
     public WeightInput Create(decimal weight, DateTime date, int userId)
     {
         var sql = $@"INSERT INTO weight_tracker.weights (weight, date, user_id) 
-VALUES (@weight, @date, @user_id) 
+VALUES (@weight, @date, @user_id) ON CONFLICT (user_id, date) DO UPDATE SET weight = @weight, date = @date
 RETURNING 
     id as {nameof(WeightInput.Id)}, 
     weight as {nameof(WeightInput.Weight)}, 
