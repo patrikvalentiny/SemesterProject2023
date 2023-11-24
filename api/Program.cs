@@ -23,6 +23,8 @@ builder.Services.AddNpgsqlDataSource(Utilities.FormatConnectionString(Environmen
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
 builder.Services.AddSingleton<IRepository<User>, UserRepository>();
+builder.Services.AddSingleton<IRepository<UserDetails>, UserDetailsRepository>();
+builder.Services.AddSingleton<UserDetailsService>();
 builder.Services.AddSingleton<WeightService>();
 builder.Services.AddSingleton<WeightRepository>();
 builder.Services.AddSingleton<PasswordRepository>();
