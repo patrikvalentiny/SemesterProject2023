@@ -49,7 +49,9 @@ create table weight_tracker.weights
     user_id integer
         constraint user_weights_users_id_fk
             references weight_tracker.users
-            on update cascade on delete cascade
+            on update cascade on delete cascade,
+    constraint weights_pk
+        unique (user_id, date)
 );
 
 create table weight_tracker.user_details

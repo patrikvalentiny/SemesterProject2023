@@ -49,16 +49,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var allowedOrigins = new List<string>{"http://localhost:4200"};
+var allowedOrigins = new List<string> { "https://weighttrackerpatval.azurewebsites.net", "https://semesterproject2023-7161a.web.app" };
 app.UseCors(policyBuilder => policyBuilder.SetIsOriginAllowed(origin => allowedOrigins.Contains(origin))
     .AllowAnyMethod()
     .AllowAnyHeader());
 
 app.UseSecurityHeaders();
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
+
 
 app.MapControllers();
 app.UseMiddleware<JwtBearerHandler>();
