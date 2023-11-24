@@ -62,7 +62,7 @@ export class WeightService {
 
     async putWeight(id: number, weight: number, date: string, time: string = "00:00") {
         try {
-            const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", {id: id, weight: weight, date: new Date(`${date}T${time}:00`).getUTCDate()});
+            const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", {id: id, weight: weight, date: date});
             const response = await firstValueFrom<WeightDto>(call);
 
             this.toastService.success("Weight successfully updated")

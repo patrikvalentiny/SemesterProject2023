@@ -10,8 +10,8 @@
         </thead>
         <tbody>
         <tr *ngFor="let weight of weightService.weights" [class]="weight.id === selectedId ? 'bg-base-200' : ''">
-            <td>{{weight.weight.toFixed(1)}} kg</td>
-            <td>{{weight.date.toLocaleString() | date : 'dd MMMM yyyy'}}</td>
+            <td (click)="setEditingWeight(weight.id)">{{weight.weight.toFixed(1)}} kg</td>
+            <td (click)="setEditingWeight(weight.id)">{{weight.date.toLocaleString() | date : 'dd MMMM yyyy'}}</td>
             <td class="w-4">
                 <button (click)="setEditingWeight(weight.id)" class="btn btn-ghost btn-circle">
                     <svg fill="currentColor" height="24" viewBox="0 0 20 20"

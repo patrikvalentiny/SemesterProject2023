@@ -14,7 +14,7 @@ export class EditWeightComponent implements OnInit {
 
     weightId = 0;
     numberInput = new FormControl(0, [Validators.required, Validators.min(0.0), Validators.max(600.0)],);
-    dateInput = new FormControl('', [Validators.required]);
+    dateInput = new FormControl({value:'', disabled:true}, [Validators.required ]);
 
     // timeInput = new FormControl('', [Validators.required]);
 
