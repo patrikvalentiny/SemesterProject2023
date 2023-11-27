@@ -5,6 +5,7 @@ import {RouterOutlet} from "@angular/router";
 import {HomeViewComponent} from './home-view/home-view.component';
 import {WeightControlsModule} from '../weight-controls/weight-controls.module';
 import {WeightLineChartComponent} from "../charts/weight-line-chart/weight-line-chart.component";
+import {CurrentWeightCardComponent} from "./current-weight-card/current-weight-card.component";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {WeightLineChartComponent} from "../charts/weight-line-chart/weight-line-
         CommonModule,
         RouterOutlet,
         WeightControlsModule,
-        WeightLineChartComponent
+        WeightLineChartComponent,
+        CurrentWeightCardComponent
     ]
 })
 export class HomeModule {

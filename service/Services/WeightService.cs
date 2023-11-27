@@ -8,7 +8,13 @@ public class WeightService(WeightRepository weightRepository)
 {
     public  WeightInput AddWeight(WeightInputCommandModel model, int userId)
     {
-        return weightRepository.Create(model.Weight, model.Date, userId);
+        WeightInput? latestWeight = new WeightInput()
+        {
+            Weight = model.Weight,
+            Date = model.Date,
+            UserId = userId
+        };
+        return weightRepository.Create(latestWeight);
     }
     
     public WeightInput? GetLatestWeightForUser(int userId)
@@ -20,9 +26,9 @@ public class WeightService(WeightRepository weightRepository)
         return weightRepository.GetAllWeightsForUser(dataUserId);
     }
 
-    public WeightInput DeleteWeight(int id, int dataUserId)
+    public WeightInput DeleteWeight(DateTime date, int dataUserId)
     {
-        return weightRepository.Delete(id, dataUserId);
+        return weightRepository.Delete(date, dataUserId);
     }
 
     public WeightInput UpdateWeight(WeightInput model)

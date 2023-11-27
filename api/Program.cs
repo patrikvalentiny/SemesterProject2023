@@ -11,8 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
-    //.WriteTo.Console()
-    //.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
     .CreateLogger();
 
 Log.Information("Starting web application");
@@ -49,7 +47,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var allowedOrigins = new List<string> { "https://weighttrackerpatval.azurewebsites.net", "https://semesterproject2023-7161a.web.app" };
+var allowedOrigins = app.Environment.IsDevelopment()? new List<string>(){"http://localhost:4200", "http://localhost:5000"} : new List<string> { "https://weighttrackerpatval.azurewebsites.net", "https://semesterproject2023-7161a.web.app" };
 app.UseCors(policyBuilder => policyBuilder.SetIsOriginAllowed(origin => allowedOrigins.Contains(origin))
     .AllowAnyMethod()
     .AllowAnyHeader());

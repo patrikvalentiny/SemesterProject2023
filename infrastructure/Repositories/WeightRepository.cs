@@ -6,57 +6,45 @@ namespace infrastructure.Repositories;
 
 public class WeightRepository(DbDataSource dataSource)
 {
-    public WeightInput GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IEnumerable<WeightInput> GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public WeightInput Create(decimal weight, DateTime date, int userId)
+    public WeightInput Create(WeightInput entity)
     {
         var sql = $@"INSERT INTO weight_tracker.weights (weight, date, user_id) 
 VALUES (@weight, @date, @user_id) ON CONFLICT (user_id, date) DO UPDATE SET weight = @weight, date = @date
 RETURNING 
-    id as {nameof(WeightInput.Id)}, 
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)};";
 
         using var conn = dataSource.OpenConnection();
-        return conn.QueryFirst<WeightInput>(sql, new { weight, date, user_id = userId });
+        return conn.QueryFirst<WeightInput>(sql, new { entity.Weight, entity.Date, user_id = entity.UserId });
     }
 
     public WeightInput Update(WeightInput entity)
     {
-        var sql = $@"UPDATE weight_tracker.weights SET weight = @weight, date = @date WHERE id = @id AND user_id = @user_id RETURNING
-                                                                 id as {nameof(WeightInput.Id)}, 
+        var sql =
+            $@"UPDATE weight_tracker.weights SET weight = @weight WHERE date = @date AND user_id = @user_id RETURNING
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)};";
-            
+
         using var conn = dataSource.OpenConnection();
-        return conn.QueryFirst<WeightInput>(sql, new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId, id = entity.Id });
+        return conn.QueryFirst<WeightInput>(sql,
+            new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId });
     }
 
-    public WeightInput Delete(int id, int userId)
+    public WeightInput Delete(DateTime date, int userId)
     {
-        var sql = $@"DELETE FROM weight_tracker.weights WHERE id = @id AND user_id = @user_id RETURNING 
-id as {nameof(WeightInput.Id)}, 
+        var sql = $@"DELETE FROM weight_tracker.weights WHERE date = @date AND user_id = @user_id RETURNING 
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)};";
         using var conn = dataSource.OpenConnection();
-        return conn.QueryFirst<WeightInput>(sql, new { id, user_id = userId });
+        return conn.QueryFirst<WeightInput>(sql, new { date, user_id = userId });
     }
 
     public IEnumerable<WeightInput> GetAllWeightsForUser(int dataUserId)
     {
         var sql = $@"SELECT
-id as {nameof(WeightInput.Id)}, 
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)}
@@ -69,7 +57,6 @@ FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date DESC;";
     public WeightInput? GetLatestWeightForUser(int userId)
     {
         var sql = $@"SELECT
-id as {nameof(WeightInput.Id)}, 
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)}

@@ -1,8 +1,9 @@
-﻿namespace service.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace service.Models;
 
 public class LoginCommandModel
 {
-    public required string Username { get; set; }
-    public required string Password { get; set; }
-    public string? Email { get; set; }
+    [Required] public required string Username { get; init; }
+    [Required] [MinLength(4)] public required string Password { get; init; }
 }

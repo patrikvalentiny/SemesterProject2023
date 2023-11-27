@@ -1,7 +1,5 @@
-﻿using api.Dtos;
-using api.Filters;
+﻿using api.Filters;
 using infrastructure.DataModels;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using service.Models;
 using service.Services;
@@ -22,13 +20,12 @@ public class WeightController(WeightService weightService) : Controller
     }
     
     [HttpPut]
-    public IActionResult UpdateWeight([FromBody] WeightDto model)
+    public IActionResult UpdateWeight([FromBody] WeightInputCommandModel model)
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
         var input = new WeightInput()
         {
-            Id = model.Id,
             Weight = model.Weight,
             Date = model.Date,
             UserId = data.UserId
@@ -53,11 +50,11 @@ public class WeightController(WeightService weightService) : Controller
         return Ok(weightService.GetLatestWeightForUser(data.UserId));
     }
     
-    [HttpDelete("{id}")]
-    public IActionResult DeleteWeight([FromRoute] int id)
+    [HttpDelete]
+    public IActionResult DeleteWeight([FromBody] DateTime date)
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        return Ok(weightService.DeleteWeight(id, data.UserId));
+        return Ok(weightService.DeleteWeight(date, data.UserId));
     }
 }

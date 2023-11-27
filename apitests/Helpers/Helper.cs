@@ -16,16 +16,14 @@ drop schema if exists weight_tracker cascade;
 create schema weight_tracker;
 create table weight_tracker.users
 (
-    id        serial
+    id       serial
         primary key,
-    username  varchar(64)  not null
-    constraint username_uk
-        unique,
-    email     varchar(128)
-        constraint email_uk
+    username varchar(64) not null
+        constraint username_uk
             unique,
-    firstname varchar(128),
-    lastname  varchar(128)
+    email    varchar(128)
+        constraint email_uk
+            unique
 );
 
 create table weight_tracker.passwords
@@ -41,17 +39,14 @@ create table weight_tracker.passwords
 
 create table weight_tracker.weights
 (
-    id      serial
-        constraint user_weights_pk
-            primary key,
-    weight  real not null,
-    date    timestamp,
-    user_id integer
+    weight  real      not null,
+    date    timestamp not null,
+    user_id integer   not null
         constraint user_weights_users_id_fk
             references weight_tracker.users
             on update cascade on delete cascade,
     constraint weights_pk
-        unique (user_id, date)
+        primary key (user_id, date)
 );
 
 create table weight_tracker.user_details
@@ -62,7 +57,9 @@ create table weight_tracker.user_details
             on update cascade on delete cascade,
     height_cm        integer,
     target_weight_kg real,
-    target_date      date
+    target_date      date,
+    firstname        varchar(128),
+    lastname         varchar(128)
 );
 ";
 
