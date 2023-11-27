@@ -6,7 +6,6 @@ namespace infrastructure.Repositories;
 
 public class UserRepository(DbDataSource dataSource) : IRepository<User>
 {
-    
     public User Create(User user)
     {
         const string sql = $"""
@@ -23,7 +22,7 @@ public class UserRepository(DbDataSource dataSource) : IRepository<User>
         using var connection = dataSource.OpenConnection();
         return connection.QueryFirst<User>(sql, new { username = user.Username, email = user.Email });
     }
-    
+
     public User? GetById(int id)
     {
         const string sql = $@"
@@ -37,7 +36,7 @@ WHERE id = @id;
         using var connection = dataSource.OpenConnection();
         return connection.QueryFirstOrDefault<User>(sql, new { id });
     }
-    
+
     public IEnumerable<User> GetAll()
     {
         const string sql = $@"
@@ -50,7 +49,7 @@ FROM users
         using var connection = dataSource.OpenConnection();
         return connection.Query<User>(sql);
     }
-    
+
     public User Update(User user)
     {
         const string sql = $@"
@@ -68,9 +67,9 @@ RETURNING
 ;";
 
         using var connection = dataSource.OpenConnection();
-        return connection.QueryFirst<User>(sql, new {userId = user.Id, username = user.Username, email = user.Email});
+        return connection.QueryFirst<User>(sql, new { userId = user.Id, username = user.Username, email = user.Email });
     }
-    
+
     public User Delete(int id)
     {
         const string sql = $@"
@@ -83,8 +82,6 @@ RETURNING
 ;";
 
         using var connection = dataSource.OpenConnection();
-        return connection.QueryFirst<User>(sql, new {id});
+        return connection.QueryFirst<User>(sql, new { id });
     }
-    
-    
 }

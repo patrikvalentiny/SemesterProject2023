@@ -7,7 +7,10 @@ public class Argon2idPasswordHashAlgorithm : PasswordHashAlgorithm
 {
     public const string Name = "argon2id";
 
-    public override string GetName() => Name;
+    public override string GetName()
+    {
+        return Name;
+    }
 
     public override string HashPassword(string password, string salt)
     {

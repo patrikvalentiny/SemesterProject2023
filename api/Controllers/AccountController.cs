@@ -25,37 +25,29 @@ public class AccountController(AccountService accountService, JwtService jwtServ
         {
             Log.Error(e.Message);
             if (e.Message.Contains("username_uk"))
-            {
-                
                 return BadRequest("Username already exists");
-            }
-            else if (e.Message.Contains("email_uk"))
-            {
+            if (e.Message.Contains("email_uk"))
                 return BadRequest("Email already exists");
-            } 
-            else
-            {
-                return BadRequest("Unknown error");
-            }
-            
+            return BadRequest("Unknown error");
         }
+
         var token = jwtService.IssueToken(SessionData.FromUser(user));
         Response.Headers.Append("Authorization", $"Bearer {token}");
-        return Ok(new {user, token});
+        return Ok(new { user, token });
     }
-    
+
     [HttpPost]
     [Route("login")]
     public IActionResult Login([FromBody] LoginCommandModel model)
     {
         var user = accountService.Authenticate(model);
         if (user == null) return Unauthorized();
-        
+
         var token = jwtService.IssueToken(SessionData.FromUser(user));
         Response.Headers.Append("Authorization", $"Bearer {token}");
-        return Ok(new {user, token});
+        return Ok(new { user, token });
     }
-    
+
     [RequireAuthentication]
     [HttpGet]
     [Route("whoami")]

@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using service;
 using service.Services;
 
 namespace api.Middleware;
@@ -8,7 +7,7 @@ public class JwtBearerHandler
 {
     private readonly RequestDelegate _next;
 
-    public JwtBearerHandler( RequestDelegate next)
+    public JwtBearerHandler(RequestDelegate next)
     {
         _next = next;
     }

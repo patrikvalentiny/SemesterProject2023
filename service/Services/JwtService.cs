@@ -14,6 +14,7 @@ public class JwtOptions
 public class JwtService(JwtOptions options)
 {
     private const string SignatureAlgorithm = SecurityAlgorithms.HmacSha512;
+
     public string IssueToken(SessionData data)
     {
         var jwtHandler = new JwtSecurityTokenHandler();

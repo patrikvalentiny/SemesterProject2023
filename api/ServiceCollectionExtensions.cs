@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting.Server;
+﻿using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using service.Services;
 
 namespace api;
@@ -23,6 +21,7 @@ public static class ServiceCollectionExtensions
                 var addresses = server.Features.Get<IServerAddressesFeature>()?.Addresses;
                 options.Issuer = addresses?.FirstOrDefault();
             }
+
             if (string.IsNullOrEmpty(options?.Audience))
             {
                 var server = service.GetRequiredService<IServer>();
@@ -34,7 +33,7 @@ public static class ServiceCollectionExtensions
         });
         services.AddSingleton<JwtService>();
     }
-    
+
     public static void AddSwaggerGenWithBearerJWT(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>

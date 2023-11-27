@@ -1,9 +1,6 @@
-﻿using System.Configuration;
-using System.Data.Common;
-using System.Reflection;
+﻿using System.Data.Common;
 using Dapper;
 using infrastructure;
-using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 namespace apitests;
@@ -11,7 +8,8 @@ namespace apitests;
 public static class Helper
 {
     private static readonly DbDataSource DataSource;
-    private static readonly string RebuildScript = $@"
+
+    private static readonly string RebuildScript = @"
 drop schema if exists weight_tracker cascade;
 create schema weight_tracker;
 create table weight_tracker.users
@@ -66,9 +64,11 @@ create table weight_tracker.user_details
     static Helper()
     {
         DataSource =
-        new NpgsqlDataSourceBuilder(Utilities.FormatConnectionString(Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!)).Build();
+            new NpgsqlDataSourceBuilder(Utilities.FormatConnectionString(
+                Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!)).Build();
         DataSource.OpenConnection().Close();
     }
+
     public static void TriggerRebuild()
     {
         using var conn = DataSource.OpenConnection();

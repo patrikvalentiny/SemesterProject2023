@@ -4,7 +4,6 @@ using infrastructure;
 using infrastructure.DataModels;
 using infrastructure.Repositories;
 using Serilog;
-using service;
 using service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +15,9 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("Starting web application");
 
 builder.Host.UseSerilog();
-builder.Services.AddNpgsqlDataSource(Utilities.FormatConnectionString(Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!),
+builder.Services.AddNpgsqlDataSource(
+    Utilities.FormatConnectionString(
+        Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!),
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
@@ -47,7 +48,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var allowedOrigins = app.Environment.IsDevelopment()? new List<string>(){"http://localhost:4200", "http://localhost:5000"} : new List<string> { "https://weighttrackerpatval.azurewebsites.net", "https://semesterproject2023-7161a.web.app" };
+var allowedOrigins = app.Environment.IsDevelopment()
+    ? new List<string> { "http://localhost:4200", "http://localhost:5000" }
+    : new List<string> { "https://weighttrackerpatval.azurewebsites.net", "https://semesterproject2023-7161a.web.app" };
 app.UseCors(policyBuilder => policyBuilder.SetIsOriginAllowed(origin => allowedOrigins.Contains(origin))
     .AllowAnyMethod()
     .AllowAnyHeader());
@@ -59,5 +62,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseMiddleware<JwtBearerHandler>();
-    
+
 app.Run();

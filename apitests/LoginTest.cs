@@ -4,7 +4,6 @@ using System.Security.Cryptography;
 using System.Text;
 using Bogus;
 using Dapper;
-using infrastructure.DataModels;
 using Konscious.Security.Cryptography;
 using Newtonsoft.Json;
 using service.Models;
@@ -80,7 +79,7 @@ public class LoginTest
             responseObject!.User.Username.Should().Be(user.Username);
         }
     }
-    
+
     [Test]
     public async Task ValidLoginEmail()
     {
@@ -89,7 +88,7 @@ public class LoginTest
             .RuleFor(u => u.Username, f => f.Person.Email)
             .RuleFor(u => u.Password, f => f.Internet.Password());
         var user = userFaker.Generate();
-        
+
         await using (var conn = Helper.OpenConnection())
         {
             var sql = "insert into weight_tracker.users (username, email) values ('test', @Username) returning id";
@@ -142,12 +141,12 @@ public class LoginTest
             responseObject!.User.Email.Should().Be(user.Username);
         }
     }
-    
+
     [TestCase("", "")]
     public void DataValidationViolation(string username, string password)
     {
         var httpClient = new HttpClient();
-        LoginCommandModel user = new ()
+        LoginCommandModel user = new()
         {
             Username = username,
             Password = password
@@ -173,7 +172,7 @@ public class LoginTest
             response.Headers.Should().NotContainKey("Authorization");
         }
     }
-    
+
     // [Test]
     // public async Task LoginAndWhoAmITest()
     // {
@@ -264,7 +263,7 @@ public class LoginTest
     //         responseObjectWhoAmI!.Username.Should().Be(user.Username);
     //     }
     // }
-    
+
     [TearDown]
     public void TearDown()
     {

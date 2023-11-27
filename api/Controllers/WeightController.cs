@@ -18,13 +18,13 @@ public class WeightController(WeightService weightService) : Controller
         if (data == null) return Unauthorized();
         return Ok(weightService.AddWeight(model, data.UserId));
     }
-    
+
     [HttpPut]
     public IActionResult UpdateWeight([FromBody] WeightInputCommandModel model)
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        var input = new WeightInput()
+        var input = new WeightInput
         {
             Weight = model.Weight,
             Date = model.Date,
@@ -32,8 +32,8 @@ public class WeightController(WeightService weightService) : Controller
         };
         return Ok(weightService.UpdateWeight(input));
     }
-    
-    
+
+
     [HttpGet]
     public IActionResult GetWeightsForUser()
     {
@@ -41,7 +41,7 @@ public class WeightController(WeightService weightService) : Controller
         if (data == null) return Unauthorized();
         return Ok(weightService.GetAllWeightForUser(data.UserId));
     }
-    
+
     [HttpGet("latest")]
     public IActionResult GetLatestWeightForUser()
     {
@@ -49,7 +49,7 @@ public class WeightController(WeightService weightService) : Controller
         if (data == null) return Unauthorized();
         return Ok(weightService.GetLatestWeightForUser(data.UserId));
     }
-    
+
     [HttpDelete]
     public IActionResult DeleteWeight([FromBody] DateTime date)
     {

@@ -21,7 +21,7 @@ WHERE username = @username;
         using var connection = dataSource.OpenConnection();
         return connection.QueryFirstOrDefault<PasswordHash>(sql, new { username });
     }
-    
+
     public PasswordHash? GetByEmail(string email)
     {
         const string sql = $@"
@@ -40,14 +40,14 @@ WHERE email = @email;
 
     public void Create(int userId, string hash, string salt, string algorithm)
     {
-        const string sql = $@"
+        const string sql = @"
 INSERT INTO weight_tracker.passwords (user_id, password_hash, salt, algorithm)
 VALUES (@userId, @hash, @salt, @algorithm)
 ";
         using var connection = dataSource.OpenConnection();
         connection.Execute(sql, new { userId, hash, salt, algorithm });
     }
-    
+
     public PasswordHash Update(PasswordHash entity)
     {
         throw new NotImplementedException();

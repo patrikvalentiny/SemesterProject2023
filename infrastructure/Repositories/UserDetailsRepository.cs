@@ -57,7 +57,8 @@ WHERE user_id = @id;
                     ;
             ";
         using var connection = dataSource.OpenConnection();
-        return connection.QueryFirst<UserDetails>(sql, new { entity.UserId, entity.Height, entity.TargetWeight, entity.TargetDate });
+        return connection.QueryFirst<UserDetails>(sql,
+            new { entity.UserId, entity.Height, entity.TargetWeight, entity.TargetDate });
     }
 
     public UserDetails Delete(int id)

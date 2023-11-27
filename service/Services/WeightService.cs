@@ -6,9 +6,9 @@ namespace service.Services;
 
 public class WeightService(WeightRepository weightRepository)
 {
-    public  WeightInput AddWeight(WeightInputCommandModel model, int userId)
+    public WeightInput AddWeight(WeightInputCommandModel model, int userId)
     {
-        WeightInput? latestWeight = new WeightInput()
+        var latestWeight = new WeightInput
         {
             Weight = model.Weight,
             Date = model.Date,
@@ -16,11 +16,12 @@ public class WeightService(WeightRepository weightRepository)
         };
         return weightRepository.Create(latestWeight);
     }
-    
+
     public WeightInput? GetLatestWeightForUser(int userId)
     {
         return weightRepository.GetLatestWeightForUser(userId);
     }
+
     public IEnumerable<WeightInput> GetAllWeightForUser(int dataUserId)
     {
         return weightRepository.GetAllWeightsForUser(dataUserId);
