@@ -9,12 +9,12 @@ export class AuthGuardService {
     tokenService: TokenService = inject(TokenService);
     router = inject(Router);
 
-    canActivate() {
-        if (this.tokenService.getToken() === null) {
-            this.router.navigate(["/login"]);
-            return false;
-        }
+    async canActivate() {
+      if (this.tokenService.getToken() === null) {
+        await this.router.navigate(["/login"]);
+        return false;
+      } else {
         return true;
+      }
     }
-
 }

@@ -1,7 +1,7 @@
 <div class="drawer lg:drawer-open w-screen h-max">
   <input class="drawer-toggle" id="my-drawer-2" type="checkbox"/>
   <!--    navbar-->
-  <div *ngIf="this.accountService.tokenService.getToken();"
+  <div *ngIf="!this.isHidden"
        class="navbar bg-base-100 drop-shadow-md fixed lg:pr-8 z-40 ">
     <div class="navbar-start">
       <label class="btn btn-ghost btn-circle lg:hidden" for="my-drawer-2" tabindex="0">
@@ -24,16 +24,16 @@
     </div>
   </div>
 
-  <div [ngClass]="this.accountService.tokenService.getToken() ? 'pt-16' : ''"
+  <div [ngClass]="!this.isHidden ? 'pt-16' : ''"
        class="drawer-content flex flex-col items-center justify-center w-full h-screen lg:justify-start">
     <!-- Page content here -->
-    <div class="w-full">
+    <div class="w-full h-full">
       <router-outlet class="h-fit w-full"></router-outlet>
     </div>
 
 
   </div>
-  <div *ngIf="this.accountService.tokenService.getToken();" class="drawer-side z-50">
+  <div *ngIf="!this.isHidden" class="drawer-side z-50">
 
     <label aria-label="close sidebar" class="drawer-overlay" for="my-drawer-2"></label>
     <ul class="menu px-4 pb-8 w-40 h-full bg-base-100 text-base-content justify-between">

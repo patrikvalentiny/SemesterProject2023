@@ -37,7 +37,7 @@ export class AccountService {
             }>(environment.baseUrl + "/account/register", value.value);
             const response = await firstValueFrom<{ token: string, user: User }>(call);
             this.tokenService.setToken(response.token);
-            await this.router.navigate(["/"])
+            await this.router.navigate(["/onboarding"])
         } catch (e) {
 
         }

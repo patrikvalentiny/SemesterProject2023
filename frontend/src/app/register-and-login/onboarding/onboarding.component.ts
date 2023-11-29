@@ -1,14 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {UserDetailsService} from "../user-details.service";
+import {Component, inject} from '@angular/core';
+import {UserDetailsService} from "../../user-details/user-details.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserDetails} from "../user-details";
+import {UserDetails} from "../../user-details/user-details";
 
 @Component({
-  selector: 'app-account-details',
-  templateUrl: './account-details.component.html',
-  styleUrl: './account-details.component.css'
+  host: {class: 'h-full'},
+  selector: 'app-onboarding',
+  templateUrl: './onboarding.component.html',
+  styleUrl: './onboarding.component.css'
 })
-export class AccountDetailsComponent implements OnInit {
+export class OnboardingComponent {
   userService = inject(UserDetailsService);
   heightInput:FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetWeightInput:FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
@@ -26,24 +27,6 @@ export class AccountDetailsComponent implements OnInit {
     lossPerWeek: this.lossPerWeek
   })
   constructor() { }
-
-  async ngOnInit() {
-    const user = await this.userService.getProfile()
-    if (user != null) {
-      this.updateData(user)
-    }
-  }
-
-  updateData(userDetails: UserDetails) {
-    this.heightInput.setValue(userDetails.height);
-    this.targetWeightInput.setValue(userDetails.targetWeight);
-    console.log(userDetails.targetDate.toString())
-    this.targetDateInput.setValue(userDetails.targetDate.toString().substring(0, 10));
-  }
-
-  async updateDetails() {
-    await this.userService.updateProfile(this.formGroup)
-  }
 
   async createDetails() {
     await this.userService.createProfile(this.formGroup)
