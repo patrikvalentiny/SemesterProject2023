@@ -1,12 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using Bogus;
-using Dapper;
-using infrastructure.DataModels;
-using Newtonsoft.Json;
-using service.Models;
-
-namespace apitests;
+﻿namespace apitests;
 
 public class WeightCrudTests
 {
@@ -26,9 +18,7 @@ public class WeightCrudTests
             .RuleFor(w => w.Weight, f => Math.Round(f.Random.Decimal(50, 200), 2))
             .RuleFor(w => w.Date, f => f.Date.Past().Date);
 
-        const string sql = "INSERT INTO weight_tracker.users (id, username, email) VALUES (1, 'test', 'test@test.test')";
-        using var conn = Helper.OpenConnection();
-        conn.Execute(sql);
+        Helper.InsertUser1();
     }
 
     [Test]
@@ -205,7 +195,11 @@ public class WeightCrudTests
         await using var conn = Helper.OpenConnection();
         for (var i = 0; i < 10; i++)
         {
-            var weight = _weightFaker.Generate();
+            WeightInputCommandModel weight;
+            do
+            {
+                weight = _weightFaker.Generate();
+            } while (weights.Exists(w => w.Date == weight.Date));
             weights.Add(weight);
             await conn.ExecuteAsync(sql, new {weight.Weight, weight.Date, Helper.UserId});
         }

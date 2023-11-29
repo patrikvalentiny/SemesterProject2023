@@ -1,6 +1,4 @@
-﻿using infrastructure.DataModels;
-
-namespace apitests;
+﻿namespace apitests;
 
 public class TokenUserModel
 {

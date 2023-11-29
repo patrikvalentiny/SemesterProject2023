@@ -58,7 +58,8 @@ create table weight_tracker.user_details
     target_weight_kg real,
     target_date      date,
     firstname        varchar(128),
-    lastname         varchar(128)
+    lastname         varchar(128),
+    loss_per_week    real
 );
 ";
 
@@ -91,5 +92,13 @@ create table weight_tracker.user_details
     public static string? GetToken()
     {
         return Environment.GetEnvironmentVariable("ASPNETCORE_TestJwt");
+    }
+
+    public static void InsertUser1()
+    {
+        const string sql =
+            "INSERT INTO weight_tracker.users (id, username, email) VALUES (1, 'testUserHelper', 'testUserHelper@test.test')";
+        using var conn = Helper.OpenConnection();
+        conn.Execute(sql);
     }
 }
