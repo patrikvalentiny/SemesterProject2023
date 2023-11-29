@@ -7,6 +7,7 @@ import {HotToastService} from "@ngneat/hot-toast";
 import {AccountService} from "../register-and-login/account.service";
 import {User} from "../user";
 import {UserDetailsModule} from "./user-details.module";
+import {FormGroup} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,6 @@ import {UserDetailsModule} from "./user-details.module";
 export class UserDetailsService {
   private readonly httpClient = inject(HttpClient);
   private readonly toastService = inject(HotToastService);
-  private readonly accountService = inject(AccountService);
   user:UserDetails | null = null;
   async getProfile() {
     try {
@@ -28,21 +28,21 @@ export class UserDetailsService {
     return null;
   }
 
-  async createProfile(height: number, targetWeight: number, targetDate: string) {
+  async createProfile(formGroup : FormGroup) {
     try {
-      const call = this.httpClient.post<UserDetails>(environment.baseUrl + "/profile", {user_id : this.accountService.user?.id, height, targetWeight, targetDate});
+      const call = this.httpClient.post<UserDetails>(environment.baseUrl + "/profile", formGroup.value);
       this.user = await firstValueFrom<UserDetails>(call);
       this.toastService.success("Profile created")
     } catch (e) {
       this.toastService.error("Failed to create profile")
     }
   }
-  async updateProfile(height: number, targetWeight: number, targetDate: string) {
+  async updateProfile(formGroup : FormGroup) {
     if (this.user == null) {
-      return await this.createProfile(height, targetWeight, targetDate)
+      return await this.createProfile(formGroup)
     }
     try {
-      const call = this.httpClient.put<UserDetails>(environment.baseUrl + "/profile", {user_id : this.accountService.user?.id,height, targetWeight, targetDate});
+      const call = this.httpClient.put<UserDetails>(environment.baseUrl + "/profile", formGroup.value);
       this.user = await firstValueFrom<UserDetails>(call);
       this.toastService.success("Profile updated")
     } catch (e) {

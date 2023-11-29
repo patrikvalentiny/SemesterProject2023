@@ -1,6 +1,9 @@
 export interface UserDetails {
-  user_id: number
+  userId: number
+  firstname: string
+  lastname: string
   height: number
   targetWeight: number
-  targetDate: Date
+  targetDate: string
+  lossPerWeek: any
 }

@@ -8,6 +8,9 @@ import {NotFoundComponent} from "./not-found/not-found.component";
 import {RecordsEditorComponent} from "./pages/records-editor/records-editor.component";
 import {AccountDetailsComponent} from "./user-details/account-details/account-details.component";
 import {WeightInputComponent} from "./weight-controls/weight-input/weight-input.component";
+import {OnboardingComponent} from "./register-and-login/onboarding/onboarding.component";
+import {SignupGuardService} from "./signup-guard.service";
+import {OnboardingWeightComponent} from "./register-and-login/onboarding-weight/onboarding-weight.component";
 
 const routes: Routes = [
     {
@@ -23,10 +26,12 @@ const routes: Routes = [
     {
         path: "login",
         component: LoginViewComponent,
+        canActivate: [SignupGuardService]
     },
     {
         path: "register",
         component: RegisterViewComponent,
+      canActivate: [SignupGuardService]
     },
     {
         path: "editor",
@@ -36,13 +41,23 @@ const routes: Routes = [
     {
       path: "profile",
       component: AccountDetailsComponent,
+      canActivate: [AuthGuardService]
     },
   {
     path: "input",
     component: WeightInputComponent,
+    canActivate: [AuthGuardService]
   },
-    {path: '404', component: NotFoundComponent},
-    {path: '**', redirectTo: '404'},
+  {
+    path:"onboarding/profile",
+    component: OnboardingComponent
+  },
+  {
+    path:"onboarding/weight",
+    component: OnboardingWeightComponent
+  },
+  {path: '404', component: NotFoundComponent},
+  {path: '**', redirectTo: '404'},
 
 ];
 
