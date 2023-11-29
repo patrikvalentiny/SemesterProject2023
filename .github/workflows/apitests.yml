@@ -48,3 +48,4 @@ jobs:
           ASPNETCORE_ConnectionStrings__WebApiDatabase: ${{ secrets.WEBAPIDATABASE }}
           ASPNETCORE_JWT__Secret: ${{ secrets.JWTSECRET }}
           ASPNETCORE_JWT__Lifetime: ${{ secrets.JWTLIFETIME }}
+          ASPNETCORE_TestJwt: ${{ secrets.TEST_JWT }}

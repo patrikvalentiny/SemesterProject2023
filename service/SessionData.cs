@@ -5,7 +5,7 @@ namespace service;
 public class SessionData
 {
     public int UserId { get; init; }
-    
+
     public static SessionData FromUser(User user)
     {
         return new SessionData { UserId = user.Id };
@@ -18,9 +18,9 @@ public class SessionData
 
     public Dictionary<string, object> ToDictionary()
     {
-        return new Dictionary<string, object> { { Keys.UserId, UserId }};
+        return new Dictionary<string, object> { { Keys.UserId, UserId } };
     }
-    
+
     public static class Keys
     {
         public const string UserId = "UserId";

@@ -4,7 +4,7 @@ namespace service.Password;
 
 public abstract class PasswordHashAlgorithm
 {
-    const string PreferredAlgorithmName = Argon2idPasswordHashAlgorithm.Name;
+    private const string PreferredAlgorithmName = Argon2idPasswordHashAlgorithm.Name;
 
     public static PasswordHashAlgorithm Create(string algorithmName = PreferredAlgorithmName)
     {

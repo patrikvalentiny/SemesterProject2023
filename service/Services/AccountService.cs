@@ -4,7 +4,7 @@ using Serilog;
 using service.Models;
 using service.Password;
 
-namespace service;
+namespace service.Services;
 
 public class AccountService(IRepository<User> userRepository,
     PasswordRepository passwordRepository)
@@ -13,7 +13,9 @@ public class AccountService(IRepository<User> userRepository,
     {
         try
         {
-            var passwordHash = passwordRepository.GetByUsername(model.Username);
+            var passwordHash = passwordRepository.GetByUsername(model.Username) ??
+                               passwordRepository.GetByEmail(model.Username);
+            if (passwordHash == null) return null;
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm);
             var isValid = hashAlgorithm.VerifyHashedPassword(model.Password, passwordHash.Hash, passwordHash.Salt);
             if (isValid) return userRepository.GetById(passwordHash.UserId);
@@ -31,17 +33,15 @@ public class AccountService(IRepository<User> userRepository,
         var hashAlgorithm = PasswordHashAlgorithm.Create();
         var salt = hashAlgorithm.GenerateSalt();
         var hash = hashAlgorithm.HashPassword(model.Password, salt);
-        var user = userRepository.Create(new User()
+        var user = userRepository.Create(new User
         {
             Username = model.Username,
-            Email = model.Email,
-            Firstname = model.Firstname,
-            Lastname = model.Lastname,
+            Email = model.Email
         });
         passwordRepository.Create(user.Id, hash, salt, hashAlgorithm.GetName());
         return user;
     }
-    
+
     public User? Get(SessionData data)
     {
         return userRepository.GetById(data.UserId);

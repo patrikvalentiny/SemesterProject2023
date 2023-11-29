@@ -7,17 +7,18 @@ public class Argon2idPasswordHashAlgorithm : PasswordHashAlgorithm
 {
     public const string Name = "argon2id";
 
-    public override string GetName() => Name;
+    public override string GetName()
+    {
+        return Name;
+    }
 
     public override string HashPassword(string password, string salt)
     {
-        using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(password))
-        {
-            Salt = Decode(salt),
-            MemorySize = 12288,
-            Iterations = 3,
-            DegreeOfParallelism = 1,
-        };
+        using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(password));
+        hashAlgo.Salt = Decode(salt);
+        hashAlgo.MemorySize = 12288;
+        hashAlgo.Iterations = 3;
+        hashAlgo.DegreeOfParallelism = 1;
         return Encode(hashAlgo.GetBytes(256));
     }
 

@@ -3,6 +3,7 @@
 public static class Utilities
 {
     public static string? ProperlyFormattedConnectionString;
+
     public static string FormatConnectionString(string connectionString)
     {
         Uri uri = new(connectionString);

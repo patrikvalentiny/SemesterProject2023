@@ -1,23 +1,55 @@
-
-  <div class="drawer lg:drawer-open">
-    <input class="drawer-toggle" id="my-drawer-2" type="checkbox"/>
-    <div class="drawer-content flex flex-col items-center justify-start">
-      <!-- Page content here -->
-        <router-outlet></router-outlet>
-
+<div class="drawer lg:drawer-open w-screen h-max">
+  <input class="drawer-toggle" id="my-drawer-2" type="checkbox"/>
+  <!--    navbar-->
+  <div *ngIf="this.accountService.tokenService.getToken();"
+       class="navbar bg-base-100 drop-shadow-md fixed lg:pr-8 z-40 ">
+    <div class="navbar-start">
+      <label class="btn btn-ghost btn-circle lg:hidden" for="my-drawer-2" tabindex="0">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6h16M4 12h16M4 18h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+      </label>
     </div>
-    <div *ngIf="this.accountService.tokenService.getToken();" class="drawer-side">
-      <label aria-label="close sidebar" class="drawer-overlay" for="my-drawer-2"></label>
-      <ul class="menu p-4 w-40 h-full bg-base-200 text-base-content justify-between">
-        <div>
-        <!-- Sidebar content here -->
-        <li><a>Sidebar Item 1</a></li>
-        <li><a>Sidebar Item 2</a></li>
+    <div class="navbar-end">
+      <a class="btn btn-circle" href="../profile">
+        <div class="avatar">
+          <div class="h-10 w-10 rounded-full">
+            <img
+              alt="profilePicture"
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
+          </div>
         </div>
-        <div class="flex flex-col w-full items-center justify-center">
-          <button class="btn btn-outline btn-accent" (click)="logout()">Logout</button>
-        </div>
-      </ul>
-
+      </a>
     </div>
   </div>
+
+  <div [ngClass]="this.accountService.tokenService.getToken() ? 'pt-16' : ''"
+       class="drawer-content flex flex-col items-center justify-center w-full h-screen lg:justify-start">
+    <!-- Page content here -->
+    <div class="w-full">
+      <router-outlet class="h-fit w-full"></router-outlet>
+    </div>
+
+
+  </div>
+  <div *ngIf="this.accountService.tokenService.getToken();" class="drawer-side z-50">
+
+    <label aria-label="close sidebar" class="drawer-overlay" for="my-drawer-2"></label>
+    <ul class="menu px-4 pb-8 w-40 h-full bg-base-100 text-base-content justify-between">
+      <div>
+        <div class="navbar-center h-16">
+          <a class="btn btn-ghost text-xl" href="">HOME</a>
+        </div>
+        <!-- Sidebar content here -->
+        <li><a href="../input">Add record</a></li>
+        <li><a href="../editor">Records editor</a></li>
+
+      </div>
+      <div class="flex flex-col w-full items-center justify-center">
+        <button (click)="logout()" class="btn btn-outline btn-accent">Logout</button>
+      </div>
+    </ul>
+
+  </div>
+</div>

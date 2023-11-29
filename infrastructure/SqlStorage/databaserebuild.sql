@@ -2,9 +2,9 @@ drop schema if exists weight_tracker cascade;
 create schema weight_tracker;
 create table weight_tracker.users
 (
-    id    SERIAL
+    id        SERIAL
         primary key,
-    username  varchar(64) not null,
+    username  varchar(64)  not null,
     email     varchar(128) not null
         constraint users_pk2
             unique,
@@ -19,7 +19,7 @@ alter table weight_tracker.passwords
 
 create table weight_tracker.passwords
 (
-    user_id        integer     not null
+    user_id       integer     not null
         constraint passwords_users_userid_fk
             references weight_tracker.users
             on update cascade on delete cascade,
