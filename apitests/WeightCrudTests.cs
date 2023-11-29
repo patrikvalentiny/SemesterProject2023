@@ -18,9 +18,7 @@ public class WeightCrudTests
             .RuleFor(w => w.Weight, f => Math.Round(f.Random.Decimal(50, 200), 2))
             .RuleFor(w => w.Date, f => f.Date.Past().Date);
 
-        const string sql = "INSERT INTO weight_tracker.users (id, username, email) VALUES (1, 'test', 'test@test.test')";
-        using var conn = Helper.OpenConnection();
-        conn.Execute(sql);
+        Helper.InsertUser1();
     }
 
     [Test]

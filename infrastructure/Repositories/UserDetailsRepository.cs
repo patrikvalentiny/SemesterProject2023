@@ -31,14 +31,17 @@ WHERE user_id = @id;
     public UserDetails Create(UserDetails entity)
     {
         const string sql = $@"
-           INSERT INTO weight_tracker.user_details (user_id, height_cm, target_weight_kg, target_date) VALUES (@{nameof(UserDetails.UserId)}, @{nameof(UserDetails.Height)}, @{nameof(UserDetails.TargetWeight)}, @{nameof(UserDetails.TargetDate)})
+           INSERT INTO weight_tracker.user_details (user_id, height_cm, target_weight_kg, target_date, firstname, lastname, loss_per_week) VALUES 
+        (@{nameof(UserDetails.UserId)}, @{nameof(UserDetails.Height)}, @{nameof(UserDetails.TargetWeight)}, @{nameof(UserDetails.TargetDate)},
+         @{nameof(UserDetails.Firstname)}, @{nameof(UserDetails.Lastname)}, @{nameof(UserDetails.LossPerWeek)})
            RETURNING
                user_id as {nameof(UserDetails.UserId)},
                height_cm as {nameof(UserDetails.Height)},
                target_weight_kg as {nameof(UserDetails.TargetWeight)},
                target_date as {nameof(UserDetails.TargetDate)},
                firstname as {nameof(UserDetails.Firstname)},
-                lastname as {nameof(UserDetails.Lastname)}
+                lastname as {nameof(UserDetails.Lastname)},
+                loss_per_week as {nameof(UserDetails.LossPerWeek)}
                ;";
         using var connection = dataSource.OpenConnection();
         return connection.QueryFirst<UserDetails>(sql, entity);
