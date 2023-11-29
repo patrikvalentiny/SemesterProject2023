@@ -1,6 +1,4 @@
 using System.Net;
-using Dapper;
-using service.Models;
 
 namespace apitests;
 
