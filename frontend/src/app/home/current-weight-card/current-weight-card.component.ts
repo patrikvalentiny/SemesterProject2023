@@ -1,12 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {WeightService} from "../../weight-controls/weight.service";
 import {UserDetailsService} from "../../user-details/user-details.service";
 
 @Component({
   selector: 'app-current-weight-card',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './current-weight-card.component.html',
   styleUrl: './current-weight-card.component.css'
 })

@@ -1,9 +1,4 @@
 using System.Net;
-using System.Net.Http.Json;
-using Bogus;
-using Dapper;
-using Newtonsoft.Json;
-using service.Models;
 
 namespace apitests;
 
@@ -68,6 +63,47 @@ public class RegisterTests
             .RuleFor(u => u.Email, f => f.Person.Email);
 
         var user = userFaker.Generate();
+        await using var conn = Helper.OpenConnection();
+        await conn.ExecuteAsync("INSERT INTO weight_tracker.users (username, email) VALUES (@Username, @Email)", user);
+
+
+        const string url = "http://localhost:5000/api/v1/account/register";
+
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await httpClient.PostAsJsonAsync(url, user);
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+
+        using (new AssertionScope())
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+    }
+    
+    [TestCase]
+    [TestCase("", "test", "test@test.dk", TestName = "TestUsernameEmpty")]
+    [TestCase("test", "", "test@test.dk", TestName = "TestPasswordEmpty")]
+    [TestCase("test", "test", "", TestName = "TestEmailEmpty")]
+    [TestCase("test", "t", "test@test.dk", TestName = "TestPasswordTooShort")]
+    [TestCase("test", "test", "te", TestName = "TestEmailNotEmailing")]
+    public async Task TestValidationErrors(string username = "", string password = "", string email = "")
+    {
+        var httpClient = new HttpClient();
+
+        var user = new RegisterCommandModel
+        {
+            Username = username,
+            Password = password,
+            Email = email
+        };
         await using var conn = Helper.OpenConnection();
         await conn.ExecuteAsync("INSERT INTO weight_tracker.users (username, email) VALUES (@Username, @Email)", user);
 

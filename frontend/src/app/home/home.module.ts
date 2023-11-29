@@ -11,7 +11,8 @@ import {CurrentWeightCardComponent} from "./current-weight-card/current-weight-c
 @NgModule({
     declarations: [
         HomeSkeletonComponent,
-        HomeViewComponent
+        HomeViewComponent,
+        CurrentWeightCardComponent
     ],
     exports: [
         HomeSkeletonComponent
@@ -21,7 +22,6 @@ import {CurrentWeightCardComponent} from "./current-weight-card/current-weight-c
         RouterOutlet,
         WeightControlsModule,
         WeightLineChartComponent,
-        CurrentWeightCardComponent
     ]
 })
 export class HomeModule {

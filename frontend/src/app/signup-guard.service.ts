@@ -5,13 +5,13 @@ import {TokenService} from "./token.service";
 @Injectable({
     providedIn: 'root'
 })
-export class AuthGuardService {
+export class SignupGuardService {
     tokenService: TokenService = inject(TokenService);
     router = inject(Router);
 
     async canActivate() {
-      if (this.tokenService.getToken() === null) {
-        await this.router.navigate(["/login"]);
+      if (this.tokenService.getToken() !== null) {
+        await this.router.navigate(["/home"]);
         return false;
       } else {
         return true;
