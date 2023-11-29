@@ -1,12 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using Bogus;
-using Dapper;
-using infrastructure.DataModels;
-using Newtonsoft.Json;
-using service.Models;
-
-namespace apitests;
+﻿namespace apitests;
 
 public class WeightCrudTests
 {

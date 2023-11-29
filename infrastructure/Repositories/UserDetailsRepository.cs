@@ -13,7 +13,9 @@ SELECT
     user_id as {nameof(UserDetails.UserId)},
     height_cm as {nameof(UserDetails.Height)},
     target_weight_kg as {nameof(UserDetails.TargetWeight)},
-    target_date as {nameof(UserDetails.TargetDate)}
+    target_date as {nameof(UserDetails.TargetDate)},
+    firstname as {nameof(UserDetails.Firstname)},
+    lastname as {nameof(UserDetails.Lastname)}
 FROM weight_tracker.user_details
 WHERE user_id = @id;
 ";
@@ -34,7 +36,9 @@ WHERE user_id = @id;
                user_id as {nameof(UserDetails.UserId)},
                height_cm as {nameof(UserDetails.Height)},
                target_weight_kg as {nameof(UserDetails.TargetWeight)},
-               target_date as {nameof(UserDetails.TargetDate)}
+               target_date as {nameof(UserDetails.TargetDate)},
+               firstname as {nameof(UserDetails.Firstname)},
+                lastname as {nameof(UserDetails.Lastname)}
                ;";
         using var connection = dataSource.OpenConnection();
         return connection.QueryFirst<UserDetails>(sql, entity);
@@ -47,7 +51,9 @@ WHERE user_id = @id;
               SET 
                   height_cm = @{nameof(UserDetails.Height)}, 
                    target_weight_kg = @{nameof(UserDetails.TargetWeight)}, 
-                   target_date = @{nameof(UserDetails.TargetDate)}
+                   target_date = @{nameof(UserDetails.TargetDate)},
+                     firstname = @{nameof(UserDetails.Firstname)},
+                        lastname = @{nameof(UserDetails.Lastname)}
                 WHERE user_id = @{nameof(UserDetails.UserId)}
               RETURNING 
                     user_id as {nameof(UserDetails.UserId)},
@@ -57,8 +63,7 @@ WHERE user_id = @id;
                     ;
             ";
         using var connection = dataSource.OpenConnection();
-        return connection.QueryFirst<UserDetails>(sql,
-            new { entity.UserId, entity.Height, entity.TargetWeight, entity.TargetDate });
+        return connection.QueryFirst<UserDetails>(sql, entity);
     }
 
     public UserDetails Delete(int id)

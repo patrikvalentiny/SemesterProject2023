@@ -1,9 +1,5 @@
 using System.Net;
-using System.Net.Http.Json;
-using Bogus;
 using Dapper;
-using Newtonsoft.Json;
-using NUnit.Framework.Internal;
 using service.Models;
 
 namespace apitests;
