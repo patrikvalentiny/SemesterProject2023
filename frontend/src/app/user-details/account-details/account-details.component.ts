@@ -35,10 +35,12 @@ export class AccountDetailsComponent implements OnInit {
   }
 
   updateData(userDetails: UserDetails) {
+    this.firstName.setValue(userDetails.firstname);
+    this.lastName.setValue(userDetails.lastname);
     this.heightInput.setValue(userDetails.height);
     this.targetWeightInput.setValue(userDetails.targetWeight);
-    console.log(userDetails.targetDate.toString())
     this.targetDateInput.setValue(userDetails.targetDate.toString().substring(0, 10));
+    this.lossPerWeek.setValue(userDetails.lossPerWeek);
   }
 
   async updateDetails() {

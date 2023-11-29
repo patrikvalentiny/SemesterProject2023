@@ -15,7 +15,6 @@ import {FormGroup} from "@angular/forms";
 export class UserDetailsService {
   private readonly httpClient = inject(HttpClient);
   private readonly toastService = inject(HotToastService);
-  private readonly accountService = inject(AccountService);
   user:UserDetails | null = null;
   async getProfile() {
     try {
