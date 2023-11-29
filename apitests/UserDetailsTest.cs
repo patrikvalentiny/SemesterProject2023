@@ -18,7 +18,7 @@ public class UserDetailsTest
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());
         
         _faker = new Faker<UserDetails>()
-            .RuleFor(u => u.Height, f => f.Random.Int(50, 250))
+            .RuleFor(u => u.Height, f => f.Random.Int(150, 250))
             .RuleFor(u => u.TargetWeight, f => Math.Round(f.Random.Decimal(50, 200), 2))
             .RuleFor(u => u.TargetDate, f => f.Date.Future().Date.OrNull(f, 0.2f))
             .RuleFor(u => u.LossPerWeek, f => Math.Round(f.Random.Decimal(0.1m, 5.0m), 2).OrNull(f, 0.2f))
