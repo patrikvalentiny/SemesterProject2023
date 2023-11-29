@@ -7,6 +7,7 @@ namespace apitests;
 
 public static class Helper
 {
+    public static int UserId => 1;
     private static readonly DbDataSource DataSource;
 
     private static readonly string RebuildScript = @"
@@ -85,5 +86,10 @@ create table weight_tracker.user_details
     public static DbConnection OpenConnection()
     {
         return DataSource.OpenConnection();
+    }
+
+    public static string? GetToken()
+    {
+        return Environment.GetEnvironmentVariable("ASPNETCORE_TestJwt");
     }
 }

@@ -50,8 +50,8 @@ public class WeightController(WeightService weightService) : Controller
         return Ok(weightService.GetLatestWeightForUser(data.UserId));
     }
 
-    [HttpDelete]
-    public IActionResult DeleteWeight([FromBody] DateTime date)
+    [HttpDelete("{date:datetime}")]
+    public IActionResult DeleteWeight([FromRoute] DateTime date)
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();

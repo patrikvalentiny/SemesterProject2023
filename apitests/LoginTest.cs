@@ -27,24 +27,22 @@ public class LoginTest
             .RuleFor(u => u.Password, f => f.Internet.Password());
         var user = userFaker.Generate();
 
-        await using (var conn = Helper.OpenConnection())
+        await using var conn = Helper.OpenConnection();
+        var sql = "insert into weight_tracker.users (username) values (@Username) returning id";
+        var id = await conn.QueryFirstAsync<int>(sql, user);
+        sql =
+            "insert into weight_tracker.passwords (user_id, password_hash, salt, algorithm) values (@Id, @Password, @Salt, 'argon2id')";
+        using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(user.Password));
+        hashAlgo.Salt = RandomNumberGenerator.GetBytes(128);
+        hashAlgo.MemorySize = 12288;
+        hashAlgo.Iterations = 3;
+        hashAlgo.DegreeOfParallelism = 1;
+        await conn.ExecuteAsync(sql, new
         {
-            var sql = "insert into weight_tracker.users (username) values (@Username) returning id";
-            var id = await conn.QueryFirstAsync<int>(sql, user);
-            sql =
-                "insert into weight_tracker.passwords (user_id, password_hash, salt, algorithm) values (@Id, @Password, @Salt, 'argon2id')";
-            using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(user.Password));
-            hashAlgo.Salt = RandomNumberGenerator.GetBytes(128);
-            hashAlgo.MemorySize = 12288;
-            hashAlgo.Iterations = 3;
-            hashAlgo.DegreeOfParallelism = 1;
-            await conn.ExecuteAsync(sql, new
-            {
-                Id = id,
-                Password = Convert.ToBase64String(await hashAlgo.GetBytesAsync(256)),
-                Salt = Convert.ToBase64String(hashAlgo.Salt)
-            });
-        }
+            Id = id,
+            Password = Convert.ToBase64String(await hashAlgo.GetBytesAsync(256)),
+            Salt = Convert.ToBase64String(hashAlgo.Salt)
+        });
 
         const string url = "http://localhost:5000/api/v1/account/login";
 

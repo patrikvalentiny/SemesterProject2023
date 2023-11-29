@@ -16,7 +16,7 @@ RETURNING
     user_id as {nameof(WeightInput.UserId)};";
 
         using var conn = dataSource.OpenConnection();
-        return conn.QueryFirst<WeightInput>(sql, new { entity.Weight, entity.Date, user_id = entity.UserId });
+        return conn.QueryFirst<WeightInput>(sql, new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId });
     }
 
     public WeightInput Update(WeightInput entity)
