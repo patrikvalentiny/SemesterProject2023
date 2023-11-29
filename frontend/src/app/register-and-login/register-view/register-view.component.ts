@@ -14,23 +14,22 @@ export class RegisterViewComponent implements OnInit {
     private readonly fb: FormBuilder = inject(FormBuilder);
     private readonly toastService = inject(HotToastService);
     registerForm = this.fb.group({
+        email: [null, Validators.email],
         username: [null, Validators.required],
         password: [null, Validators.required],
         confirmPassword: [null, Validators.required],
-        email: [null, Validators.email],
-        firstName: [null],
-        lastName: [null],
+
     });
 
-    register() {
-        if (this.registerForm.value.confirmPassword !== this.registerForm.value.password) {
-            this.passwordMatching = false;
-            this.registerForm.controls.confirmPassword.reset();
-            this.toastService.error("Passwords do not match");
-            return
-        }
+    async register() {
+      if (this.registerForm.value.confirmPassword !== this.registerForm.value.password) {
+        this.passwordMatching = false;
+        this.registerForm.controls.confirmPassword.reset();
+        this.toastService.error("Passwords do not match");
+        return
+      }
 
-        this.accountService.register(this.registerForm);
+      await this.accountService.register(this.registerForm);
 
     }
 
