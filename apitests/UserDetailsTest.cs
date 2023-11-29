@@ -61,6 +61,46 @@ public class UserDetailsTest
             responseObject.Should().BeEquivalentTo(userDetails);
         }
     }
+
+    public enum TestCases
+    {
+        Height,
+        TargetWeight
+    }
+    
+    [TestCase(TestCases.Height, TestName = "TestMissingParameterTargetWeight")]
+    [TestCase(TestCases.TargetWeight, TestName = "TestMissingParameterHeight")]
+    public async Task TestMissingParameters(TestCases testCases)
+    {
+        var userDetails = _faker.Generate();
+        
+        HttpResponseMessage response;
+        try
+        {
+            object body;
+            if (testCases == TestCases.Height)
+            {
+                body = new {userDetails.TargetWeight};
+            }
+            else
+            {
+                body = new {userDetails.Height};
+            }
+            response = await _httpClient.PostAsJsonAsync("http://localhost:5000/api/v1/profile", body);
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeFalse();
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+    }
+    
     [TestCase]
     [TestCase(5000, 100, TestName = "TestInvalidParametersHeightMax")]
     [TestCase(25, 100, TestName = "TestInvalidParametersTargetHeightMin")]
@@ -107,11 +147,59 @@ public class UserDetailsTest
         await using var conn = Helper.OpenConnection();
         await conn.ExecuteAsync(sql, userDetails);
         
-        
         HttpResponseMessage response;
         try
         {
             response = await _httpClient.GetAsync("http://localhost:5000/api/v1/profile");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        UserDetails? responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<UserDetails>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().BeEquivalentTo(userDetails);
+        }
+    }
+
+    [Test]
+    public async Task TestUpdateUserDetails()
+    {
+        var userDetails = _faker.Generate();
+
+        const string sql =
+            $@"INSERT INTO weight_tracker.user_details (user_id, firstname, lastname, height_cm, target_weight_kg, target_date, loss_per_week) VALUES (
+                @{nameof(UserDetails.UserId)},
+                @{nameof(UserDetails.Firstname)},
+                @{nameof(UserDetails.Lastname)},
+                @{nameof(UserDetails.Height)},
+                @{nameof(UserDetails.TargetWeight)},
+                @{nameof(UserDetails.TargetDate)},
+                @{nameof(UserDetails.LossPerWeek)}
+        );";
+        await using var conn = Helper.OpenConnection();
+        await conn.ExecuteAsync(sql, userDetails);
+        
+        
+        userDetails = _faker.Generate();
+        
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.PutAsJsonAsync("http://localhost:5000/api/v1/profile", userDetails);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)

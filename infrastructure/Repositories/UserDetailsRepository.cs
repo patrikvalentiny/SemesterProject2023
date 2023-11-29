@@ -57,13 +57,17 @@ WHERE user_id = @id;
                    target_weight_kg = @{nameof(UserDetails.TargetWeight)}, 
                    target_date = @{nameof(UserDetails.TargetDate)},
                      firstname = @{nameof(UserDetails.Firstname)},
-                        lastname = @{nameof(UserDetails.Lastname)}
+                        lastname = @{nameof(UserDetails.Lastname)},
+                        loss_per_week = @{nameof(UserDetails.LossPerWeek)}
                 WHERE user_id = @{nameof(UserDetails.UserId)}
               RETURNING 
                     user_id as {nameof(UserDetails.UserId)},
                     height_cm as {nameof(UserDetails.Height)},
                     target_weight_kg as {nameof(UserDetails.TargetWeight)},
-                    target_date as {nameof(UserDetails.TargetDate)}
+                    target_date as {nameof(UserDetails.TargetDate)},
+                    firstname as {nameof(UserDetails.Firstname)},
+                    lastname as {nameof(UserDetails.Lastname)},
+                    loss_per_week as {nameof(UserDetails.LossPerWeek)}
                     ;
             ";
         using var connection = dataSource.OpenConnection();
