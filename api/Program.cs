@@ -20,7 +20,7 @@ builder.Services.AddNpgsqlDataSource(
         Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!),
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddJwtService();
-builder.Services.AddSwaggerGenWithBearerJWT();
+builder.Services.AddSwaggerGenWithBearerJwt();
 builder.Services.AddSingleton<IRepository<User>, UserRepository>();
 builder.Services.AddSingleton<IRepository<UserDetails>, UserDetailsRepository>();
 builder.Services.AddSingleton<UserDetailsService>();

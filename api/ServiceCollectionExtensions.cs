@@ -15,14 +15,14 @@ public static class ServiceCollectionExtensions
             var options = configuration.GetRequiredSection("JWT").Get<JwtOptions>()!;
             // If address isn't set in the config then we are likely running in development mode.
             // We will use the address of the server as *issuer* for JWT.
-            if (string.IsNullOrEmpty(options?.Issuer))
+            if (string.IsNullOrEmpty(options.Issuer))
             {
                 var server = service.GetRequiredService<IServer>();
                 var addresses = server.Features.Get<IServerAddressesFeature>()?.Addresses;
                 options.Issuer = addresses?.FirstOrDefault();
             }
 
-            if (string.IsNullOrEmpty(options?.Audience))
+            if (string.IsNullOrEmpty(options.Audience))
             {
                 var server = service.GetRequiredService<IServer>();
                 var addresses = server.Features.Get<IServerAddressesFeature>()?.Addresses;
@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<JwtService>();
     }
 
-    public static void AddSwaggerGenWithBearerJWT(this IServiceCollection services)
+    public static void AddSwaggerGenWithBearerJwt(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
             {

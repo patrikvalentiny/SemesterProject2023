@@ -10,9 +10,9 @@ namespace apitests;
 
 public class WeightCrudTests
 {
-    
-    private HttpClient _httpClient;
-    private Faker<WeightInputCommandModel> _weightFaker;
+
+    private HttpClient _httpClient = null!;
+    private Faker<WeightInputCommandModel> _weightFaker = null!;
     private const string Url = "http://localhost:5000/api/v1/weight";
     [SetUp]
     public void Setup()
@@ -68,6 +68,46 @@ public class WeightCrudTests
     }
 
     [Test]
+    public async Task TestAddWeightToSameDay()
+    {
+        var weight = _weightFaker.Generate();
+        
+        const string sql = "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)";
+        await using var conn = Helper.OpenConnection();
+        await conn.ExecuteAsync(sql, new {weight.Weight, weight.Date, Helper.UserId});
+
+        weight.Weight = _weightFaker.Generate().Weight;
+        
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync(Url, weight);
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        WeightInput? responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<WeightInput>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            weight.Weight.Should().Be(responseObject!.Weight);
+            weight.Date.Date.Should().Be(responseObject.Date);
+            responseObject.UserId.Should().Be(Helper.UserId);
+        }
+    }
+    [Test]
     public async Task GetAllWeightsTest()
     {
         var weights = new List<WeightInputCommandModel>();
@@ -75,7 +115,11 @@ public class WeightCrudTests
         await using var conn = Helper.OpenConnection();
         for (var i = 0; i < 10; i++)
         {
-            var weight = _weightFaker.Generate();
+            WeightInputCommandModel weight;
+            do
+            {
+                 weight = _weightFaker.Generate();
+            } while (weights.Exists(w => w.Date == weight.Date));
             weights.Add(weight);
             await conn.ExecuteAsync(sql, new {weight.Weight, weight.Date, Helper.UserId});
         }
@@ -107,6 +151,7 @@ public class WeightCrudTests
             response.IsSuccessStatusCode.Should().BeTrue();
             weights.Should().BeEquivalentTo(responseObject!, options => options.Excluding(o => o.UserId));
             weights.Count.Should().Be(responseObject!.Length);
+            responseObject.Should().BeInDescendingOrder(w => w.Date);
             responseObject.All(w => w.UserId == Helper.UserId).Should().BeTrue();
         }
     }
