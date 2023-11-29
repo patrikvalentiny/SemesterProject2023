@@ -1,5 +1,7 @@
 ﻿
 
+using System.Net;
+
 namespace apitests;
 
 public class UserDetailsTest
@@ -36,6 +38,80 @@ public class UserDetailsTest
         try
         {
             response = await _httpClient.PostAsJsonAsync("http://localhost:5000/api/v1/profile", userDetails);
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        UserDetails? responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<UserDetails>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().BeEquivalentTo(userDetails);
+        }
+    }
+    [TestCase]
+    [TestCase(5000, 100, TestName = "TestInvalidParametersHeightMax")]
+    [TestCase(25, 100, TestName = "TestInvalidParametersTargetHeightMin")]
+    [TestCase(180, 5000, TestName = "TestInvalidParametersTargetWeightMax")]
+    [TestCase(180, 25, TestName = "TestInvalidParametersTargetWeightMin")]
+    public async Task TestInvalidParameters(int height = 0, decimal targetWeight = 0)
+    {
+        var userDetails = _faker.Generate();
+        userDetails.Height = height;
+        userDetails.TargetWeight = targetWeight;
+        
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync("http://localhost:5000/api/v1/profile", userDetails);
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeFalse();
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+    }
+    [Test]
+    public async Task TestGetUserDetails()
+    {
+        var userDetails = _faker.Generate();
+
+        const string sql = $@"INSERT INTO weight_tracker.user_details (user_id, firstname, lastname, height_cm, target_weight_kg, target_date, loss_per_week) 
+        VALUES (
+                @{nameof(UserDetails.UserId)},
+                @{nameof(UserDetails.Firstname)},
+                @{nameof(UserDetails.Lastname)},
+                @{nameof(UserDetails.Height)},
+                @{nameof(UserDetails.TargetWeight)},
+                @{nameof(UserDetails.TargetDate)},
+                @{nameof(UserDetails.LossPerWeek)}
+        );";
+        await using var conn = Helper.OpenConnection();
+        await conn.ExecuteAsync(sql, userDetails);
+        
+        
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync("http://localhost:5000/api/v1/profile");
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)

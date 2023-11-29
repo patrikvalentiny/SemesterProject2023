@@ -15,7 +15,8 @@ SELECT
     target_weight_kg as {nameof(UserDetails.TargetWeight)},
     target_date as {nameof(UserDetails.TargetDate)},
     firstname as {nameof(UserDetails.Firstname)},
-    lastname as {nameof(UserDetails.Lastname)}
+    lastname as {nameof(UserDetails.Lastname)},
+    loss_per_week as {nameof(UserDetails.LossPerWeek)}
 FROM weight_tracker.user_details
 WHERE user_id = @id;
 ";

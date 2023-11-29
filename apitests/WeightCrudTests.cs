@@ -195,7 +195,11 @@ public class WeightCrudTests
         await using var conn = Helper.OpenConnection();
         for (var i = 0; i < 10; i++)
         {
-            var weight = _weightFaker.Generate();
+            WeightInputCommandModel weight;
+            do
+            {
+                weight = _weightFaker.Generate();
+            } while (weights.Exists(w => w.Date == weight.Date));
             weights.Add(weight);
             await conn.ExecuteAsync(sql, new {weight.Weight, weight.Date, Helper.UserId});
         }
