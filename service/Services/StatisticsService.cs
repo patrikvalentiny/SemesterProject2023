@@ -25,7 +25,7 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         var averageLoss = decimal.Round(totalLoss / firstToLastDateDaysDiff, 4); // average loss per day ex. -1
         
         // get target date
-        var targetDate = user.TargetDate ?? oldestWeightInput.Date; // if target date is null, use last input date
+        var targetDate = user.TargetDate ?? newestWeightInput.Date; // if target date is null, use last input date
         
         // create list of dates from first date to target date
         var dates = new List<DateTime>();
