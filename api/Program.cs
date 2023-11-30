@@ -25,6 +25,7 @@ builder.Services.AddSingleton<IRepository<User>, UserRepository>();
 builder.Services.AddSingleton<IRepository<UserDetails>, UserDetailsRepository>();
 builder.Services.AddSingleton<UserDetailsService>();
 builder.Services.AddSingleton<WeightService>();
+builder.Services.AddSingleton<BmiService>();
 builder.Services.AddSingleton<WeightRepository>();
 builder.Services.AddSingleton<PasswordRepository>();
 builder.Services.AddSingleton<AccountService>();
