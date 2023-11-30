@@ -1,0 +1,10 @@
+global using NUnit.Framework;
+global using FluentAssertions;
+global using FluentAssertions.Execution;
+global using System.Net.Http.Headers;
+global using System.Net.Http.Json;
+global using Bogus;
+global using infrastructure.DataModels;
+global using Newtonsoft.Json;
+global using Dapper;
+global using service.Models;

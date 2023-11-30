@@ -12,7 +12,7 @@ Compared to other apps the open source nature assures you that your data is not 
 
 ## Base Features
 
-- [ ] User registration and authentication
+- [X] User registration and authentication
 - [ ] Record and update weight measurements
 - [ ] Set and track weight loss goals
 - [ ] Visualize weight loss progress with charts
