@@ -48,7 +48,7 @@ RETURNING
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)}
-FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date DESC;";
+FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date;";
 
         using var conn = dataSource.OpenConnection();
         return conn.Query<WeightInput>(sql, new { user_id = dataUserId });

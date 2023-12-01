@@ -141,7 +141,7 @@ public class WeightCrudTests
             response.IsSuccessStatusCode.Should().BeTrue();
             weights.Should().BeEquivalentTo(responseObject!, options => options.Excluding(o => o.UserId));
             weights.Count.Should().Be(responseObject!.Length);
-            responseObject.Should().BeInDescendingOrder(w => w.Date);
+            responseObject.Should().BeInAscendingOrder(w => w.Date);
             responseObject.All(w => w.UserId == Helper.UserId).Should().BeTrue();
         }
     }

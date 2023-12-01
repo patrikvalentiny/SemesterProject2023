@@ -1,4 +1,6 @@
-﻿namespace apitests;
+﻿using System.Net;
+
+namespace apitests;
 
 public class StatisticsTests
 {
@@ -142,11 +144,59 @@ public class StatisticsTests
         }
     }
     
+    [Test]
+    public async Task TestCurrentTrendNoUserDetails()
+    {
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/currentTrend");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeFalse();
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+    }
+    
+    [Test]
+    public async Task TestCurrentTrendNoWeights()
+    {
+        await using var conn = Helper.OpenConnection();
+        const int height = 180;
+        const decimal targetWeight = 80.0m;
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id) VALUES (@Height, @TargetWeight, @UserId)",
+            new { Height = height, TargetWeight = targetWeight, UserId = 1 });
+        
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/currentTrend");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeFalse();
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+    }
+    
     [TearDown]
     public void TearDown()
     {
         Helper.TriggerRebuild();
-        Helper.InsertUser1();
         _httpClient.Dispose();
     }
 }
