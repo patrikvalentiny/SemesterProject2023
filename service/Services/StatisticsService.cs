@@ -10,13 +10,11 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
     {
         // get user for target date 
         var user = userDetailsRepository.GetById(dataUserId);
-        if (user == null) throw new Exception("User not found");
+        if (user == null) throw new Exception("User details not found");
         
         // get all weights for user
         List<WeightInput> weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
         if (weights.Count == 0) throw new Exception("No weights found");
-        // reverse list so that the first date is oldest date
-        weights.Reverse();
         // calculate average loss per day
         var oldestWeightInput = weights.First();
         var newestWeightInput = weights.Last();
@@ -41,5 +39,13 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
             Date = dt.Date,
             UserId = dataUserId
         });
+    }
+
+    public decimal? GetCurrentTotalLoss(int dataUserId)
+    {
+        // oldest to newest
+        List<WeightInput> weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        if (weights.Count == 0) throw new Exception("No weights found");
+        return weights.First().Weight - weights.Last().Weight;
     }
 }

@@ -15,6 +15,30 @@ public class StatisticsController(StatisticsService service) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        return Ok(service.GetCurrentTrend(data.UserId));
+        try
+        {
+            return Ok(service.GetCurrentTrend(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
+    
+    [HttpGet("currentTotalLoss")]
+    public IActionResult GetCurrentProgress()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(service.GetCurrentTotalLoss(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
     }
 }

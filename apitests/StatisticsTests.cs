@@ -192,7 +192,53 @@ public class StatisticsTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
-    
+
+    [Test]
+    public async Task TestCurrentTotalLoss()
+    {
+        await using var conn = Helper.OpenConnection();
+        const int inputSize = 10;
+        const int startWeight = 100;
+        var startDate = DateTime.Now.AddDays(-inputSize).Date;
+        for (int i = 0; i < inputSize + 1; i++)
+        {
+            var weight = new WeightInput
+            {
+                Weight = startWeight - i,
+                Date = startDate.AddDays(i),
+                UserId = 1
+            };
+            await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+        }
+        
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/currentTotalLoss");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        decimal? responseObject;
+        try 
+        {
+            responseObject = JsonConvert.DeserializeObject<decimal?>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().Be(inputSize);
+        }
+    }
+
     [TearDown]
     public void TearDown()
     {
