@@ -1,5 +1,7 @@
-﻿using infrastructure.DataModels;
+﻿using System.Linq.Expressions;
+using infrastructure.DataModels;
 using infrastructure.Repositories;
+using Microsoft.AspNetCore.Routing;
 using Serilog;
 
 namespace service.Services;
@@ -18,9 +20,9 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         // calculate average loss per day
         var oldestWeightInput = weights.First();
         var newestWeightInput = weights.Last();
-        var totalLoss = oldestWeightInput.Weight - newestWeightInput.Weight; // start weight - current weight ex. 100 - 90 = 10
-        var firstToLastDateDaysDiff = (oldestWeightInput.Date - newestWeightInput.Date).Days; // days between start and current weight ex. -10
-        var averageLoss = decimal.Round(totalLoss / firstToLastDateDaysDiff, 4); // average loss per day ex. -1
+        var totalLoss = GetCurrentTotalLoss(weights); // start weight - current weight ex. 100 - 90 = 10
+        var firstToLastDateDaysDiff = FirstToLastDateDaysDiff(weights); // days between start and current weight ex. -10
+        var averageLoss = AverageLoss(totalLoss, firstToLastDateDaysDiff); // average loss per day ex. -1
         
         // get target date
         var targetDate = user.TargetDate ?? newestWeightInput.Date; // if target date is null, use last input date
@@ -41,10 +43,38 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         });
     }
 
-    public decimal? GetCurrentTotalLoss(int dataUserId)
+    private decimal AverageLoss(decimal totalLoss, int firstToLastDateDaysDiff)
     {
-        // oldest to newest
-        List<WeightInput> weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        return decimal.Round(totalLoss / firstToLastDateDaysDiff, 4);
+    }
+    
+    public decimal AverageLoss(int dataUserId)
+    {
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        var totalLoss = GetCurrentTotalLoss(weights);
+        var firstToLastDateDaysDiff = FirstToLastDateDaysDiff(weights);
+        return AverageLoss(totalLoss, firstToLastDateDaysDiff);
+    }
+
+    private int FirstToLastDateDaysDiff(IReadOnlyCollection<WeightInput> weights)
+    {
+        return (weights.First().Date - weights.Last().Date).Days;
+    }
+    
+    public int FirstToLastDateDaysDiff(int userId)
+    {
+        var weights = weightRepository.GetAllWeightsForUser(userId).ToList();
+        return FirstToLastDateDaysDiff(weights);
+    }
+    
+    public decimal GetCurrentTotalLoss(int dataUserId)
+    {
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        return GetCurrentTotalLoss(weights);
+    }
+    
+    private decimal GetCurrentTotalLoss(IReadOnlyCollection<WeightInput> weights)
+    {
         if (weights.Count == 0) throw new Exception("No weights found");
         return weights.First().Weight - weights.Last().Weight;
     }

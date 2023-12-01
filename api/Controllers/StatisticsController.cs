@@ -41,4 +41,36 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         
     }
+    
+    [HttpGet("averageLoss")]
+    public IActionResult GetAverageLoss()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(-service.AverageLoss(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
+    
+    [HttpGet("daysIn")]
+    public IActionResult GetDaysIn()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(-service.FirstToLastDateDaysDiff(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
 }
