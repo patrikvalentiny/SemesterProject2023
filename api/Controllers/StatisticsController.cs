@@ -73,4 +73,20 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         
     }
+    
+    [HttpGet("daysToTarget")]
+    public IActionResult GetDaysToGo()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(service.DaysToTarget(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
 }

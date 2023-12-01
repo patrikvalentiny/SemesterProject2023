@@ -78,4 +78,9 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         if (weights.Count == 0) throw new Exception("No weights found");
         return weights.First().Weight - weights.Last().Weight;
     }
+
+    public int DaysToTarget(int dataUserId)
+    {
+        return -(DateTime.Today.Date - userDetailsRepository.GetById(dataUserId)!.TargetDate!.Value.Date).Days;
+    }
 }

@@ -334,6 +334,47 @@ public class StatisticsTests
             responseObject.Should().Be(inputSize);
         }
     }
+
+    [TestCase]
+    [TestCase(10)]
+    [TestCase(-10)]
+    public async Task TestDaysToTarget(int dateDiff = 0)
+    {
+        await using var conn = Helper.OpenConnection();
+        const int height = 180;
+        const decimal targetWeight = 80.0m;
+        DateTime targetDate = DateTime.Now.AddDays(dateDiff).Date;
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id, target_date) VALUES (@Height, @TargetWeight, @UserId, @TargetDate)",
+            new { Height = height, TargetWeight = targetWeight, UserId = 1, TargetDate = targetDate });
+        
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/daysToTarget");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        int? responseObject;
+        try 
+        {
+            responseObject = JsonConvert.DeserializeObject<int?>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().Be(dateDiff);
+        }
+    }
     [TearDown]
     public void TearDown()
     {
