@@ -121,4 +121,20 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         
     }
+    
+    [HttpGet("percentageOfGoal")]
+    public IActionResult GetPercentageLost()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(service.PercentageLost(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
 }

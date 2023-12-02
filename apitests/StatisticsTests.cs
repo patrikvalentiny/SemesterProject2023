@@ -484,6 +484,67 @@ public class StatisticsTests
         }
     }
 
+    [Test]
+    public async Task TestPercentageOfGoal()
+    {
+        await using var conn = Helper.OpenConnection();
+        const int startWeight = 100;
+        const int currentWeight = 90;
+        var weights = new List<WeightInput>
+        {
+            new()
+            {
+                Weight = startWeight,
+                Date = DateTime.Today.Date,
+                UserId = 1
+            },
+            new()
+            {
+                Weight = currentWeight,
+                Date = DateTime.Today.AddDays(1).Date,
+                UserId = 1
+            }
+        };
+        foreach (var weight in weights)
+        {
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+        }
+
+        const int height = 180;
+        const decimal targetWeight = 80.0m;
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id) VALUES (@Height, @TargetWeight, @UserId)",
+            new { Height = height, TargetWeight = targetWeight, UserId = 1 });
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/percentageOfGoal");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        decimal responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<decimal>(await response.Content.ReadAsStringAsync())!;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().Be((startWeight - currentWeight) / (startWeight - targetWeight) * 100);
+        }
+    }
+
     [TearDown]
     public void TearDown()
     {

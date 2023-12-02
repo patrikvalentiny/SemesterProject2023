@@ -94,4 +94,15 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         if (latestWeight == null) throw new Exception("No weights found");
         return latestWeight.Weight - user.TargetWeight;
     }
+
+    public decimal PercentageLost(int dataUserId)
+    {
+        var user = userDetailsRepository.GetById(dataUserId);
+        if (user == null) throw new Exception("User details not found");
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        if (weights.Count == 0) throw new Exception("No weights found");
+        var totalLoss = GetCurrentTotalLoss(weights);
+        return decimal.Round(totalLoss / (weights.First().Weight - user.TargetWeight) * 100, 2);
+        
+    }
 }
