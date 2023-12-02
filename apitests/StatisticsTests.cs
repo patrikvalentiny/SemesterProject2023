@@ -1,19 +1,21 @@
-﻿using System.Net;
+﻿using System.Linq.Expressions;
+using System.Net;
+using Microsoft.AspNetCore.Routing;
 
 namespace apitests;
 
 public class StatisticsTests
 {
-    
-    private HttpClient _httpClient = null!;
     private const string Url = "http://localhost:5000/api/v1/statistics";
-    
+
+    private HttpClient _httpClient = null!;
+
     [SetUp]
     public void Setup()
     {
         Helper.TriggerRebuild();
         Helper.InsertUser1();
-        
+
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());
     }
@@ -31,25 +33,26 @@ public class StatisticsTests
         const int inputSize = 10;
         const int startWeight = 100;
         var startDate = DateTime.Now.AddDays(-inputSize).Date;
-        for (int i = 0; i < inputSize; i++)
+        for (var i = 0; i < inputSize; i++)
         {
             var weight = new WeightInput
             {
-                Weight = startWeight - (i * averageLoss),
+                Weight = startWeight - i * averageLoss,
                 Date = startDate.AddDays(i),
                 UserId = 1
             };
-            await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
         }
-        
+
         const int height = 180;
         const decimal targetWeight = 80.0m;
         const int dateDiff = 10;
-        DateTime targetDate = DateTime.Now.AddDays(dateDiff).Date;
+        var targetDate = DateTime.Now.AddDays(dateDiff).Date;
         await conn.ExecuteAsync(
             "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id, target_date) VALUES (@Height, @TargetWeight, @UserId, @TargetDate)",
             new { Height = height, TargetWeight = targetWeight, UserId = 1, TargetDate = targetDate });
-        
+
         HttpResponseMessage response;
         try
         {
@@ -60,7 +63,7 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         WeightInput[] responseObject;
         try
         {
@@ -70,7 +73,7 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
@@ -81,7 +84,7 @@ public class StatisticsTests
             responseObject.Last().Weight.Should().Be(startWeight - (dateDiff + inputSize) * averageLoss);
         }
     }
-    
+
     [TestCase(1)]
     [TestCase(0.1)]
     [TestCase(0.5)]
@@ -95,23 +98,24 @@ public class StatisticsTests
         const int inputSize = 10;
         const int startWeight = 100;
         var startDate = DateTime.Now.AddDays(-inputSize).Date;
-        for (int i = 0; i < inputSize + 1; i++)
+        for (var i = 0; i < inputSize + 1; i++)
         {
             var weight = new WeightInput
             {
-                Weight = startWeight - (i * averageLoss),
+                Weight = startWeight - i * averageLoss,
                 Date = startDate.AddDays(i),
                 UserId = 1
             };
-            await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
         }
-        
+
         const int height = 180;
         const decimal targetWeight = 80.0m;
         await conn.ExecuteAsync(
             "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id) VALUES (@Height, @TargetWeight, @UserId)",
             new { Height = height, TargetWeight = targetWeight, UserId = 1 });
-        
+
         HttpResponseMessage response;
         try
         {
@@ -122,7 +126,7 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         WeightInput[] responseObject;
         try
         {
@@ -132,18 +136,18 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Length.Should().Be( inputSize + 1);
+            responseObject.Length.Should().Be(inputSize + 1);
             responseObject.First().Weight.Should().Be(startWeight);
             responseObject.First().Date.Should().Be(startDate);
             responseObject.Last().Date.Should().Be(DateTime.Now.Date);
-            responseObject.Last().Weight.Should().Be(startWeight - (inputSize) * averageLoss);
+            responseObject.Last().Weight.Should().Be(startWeight - inputSize * averageLoss);
         }
     }
-    
+
     [Test]
     public async Task TestCurrentTrendNoUserDetails()
     {
@@ -157,14 +161,14 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeFalse();
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
-    
+
     [Test]
     public async Task TestCurrentTrendNoWeights()
     {
@@ -174,7 +178,7 @@ public class StatisticsTests
         await conn.ExecuteAsync(
             "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id) VALUES (@Height, @TargetWeight, @UserId)",
             new { Height = height, TargetWeight = targetWeight, UserId = 1 });
-        
+
         HttpResponseMessage response;
         try
         {
@@ -185,7 +189,7 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeFalse();
@@ -200,7 +204,7 @@ public class StatisticsTests
         const int inputSize = 10;
         const int startWeight = 100;
         var startDate = DateTime.Now.AddDays(-inputSize).Date;
-        for (int i = 0; i < inputSize + 1; i++)
+        for (var i = 0; i < inputSize + 1; i++)
         {
             var weight = new WeightInput
             {
@@ -208,9 +212,10 @@ public class StatisticsTests
                 Date = startDate.AddDays(i),
                 UserId = 1
             };
-            await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
         }
-        
+
         HttpResponseMessage response;
         try
         {
@@ -221,9 +226,9 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         decimal? responseObject;
-        try 
+        try
         {
             responseObject = JsonConvert.DeserializeObject<decimal?>(await response.Content.ReadAsStringAsync());
         }
@@ -231,14 +236,14 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().Be(inputSize);
         }
     }
-    
+
     [TestCase]
     [TestCase(0.5)]
     [TestCase(0.82)]
@@ -249,17 +254,18 @@ public class StatisticsTests
         const int inputSize = 10;
         const int startWeight = 100;
         var startDate = DateTime.Now.AddDays(-inputSize).Date;
-        for (int i = 0; i < inputSize + 1; i++)
+        for (var i = 0; i < inputSize + 1; i++)
         {
             var weight = new WeightInput
             {
-                Weight = startWeight - (i * averageLoss),
+                Weight = startWeight - i * averageLoss,
                 Date = startDate.AddDays(i),
                 UserId = 1
             };
-            await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
         }
-        
+
         HttpResponseMessage response;
         try
         {
@@ -270,9 +276,9 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         decimal? responseObject;
-        try 
+        try
         {
             responseObject = JsonConvert.DeserializeObject<decimal?>(await response.Content.ReadAsStringAsync());
         }
@@ -280,7 +286,7 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
@@ -298,17 +304,18 @@ public class StatisticsTests
         const int inputSize = 10;
         const int startWeight = 100;
         var startDate = DateTime.Now.AddDays(-inputSize).Date;
-        for (int i = 0; i < inputSize + 1; i++)
+        for (var i = 0; i < inputSize + 1; i++)
         {
             var weight = new WeightInput
             {
-                Weight = startWeight - (i * averageLoss),
+                Weight = startWeight - i * averageLoss,
                 Date = startDate.AddDays(i),
                 UserId = 1
             };
-            await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
         }
-        
+
         HttpResponseMessage response;
         try
         {
@@ -319,9 +326,9 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         decimal? responseObject;
-        try 
+        try
         {
             responseObject = JsonConvert.DeserializeObject<decimal?>(await response.Content.ReadAsStringAsync());
         }
@@ -329,14 +336,14 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().Be(averageLoss * 7);
         }
     }
-    
+
     [TestCase]
     [TestCase(1)]
     public async Task TestDaysIn(int inputSize = 10)
@@ -345,17 +352,18 @@ public class StatisticsTests
         const int startWeight = 100;
         const decimal averageLoss = 1;
         var startDate = DateTime.Now.AddDays(-inputSize).Date;
-        for (int i = 0; i < inputSize + 1; i++)
+        for (var i = 0; i < inputSize + 1; i++)
         {
             var weight = new WeightInput
             {
-                Weight = startWeight - (i * averageLoss),
+                Weight = startWeight - i * averageLoss,
                 Date = startDate.AddDays(i),
                 UserId = 1
             };
-            await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
         }
-        
+
         HttpResponseMessage response;
         try
         {
@@ -366,9 +374,9 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         decimal? responseObject;
-        try 
+        try
         {
             responseObject = JsonConvert.DeserializeObject<decimal?>(await response.Content.ReadAsStringAsync());
         }
@@ -376,7 +384,7 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
@@ -392,11 +400,11 @@ public class StatisticsTests
         await using var conn = Helper.OpenConnection();
         const int height = 180;
         const decimal targetWeight = 80.0m;
-        DateTime targetDate = DateTime.Now.AddDays(dateDiff).Date;
+        var targetDate = DateTime.Now.AddDays(dateDiff).Date;
         await conn.ExecuteAsync(
             "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id, target_date) VALUES (@Height, @TargetWeight, @UserId, @TargetDate)",
             new { Height = height, TargetWeight = targetWeight, UserId = 1, TargetDate = targetDate });
-        
+
         HttpResponseMessage response;
         try
         {
@@ -407,9 +415,9 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         int? responseObject;
-        try 
+        try
         {
             responseObject = JsonConvert.DeserializeObject<int?>(await response.Content.ReadAsStringAsync());
         }
@@ -417,13 +425,65 @@ public class StatisticsTests
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().Be(dateDiff);
         }
     }
+
+    [Test]
+    public async Task TestWeightToGo()
+    {
+        await using var conn = Helper.OpenConnection();
+        const int inputSize = 10;
+        const int startWeight = 100;
+        var startDate = DateTime.Now.AddDays(-inputSize).Date;
+
+        var weight = new WeightInput
+        {
+            Weight = startWeight,
+            Date = DateTime.Today.Date,
+            UserId = 1
+        };
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+
+        const int height = 180;
+        const decimal targetWeight = 80.0m;
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id) VALUES (@Height, @TargetWeight, @UserId)",
+            new { Height = height, TargetWeight = targetWeight, UserId = 1 });
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/weightToGo");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        decimal responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<decimal>(await response.Content.ReadAsStringAsync())!;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().Be(startWeight - targetWeight);
+        }
+    }
+
     [TearDown]
     public void TearDown()
     {

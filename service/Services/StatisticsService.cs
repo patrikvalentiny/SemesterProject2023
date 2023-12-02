@@ -83,4 +83,15 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
     {
         return -(DateTime.Today.Date - userDetailsRepository.GetById(dataUserId)!.TargetDate!.Value.Date).Days;
     }
+
+    public decimal WeightToGo(int dataUserId)
+    {
+        // get user for target date 
+        var user = userDetailsRepository.GetById(dataUserId);
+        if (user == null) throw new Exception("User details not found");
+
+        var latestWeight = weightRepository.GetLatestWeightForUser(dataUserId);
+        if (latestWeight == null) throw new Exception("No weights found");
+        return latestWeight.Weight - user.TargetWeight;
+    }
 }
