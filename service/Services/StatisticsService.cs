@@ -105,4 +105,19 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         return decimal.Round(totalLoss / (weights.First().Weight - user.TargetWeight) * 100, 2);
         
     }
+
+    public DateTime PredictedTargetDate(int dataUserId)
+    {
+        var user = userDetailsRepository.GetById(dataUserId);
+        if (user == null) throw new Exception("User details not found");
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        if (weights.Count == 0) throw new Exception("No weights found");
+        var totalLoss = GetCurrentTotalLoss(weights);
+        var firstToLastDateDaysDiff = FirstToLastDateDaysDiff(weights);
+        var averageLoss = AverageLoss(totalLoss, firstToLastDateDaysDiff);
+        Log.Information("Average loss: {averageLoss}", averageLoss);
+        var daysToTarget = Math.Round((user.TargetWeight - weights.First().Weight) / averageLoss);
+        Log.Information("Days to target: {daysToTarget}", daysToTarget);
+        return weights.First().Date.AddDays(Decimal.ToDouble(daysToTarget));
+    }
 }

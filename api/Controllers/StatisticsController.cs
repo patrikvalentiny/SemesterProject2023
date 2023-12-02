@@ -137,4 +137,20 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         
     }
+    
+    [HttpGet("predictedTargetDate")]
+    public IActionResult GetPredictedTargetDate()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(service.PredictedTargetDate(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
 using System.Net;
+using Bogus.DataSets;
 using Microsoft.AspNetCore.Routing;
+using NUnit.Framework.Internal;
 
 namespace apitests;
 
@@ -542,6 +544,60 @@ public class StatisticsTests
         {
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().Be(decimal.Round((startWeight - currentWeight) / (startWeight - targetWeight) * 100, 2));
+        }
+    }
+
+    [Test]
+    public async Task TestPredictedTargetDate()
+    {
+        await using var conn = Helper.OpenConnection();
+        const int startWeight = 100;
+        const decimal averageLoss = 1;
+        const int inputSize = 10;
+        var startDate = DateTime.Now.AddDays(-inputSize).Date;
+        for (var i = 0; i < inputSize + 1; i++)
+        {
+            var weight = new WeightInput
+            {
+                Weight = startWeight - i * averageLoss,
+                Date = startDate.AddDays(i),
+                UserId = 1
+            };
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+        }
+
+        const int height = 180;
+        const decimal targetWeight = 80.0m;
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id) VALUES (@Height, @TargetWeight, @UserId)",
+            new { Height = height, TargetWeight = targetWeight, UserId = 1 });
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/predictedTargetDate");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        DateTime responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<DateTime>(await response.Content.ReadAsStringAsync())!;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().Be(startDate.Date.AddDays(decimal.ToDouble((startWeight - targetWeight) / averageLoss))); 
         }
     }
 
