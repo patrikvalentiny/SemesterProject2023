@@ -58,6 +58,22 @@ public class StatisticsController(StatisticsService service) : Controller
         
     }
     
+    [HttpGet("averageLossPerWeek")]
+    public IActionResult GetAverageLossPerWeek()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(-service.AverageLoss(data.UserId) * 7);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
+    
     [HttpGet("daysIn")]
     public IActionResult GetDaysIn()
     {
