@@ -484,12 +484,13 @@ public class StatisticsTests
         }
     }
 
-    [Test]
-    public async Task TestPercentageOfGoal()
+    [TestCase(100, 90, 80)]
+    [TestCase(100, 90, 70)]
+    [TestCase(100, 90, 60)]
+    [TestCase(96.69, 82.12, 72.12)]
+    public async Task TestPercentageOfGoal(decimal startWeight, decimal currentWeight, decimal targetWeight)
     {
         await using var conn = Helper.OpenConnection();
-        const int startWeight = 100;
-        const int currentWeight = 90;
         var weights = new List<WeightInput>
         {
             new()
@@ -512,7 +513,6 @@ public class StatisticsTests
         }
 
         const int height = 180;
-        const decimal targetWeight = 80.0m;
         await conn.ExecuteAsync(
             "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id) VALUES (@Height, @TargetWeight, @UserId)",
             new { Height = height, TargetWeight = targetWeight, UserId = 1 });
@@ -541,7 +541,7 @@ public class StatisticsTests
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Should().Be((startWeight - currentWeight) / (startWeight - targetWeight) * 100);
+            responseObject.Should().Be(decimal.Round((startWeight - currentWeight) / (startWeight - targetWeight) * 100, 2));
         }
     }
 
