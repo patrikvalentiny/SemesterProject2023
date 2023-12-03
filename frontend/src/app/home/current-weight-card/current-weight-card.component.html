@@ -1,8 +1,8 @@
-<div class="stats stats-vertical lg:stats-horizontal shadow w-full">
+<div class="stats stats-horizontal shadow w-full">
   <div class="stat place-items-center">
     <div class="stat-title">Current weight</div>
     <div class="stat-value">{{currentWeight?.weight}} kg</div>
-    <div class="stat-desc">{{(currentWeight?.difference ?? 0) >= 0 ? '↘︎' : '↗'}} {{(currentWeight?.difference ?? 0)}}</div>
+    <div class="stat-desc">{{(currentWeight?.difference ?? 0) >= 0 ? '↘︎' : '↗'}} {{-(currentWeight?.difference ?? 0)}}</div>
   </div>
 
 
@@ -13,15 +13,9 @@
   </div>
 
   <div class="stat place-items-center">
-    <div class="stat-title">Current progress</div>
-    <div class="stat-value">1,200</div>
-    <div class="stat-desc">↘︎ 90 (14%)</div>
-  </div>
-
-  <div class="stat place-items-center">
-    <div class="stat-title">New Registers</div>
-    <div class="stat-value">1,200</div>
-    <div class="stat-desc">↘︎ 90 (14%)</div>
+    <div class="stat-title">Current loss</div>
+    <div class="stat-value">{{-currentLoss}}kg</div>
+    <div class="stat-desc">{{(currentWeight?.difference ?? 0) >= 0 ? '↘︎' : '↗'}} {{-(currentWeight?.difference ?? 0)}}</div>
   </div>
 
 </div>

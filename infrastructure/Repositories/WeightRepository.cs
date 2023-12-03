@@ -72,6 +72,6 @@ FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date DESC LIMIT 1;
        (SELECT weight FROM weight_tracker.weights WHERE user_id = @user_id AND date = @date) AS {nameof(WeightInput.Difference)};";
 
         using var conn = dataSource.OpenConnection();
-        return conn.QueryFirstOrDefault<decimal?>(sql, new { user_id = userId, date = weightDate });
+        return decimal.Round(conn.QueryFirst<decimal>(sql, new { user_id = userId, date = weightDate }), 2);
     }
 }
