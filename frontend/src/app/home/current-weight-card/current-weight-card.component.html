@@ -1,49 +1,27 @@
-<div class="flex flex-row flex-wrap gap-2 w-full items-center justify-center">
-  <div class="card lg:w-52 w-full items-center bg-gradient-to-r from-neutral to-neutral-content text-primary">
-    <a href="./input">
-      <div class="card-body w-full">
-        <h2 class="card-title text-3xl">{{latestWeight}}<sub>kg</sub></h2>
-        <p>Current weight</p>
-        <div class="card-actions w-full">
-          <button class="btn w-full text-primary">Enter data</button>
-        </div>
-      </div>
-    </a>
+<div class="stats stats-vertical lg:stats-horizontal shadow w-full">
+
+  <div class="stat place-items-center">
+    <div class="stat-title">Downloads</div>
+    <div class="stat-value">31K</div>
+    <div class="stat-desc">Jan 1st - Feb 1st</div>
   </div>
 
-  <div class="card lg:w-52 w-full items-center bg-gradient-to-r from-secondary to-secondary-content text-primary">
-    <a href="./input">
-      <div class="card-body w-full">
-        <h2 class="card-title text-3xl">{{(bmi).toFixed(2)}}<sub></sub></h2>
-        <p>Current bmi</p>
-        <div class="card-actions w-full">
-          <button class="btn w-full text-primary">Enter data</button>
-        </div>
-      </div>
-    </a>
+  <div class="stat place-items-center">
+    <div class="stat-title">New Users</div>
+    <div class="stat-value">4,200</div>
+    <div class="stat-desc">↗︎ 400 (22%)</div>
   </div>
 
-  <div class="card lg:w-52 w-full items-center bg-gradient-to-r from-accent to-accent-content text-primary">
-    <a href="./profile">
-      <div class="card-body w-full">
-        <h2 class="card-title text-3xl">{{(userService.user?.targetWeight)}}<sub>kg</sub></h2>
-        <p>Target weight</p>
-        <div class="card-actions w-full">
-          <button class="btn w-full text-primary">Edit profile</button>
-        </div>
-      </div>
-    </a>
+  <div class="stat place-items-center">
+    <div class="stat-title">New Registers</div>
+    <div class="stat-value">1,200</div>
+    <div class="stat-desc">↘︎ 90 (14%)</div>
   </div>
 
-  <div class="card lg:w-52 w-full items-center bg-gradient-to-r from-accent to-accent-content text-primary">
-    <a href="./profile">
-      <div class="card-body w-full">
-        <h2 class="card-title text-3xl">{{(userService.user?.targetWeight)}}<sub>kg</sub></h2>
-        <p>Target weight</p>
-        <div class="card-actions w-full">
-          <button class="btn w-full text-primary">Edit profile</button>
-        </div>
-      </div>
-    </a>
+  <div class="stat place-items-center">
+    <div class="stat-title">New Registers</div>
+    <div class="stat-value">1,200</div>
+    <div class="stat-desc">↘︎ 90 (14%)</div>
   </div>
+
 </div>

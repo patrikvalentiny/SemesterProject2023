@@ -6,6 +6,7 @@ import {User} from "../user";
 import {TokenService} from "../token.service";
 import {FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
+import {HotToastService} from "@ngneat/hot-toast";
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +16,7 @@ export class AccountService {
     httpClient: HttpClient = inject(HttpClient);
     tokenService: TokenService = inject(TokenService);
     router: Router = inject(Router);
+    toastService = inject(HotToastService);
     user: User | null = null;
 
     async login(username: string, password: string) {
@@ -39,7 +41,7 @@ export class AccountService {
             this.tokenService.setToken(response.token);
             await this.router.navigate(["/onboarding/weight"])
         } catch (e) {
-
+          this.toastService.error("Username or email already taken");
         }
     }
 
