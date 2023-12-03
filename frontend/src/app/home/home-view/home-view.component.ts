@@ -1,10 +1,20 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
+import {StatisticsService} from "../../statistics.service";
 
 @Component({
     selector: 'app-home-view',
+    host: {class: 'h-full'},
     templateUrl: './home-view.component.html',
     styleUrls: ['./home-view.component.css']
 })
-export class HomeViewComponent {
+export class HomeViewComponent implements OnInit{
+  private readonly statService: StatisticsService = inject(StatisticsService);
 
+  constructor() {
+
+  }
+
+  async ngOnInit() {
+
+  }
 }

@@ -12,10 +12,12 @@ public class BmiService(WeightRepository weightRepository, IRepository<UserDetai
         var userDetails = userDetailsRepository.GetById(dataUserId);
         if (weight == null || userDetails == null) return null;
         var heightInMeters = userDetails.Height / 100m;
+        var bmi = weight.Weight / (heightInMeters * heightInMeters);
         return new BmiCommandModel
         {
-            Bmi = decimal.Round(weight.Weight / (heightInMeters * heightInMeters), 2),
-            Date = weight.Date
+            Bmi = decimal.Round(bmi, 2),
+            Date = weight.Date,
+            Category = CategorizeBmi(bmi)
         };
     }
     
@@ -28,7 +30,19 @@ public class BmiService(WeightRepository weightRepository, IRepository<UserDetai
         return weights.Select(weight => new BmiCommandModel
         {
             Bmi = decimal.Round(weight.Weight / (heightInMeters * heightInMeters), 2),
-            Date = weight.Date
+            Date = weight.Date,
+            Category = CategorizeBmi(weight.Weight / (heightInMeters * heightInMeters))
         });
+    }
+    
+    private string CategorizeBmi(decimal bmi)
+    {
+        return bmi switch
+        {
+            < 18.5m => "Underweight",
+            < 25m => "Normal",
+            < 30m => "Overweight",
+            _ => "Obese"
+        };
     }
 }

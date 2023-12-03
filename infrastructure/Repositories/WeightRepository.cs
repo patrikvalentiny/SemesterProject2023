@@ -65,4 +65,13 @@ FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date DESC LIMIT 1;
         using var conn = dataSource.OpenConnection();
         return conn.QueryFirstOrDefault<WeightInput>(sql, new { user_id = userId });
     }
+
+    public decimal? GetDifferenceBetweenLatestAndPreviousWeight(DateTime weightDate, int userId)
+    {
+       var sql = $@"SELECT (SELECT weight FROM weight_tracker.weights WHERE user_id = @user_id AND date < @date ORDER BY date DESC LIMIT 1) -
+       (SELECT weight FROM weight_tracker.weights WHERE user_id = @user_id AND date = @date) AS {nameof(WeightInput.Difference)};";
+
+        using var conn = dataSource.OpenConnection();
+        return conn.QueryFirstOrDefault<decimal?>(sql, new { user_id = userId, date = weightDate });
+    }
 }

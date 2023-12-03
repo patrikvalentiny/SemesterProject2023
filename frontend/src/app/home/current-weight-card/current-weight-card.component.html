@@ -1,19 +1,19 @@
 <div class="stats stats-vertical lg:stats-horizontal shadow w-full">
+  <div class="stat place-items-center">
+    <div class="stat-title">Current weight</div>
+    <div class="stat-value">{{currentWeight?.weight}} kg</div>
+    <div class="stat-desc">{{(currentWeight?.difference ?? 0) >= 0 ? '↘︎' : '↗'}} {{(currentWeight?.difference ?? 0)}}</div>
+  </div>
+
 
   <div class="stat place-items-center">
-    <div class="stat-title">Downloads</div>
-    <div class="stat-value">31K</div>
-    <div class="stat-desc">Jan 1st - Feb 1st</div>
+    <div class="stat-title">Current BMI</div>
+    <div class="stat-value">{{bmi?.bmi}}</div>
+    <div class="stat-desc">{{bmi?.category}}</div>
   </div>
 
   <div class="stat place-items-center">
-    <div class="stat-title">New Users</div>
-    <div class="stat-value">4,200</div>
-    <div class="stat-desc">↗︎ 400 (22%)</div>
-  </div>
-
-  <div class="stat place-items-center">
-    <div class="stat-title">New Registers</div>
+    <div class="stat-title">Current progress</div>
     <div class="stat-value">1,200</div>
     <div class="stat-desc">↘︎ 90 (14%)</div>
   </div>

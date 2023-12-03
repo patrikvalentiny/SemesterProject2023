@@ -3,4 +3,5 @@ export interface WeightDto {
     weight: number
     date: Date
     userId: number
+    difference: number
 }

@@ -19,7 +19,10 @@ public class WeightService(WeightRepository weightRepository)
 
     public WeightInput? GetLatestWeightForUser(int userId)
     {
-        return weightRepository.GetLatestWeightForUser(userId);
+        var weight = weightRepository.GetLatestWeightForUser(userId);
+        if (weight == null) return null;
+        weight.Difference = weightRepository.GetDifferenceBetweenLatestAndPreviousWeight(weight.Date, userId);
+        return weight;
     }
 
     public IEnumerable<WeightInput> GetAllWeightForUser(int dataUserId)

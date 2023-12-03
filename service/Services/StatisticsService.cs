@@ -118,4 +118,13 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         var daysToTarget = Math.Round((user.TargetWeight - weights.First().Weight) / averageLoss);
         return weights.First().Date.AddDays(Decimal.ToDouble(daysToTarget));
     }
+
+    public object? DifferenceToDayBefore(int dataUserId)
+    {
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        if (weights.Count == 0) throw new Exception("No weights found");
+        var latestWeight = weights.First();
+        var secondLatestWeight = weights.Skip(1).First();
+        return latestWeight.Weight - secondLatestWeight.Weight;
+    }
 }
