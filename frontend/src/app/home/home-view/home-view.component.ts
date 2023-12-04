@@ -8,7 +8,6 @@ import {StatisticsService} from "../../services/statistics.service";
     styleUrls: ['./home-view.component.css']
 })
 export class HomeViewComponent implements OnInit{
-  private readonly statService: StatisticsService = inject(StatisticsService);
 
   constructor() {
 

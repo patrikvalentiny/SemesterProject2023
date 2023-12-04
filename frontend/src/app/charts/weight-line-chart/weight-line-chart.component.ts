@@ -178,10 +178,6 @@ export class WeightLineChartComponent implements OnInit {
       {
         name: "Trend",
         data: trendFormatted
-      },
-      {
-        name: "BMI",
-        data: weights.map(weight => +((weight / (height * height)).toFixed(2)))
       }
     ];
     this.chartOptions.xaxis = {
