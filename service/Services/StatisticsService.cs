@@ -127,4 +127,15 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         var secondLatestWeight = weights.Skip(1).First();
         return latestWeight.Weight - secondLatestWeight.Weight;
     }
+
+    //predicted date on target date
+    public object? GetPredictedTargetDate(int dataUserId)
+    {
+        var currentTrend = GetCurrentTrend(dataUserId).ToList();
+        if (currentTrend.Count == 0) throw new Exception("No weights found");
+        var user = userDetailsRepository.GetById(dataUserId);
+        if (user == null) throw new Exception("User details not found");
+        var targetDate = user.TargetDate ?? currentTrend.Last().Date;
+        return currentTrend.FirstOrDefault(x => x.Date == targetDate);
+    }
 }
