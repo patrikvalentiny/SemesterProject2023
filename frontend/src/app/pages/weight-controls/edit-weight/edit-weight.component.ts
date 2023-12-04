@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {WeightService} from "../weight.service";
+import {WeightService} from "../../../services/weight.service";
 import {FormControl, Validators} from "@angular/forms";
-import {WeightDto} from "../weight-dto";
+import {WeightDto} from "../../../dtos/weight-dto";
 
 @Component({
     selector: 'app-edit-weight',

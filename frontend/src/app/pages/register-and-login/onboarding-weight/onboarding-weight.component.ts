@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
-import {WeightService} from "../../weight-controls/weight.service";
+import {WeightService} from "../../../services/weight.service";
 import {Router} from "@angular/router";
 
 @Component({

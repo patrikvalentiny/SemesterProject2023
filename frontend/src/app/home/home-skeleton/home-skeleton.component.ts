@@ -1,6 +1,6 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {User} from "../../user";
-import {AccountService} from "../../register-and-login/account.service";
+import {AccountService} from "../../services/account.service";
 import {NavigationEnd, Router} from "@angular/router";
 
 @Component({

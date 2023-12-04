@@ -1,5 +1,5 @@
 import {inject, Injectable, OnInit} from '@angular/core';
-import {WeightDto} from "./weight-controls/weight-dto";
+import {WeightDto} from "./dtos/weight-dto";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../environments/environment";
 import {firstValueFrom} from "rxjs";

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RecordsEditorComponent} from './records-editor/records-editor.component';
-import {WeightControlsModule} from "../weight-controls/weight-controls.module";
+import {WeightControlsModule} from "./weight-controls/weight-controls.module";
 
 
 @NgModule({

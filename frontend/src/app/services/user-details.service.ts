@@ -1,12 +1,12 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {UserDetails} from "./user-details";
+import {UserDetails} from "../dtos/user-details";
 import {environment} from "../../environments/environment";
 import {firstValueFrom, Subject} from "rxjs";
 import {HotToastService} from "@ngneat/hot-toast";
-import {AccountService} from "../register-and-login/account.service";
+import {AccountService} from "./account.service";
 import {User} from "../user";
-import {UserDetailsModule} from "./user-details.module";
+import {UserDetailsModule} from "../pages/user-details/user-details.module";
 import {FormGroup} from "@angular/forms";
 
 @Injectable({

@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {AccountService} from "../account.service";
+import {AccountService} from "../../../services/account.service";
 import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({

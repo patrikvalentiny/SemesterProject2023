@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {firstValueFrom, Subject} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HotToastService} from "@ngneat/hot-toast";
-import {WeightDto} from "./weight-dto";
+import {WeightDto} from "../dtos/weight-dto";
 import {Bmi} from "../bmi";
 
 @Injectable({
@@ -53,8 +53,8 @@ export class WeightService {
 
   async getLatestWeight() {
     try {
-      const call = this.httpClient.get<WeightDto>(environment.baseUrl + "/weight/latest");
-      return await firstValueFrom<WeightDto>(call);
+      if (this.weights.length === 0) await this.getWeights();
+      return this.weights[this.weights.length - 1]
     } catch (e) {
       return;
     }

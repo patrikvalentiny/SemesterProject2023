@@ -13,8 +13,8 @@ import {
     ChartComponent,
     NgApexchartsModule
 } from "ng-apexcharts";
-import {WeightService} from "../../weight-controls/weight.service";
-import {UserDetailsService} from "../../user-details/user-details.service";
+import {WeightService} from "../../services/weight.service";
+import {UserDetailsService} from "../../services/user-details.service";
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -65,16 +65,16 @@ export class WeightLineChartComponent implements OnInit {
                     offsetY: 0,
                     tools: {
                         download: true,
-                        selection: false,
+                        selection: true,
                         zoom: true,
-                        zoomin: false,
-                        zoomout: false,
-                        pan: false,
+                        zoomin: true,
+                        zoomout: true,
+                        pan: true,
                     }
                 },
                 zoom: {
-                    enabled: false,
-                    type: "x"
+                    enabled: true,
+                    type: "xy"
 
                 }
             },

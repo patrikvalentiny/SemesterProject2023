@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
-import {UserDetailsService} from "../../user-details/user-details.service";
+import {UserDetailsService} from "../../../services/user-details.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserDetails} from "../../user-details/user-details";
+import {UserDetails} from "../../../dtos/user-details";
 
 @Component({
   host: {class: 'h-full'},
