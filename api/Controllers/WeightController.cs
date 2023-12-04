@@ -42,13 +42,6 @@ public class WeightController(WeightService weightService) : Controller
         return Ok(weightService.GetAllWeightForUser(data.UserId));
     }
 
-    [HttpGet("latest")]
-    public IActionResult GetLatestWeightForUser()
-    {
-        var data = HttpContext.GetSessionData();
-        if (data == null) return Unauthorized();
-        return Ok(weightService.GetLatestWeightForUser(data.UserId));
-    }
 
     [HttpDelete("{date:datetime}")]
     public IActionResult DeleteWeight([FromRoute] DateTime date)

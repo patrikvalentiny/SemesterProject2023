@@ -6,7 +6,6 @@ import {AppComponent} from './app.component';
 import {RegisterAndLoginModule} from "./pages/register-and-login/register-and-login.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthHttpInterceptor} from "./interceptors/auth-http-interceptor";
-import {TokenService} from "./token.service";
 import {provideHotToastConfig} from '@ngneat/hot-toast';
 import {ErrorHttpInterceptor} from "./interceptors/error-http-interceptor";
 import {HomeModule} from "./home/home.module";
@@ -15,6 +14,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PagesModule} from "./pages/pages.module";
 import {NgApexchartsModule} from "ng-apexcharts";
 import { ServiceWorkerModule } from '@angular/service-worker';
+import {TokenService} from "./services/token.service";
 
 @NgModule({
     declarations: [

@@ -2,7 +2,7 @@
   <div class="stat place-items-center">
     <div class="stat-title">Current weight</div>
     <div class="stat-value">{{currentWeight?.weight}} kg</div>
-    <div class="stat-desc">{{(currentWeight?.difference ?? 0) >= 0 ? '↘︎' : '↗'}} {{-(currentWeight?.difference ?? 0)}}</div>
+    <div class="stat-desc">{{(currentWeight?.difference ?? 0) <= 0 ? '↘︎' : '↗'}} {{(currentWeight?.difference ?? 0)}}</div>
   </div>
 
 
@@ -15,7 +15,6 @@
   <div class="stat place-items-center">
     <div class="stat-title">Current loss</div>
     <div class="stat-value">{{-currentLoss}}kg</div>
-    <div class="stat-desc">{{(currentWeight?.difference ?? 0) >= 0 ? '↘︎' : '↗'}} {{-(currentWeight?.difference ?? 0)}}</div>
+    <div class="stat-desc">{{(currentWeight?.difference ?? 0) <= 0 ? '↘︎' : '↗'}} {{(currentWeight?.difference ?? 0)}}</div>
   </div>
-
 </div>

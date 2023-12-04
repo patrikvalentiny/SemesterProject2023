@@ -4,7 +4,7 @@ import {firstValueFrom, Subject} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HotToastService} from "@ngneat/hot-toast";
 import {WeightDto} from "../dtos/weight-dto";
-import {Bmi} from "../bmi";
+import {Bmi} from "../dtos/bmi";
 
 @Injectable({
   providedIn: 'root'

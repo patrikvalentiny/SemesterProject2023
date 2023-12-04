@@ -1,7 +1,8 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
-import {User} from "../../user";
+import {Component, inject, OnInit} from '@angular/core';
+
 import {AccountService} from "../../services/account.service";
 import {NavigationEnd, Router} from "@angular/router";
+import {User} from "../../dtos/user";
 
 @Component({
     selector: 'app-home-skeleton',

@@ -2,11 +2,12 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
-import {User} from "../user";
-import {TokenService} from "../token.service";
+
 import {FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {HotToastService} from "@ngneat/hot-toast";
+import {TokenService} from "./token.service";
+import {User} from "../dtos/user";
 
 @Injectable({
     providedIn: 'root'

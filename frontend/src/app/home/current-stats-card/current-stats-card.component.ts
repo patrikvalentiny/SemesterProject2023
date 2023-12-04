@@ -1,16 +1,16 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
-import {Bmi} from "../../bmi";
 import {WeightDto} from "../../dtos/weight-dto";
-import {StatisticsService} from "../../statistics.service";
+import {Bmi} from "../../dtos/bmi";
+import {StatisticsService} from "../../services/statistics.service";
 
 @Component({
-  selector: 'app-current-weight-card',
-  templateUrl: './current-weight-card.component.html',
-  styleUrl: './current-weight-card.component.css'
+  selector: 'app-current-stats-card',
+  templateUrl: './current-stats-card.component.html',
+  styleUrl: './current-stats-card.component.css'
 })
-export class CurrentWeightCardComponent implements OnInit {
+export class CurrentStatsCardComponent implements OnInit {
   weightService: WeightService = inject(WeightService);
   userService: UserDetailsService = inject(UserDetailsService);
   statService: StatisticsService = inject(StatisticsService);

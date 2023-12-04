@@ -5,17 +5,22 @@ import {RouterOutlet} from "@angular/router";
 import {HomeViewComponent} from './home-view/home-view.component';
 import {WeightControlsModule} from '../pages/weight-controls/weight-controls.module';
 import {WeightLineChartComponent} from "../charts/weight-line-chart/weight-line-chart.component";
-import {CurrentWeightCardComponent} from "./current-weight-card/current-weight-card.component";
+import {CurrentStatsCardComponent} from "./current-stats-card/current-stats-card.component";
+import {DaysStatsCardComponent} from "./days-stats-card/days-stats-card.component";
 
 
 @NgModule({
     declarations: [
         HomeSkeletonComponent,
         HomeViewComponent,
-        CurrentWeightCardComponent
+        CurrentStatsCardComponent,
+        DaysStatsCardComponent
     ],
     exports: [
-        HomeSkeletonComponent
+        HomeSkeletonComponent,
+        HomeViewComponent,
+        CurrentStatsCardComponent,
+        DaysStatsCardComponent
     ],
     imports: [
         CommonModule,
