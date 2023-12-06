@@ -15,7 +15,6 @@ import {
 } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
-import {StatisticsService} from "../../services/statistics.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -43,10 +42,10 @@ export class BmiLineChartComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
-  private readonly statService: StatisticsService = inject(StatisticsService);
 
   constructor() {
     this.chartOptions = {
+      colors:['#dca54c'],
       series: [
         {
           name: "Weight",
@@ -55,7 +54,7 @@ export class BmiLineChartComponent implements OnInit {
       ],
       chart: {
         height: 350,
-        type: "line",
+        type: "area",
         background: "rgba(0,0,0,0)",
         toolbar: {
           show: true,
@@ -80,13 +79,10 @@ export class BmiLineChartComponent implements OnInit {
         {
           seriesName: "BMI",
           opposite: false,
-          title: {text: "BMI"},
-        },
-        {
-          seriesName: "Weight",
-          opposite: true,
-          title: {text: "Weight (kg)"},
-        },
+          title: {
+            text: "BMI"
+          },
+        }
 
       ],
       dataLabels: {
@@ -104,7 +100,57 @@ export class BmiLineChartComponent implements OnInit {
         curve: "smooth",
       },
       annotations: {
-        yaxis: []
+        yaxis: [{
+          yAxisIndex: 0,
+          y: 29.99,
+          y2: 25,
+          borderColor: "#000",
+          fillColor: "#e2d562",
+          opacity: 0.2,
+          label: {
+            borderColor: "#333",
+            style: {
+              fontSize: "10px",
+              color: "#333",
+              background: "#e2d562"
+            },
+            text: "Overweight"
+          }
+        },
+          {
+            yAxisIndex: 0,
+            y: 24.99,
+            y2: 18.5,
+            borderColor: "#000",
+            fillColor: "#87d039",
+            opacity: 0.2,
+            label: {
+              borderColor: "#333",
+              style: {
+                fontSize: "10px",
+                color: "#333",
+                background: "#87d039"
+              },
+              text: "Normal weight"
+            }
+          },
+          {
+            yAxisIndex: 0,
+            y: 18.49,
+            y2: 0,
+            borderColor: "#000",
+            fillColor: "#66c6ff",
+            opacity: 0.2,
+            label: {
+              borderColor: "#333",
+              style: {
+                fontSize: "10px",
+                color: "#333",
+                background: "#66c6ff"
+              },
+              text: "Underweight"
+            }
+          }]
       },
       tooltip:{
         shared: true,
@@ -113,143 +159,63 @@ export class BmiLineChartComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.weightService.getWeights();
     await this.userService.getProfile();
-    const height = this.userService.user!.height / 100;
     const targetWeight = this.userService.user!.targetWeight;
     const targetDate = this.userService.user!.targetDate;
 
-    const weights = this.weightService.weights.map(weight => weight.weight);
+    const bmi = await this.weightService.getBmi() ?? [];
+    const bmiNums = bmi!.map(w => w.bmi);
     // range of dates from first in weight to target date
-    const dates: string[] = [];
     const startDate = new Date(this.weightService.weights[0].date);
     const endDate = new Date(targetDate);
-    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    for (let i = 0; i < diffDays; i++) {
-      const date = new Date(startDate);
-      date.setDate(date.getDate() + i);
-      dates.push(date.toLocaleDateString());
-    }
-    const maxWeight = Math.max(...weights) + 2;
-    let minWeight = Math.min(...weights) - 2;
-    minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
-    this.chartOptions.yaxis![1].max = maxWeight;
-    this.chartOptions.yaxis![1].min = minWeight;
 
-    const maxBmi = maxWeight / (height * height);
-    const minBmi = minWeight / (height * height);
+    const maxBmi = Math.max(...bmiNums) + 2;
+    const minBmi = Math.min(...bmiNums) - 2;
     this.chartOptions.yaxis![0].max = maxBmi;
     this.chartOptions.yaxis![0].min = minBmi;
+
+
+    const seriesData = bmi.map(bmi => ({
+      x: new Date(bmi.date).getTime(),
+      y: bmi.bmi
+    }));
 
 
 
     this.chartOptions.series = [
       {
         name: "BMI",
-        data: weights.map(weight => +(weight / (height * height)).toFixed(2))
+        data: seriesData
       },
     ];
     this.chartOptions.xaxis = {
       type: "datetime",
+      max: endDate.getTime(),
+      min: startDate.getTime(),
       labels: {
         format: "dd/MM/yy",
         datetimeUTC: false,
-
       },
-      categories: dates
     };
 
-    this.chartOptions.annotations!.yaxis! =  [
+    this.chartOptions.annotations!.yaxis!.push(
       {
-        yAxisIndex: 1,
-        y: targetWeight,
-        y2: targetWeight + 0.1,
-        borderColor: "#00dbe3",
-        fillColor: "#00dbe3",
-        opacity: 1,
-        label: {
-          position: "left",
-          textAnchor: "start",
-          offsetX: 10,
-          borderColor: "#333",
-          style: {
-            fontSize: "10px",
-            color: "#333",
-            background: "#00dbe3"
-          },
-          text: "Target weight"
-        }
-      },
-      {
-        yAxisIndex: 0,
-        y: 30,
-        y2: maxBmi,
-        borderColor: "#000",
-        fillColor: "#fc4949",
-        opacity: 0.1,
-        label: {
-          borderColor: "#333",
-          style: {
-            fontSize: "10px",
-            color: "#333",
-            background: "#fc4949"
-          },
-          text: "Obese"
-        }
-      },
-      {
-        yAxisIndex: 0,
-        y: 29.99,
-        y2: 25,
-        borderColor: "#000",
-        fillColor: "#FEB019",
-        opacity: 0.1,
-        label: {
-          borderColor: "#333",
-          style: {
-            fontSize: "10px",
-            color: "#333",
-            background: "#FEB019"
-          },
-          text: "Overweight"
-        }
-      },
-      {
-        yAxisIndex: 0,
-        y: 24.99,
-        y2: 18.5,
-        borderColor: "#000",
-        fillColor: "#00E396",
-        opacity: 0.1,
-        label: {
-          borderColor: "#333",
-          style: {
-            fontSize: "10px",
-            color: "#333",
-            background: "#00E396"
-          },
-          text: "Normal weight"
-        }
-      },
-      {
-        yAxisIndex: 0,
-        y: 18.49,
-        y2: 0,
-        borderColor: "#000",
-        fillColor: "#008FFB",
-        opacity: 0.1,
-        label: {
-          borderColor: "#333",
-          style: {
-            fontSize: "10px",
-            color: "#333",
-            background: "#008FFB"
-          },
-          text: "Underweight"
-        }
+      yAxisIndex: 0,
+      y: 30,
+      y2: maxBmi,
+      borderColor: "#000",
+      fillColor: "#ff6f6f",
+      opacity: 0.2,
+      label: {
+        borderColor: "#333",
+        style: {
+          fontSize: "10px",
+          color: "#333",
+          background: "#ff6f6f"
+        },
+        text: "Obese"
       }
-    ];
+    });
 
   }
 }

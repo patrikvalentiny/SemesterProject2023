@@ -43,14 +43,9 @@ export class WeightLineChartComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
-  private readonly statService: StatisticsService = inject(StatisticsService);
 
   constructor() {
 
-    const maxWeight = 140;
-    const minWeight = 0;
-    const maxBmi = 40;
-    const minBmi = 0;
     this.chartOptions = {
       colors: ["#dca54c", "#ff0000", "#00ff00", "#0000ff"],
       series: [
@@ -61,7 +56,7 @@ export class WeightLineChartComponent implements OnInit {
       ],
       chart: {
         height: 350,
-        type: "line",
+        type: "area",
         background: "rgba(0,0,0,0)",
         toolbar: {
           show: true,
@@ -86,23 +81,6 @@ export class WeightLineChartComponent implements OnInit {
         {
           seriesName: "Weight",
           title: {text: "Weight (kg)"},
-        },
-        {
-          seriesName: "Target weight",
-          title: {text: "Target weight (kg)"},
-          show: false,
-        },
-        {
-          seriesName: "Trend",
-          title: {text: "Trend (kg)"},
-          show: false,
-        },
-        {
-          seriesName: "BMI",
-          opposite: true,
-          title: {text: "BMI"},
-          min: minBmi,
-          max: maxBmi,
         }
       ],
       dataLabels: {

@@ -177,7 +177,7 @@ public class StatisticsController(StatisticsService service) : Controller
         if (data == null) return Unauthorized();
         try
         {
-            return Ok(service.GetPredictedTargetDate(data.UserId));
+            return Ok(service.GetPredictedWeightOnTargetDate(data.UserId));
         }
         catch (Exception e)
         {

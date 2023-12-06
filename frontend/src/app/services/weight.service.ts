@@ -89,4 +89,13 @@ export class WeightService {
       return;
     }
   }
+
+  async getBmi() {
+    try {
+      const call = this.httpClient.get<Bmi[]>(environment.baseUrl + "/bmi");
+      return await firstValueFrom<Bmi[]>(call);
+    } catch (e) {
+      return;
+    }
+  }
 }

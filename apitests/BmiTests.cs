@@ -56,10 +56,18 @@ public class BmiTests
         
         using (new AssertionScope())
         {
+            var bmi = decimal.Round(weight.Weight / (height / 100m * height / 100m), 2);
             var expected = new BmiCommandModel
             {
-                Bmi = decimal.Round(weight.Weight / (height / 100m * height / 100m), 2),
-                Date = weight.Date.Date
+                Bmi = bmi,
+                Date = weight.Date.Date,
+                Category = bmi switch
+                {
+                    < 18.5m => "Underweight",
+                    < 25m => "Normal",
+                    < 30m => "Overweight",
+                    _ => "Obese"
+                }
             };
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().BeEquivalentTo(expected);
@@ -111,10 +119,21 @@ public class BmiTests
         
         using (new AssertionScope())
         {
-            var expected = weights.Select(w => new BmiCommandModel
+            var expected = weights.Select(w =>
             {
-                Bmi = decimal.Round(w.Weight / (height / 100m * height / 100m), 2),
-                Date = w.Date.Date
+                var bmi = decimal.Round(w.Weight / (height / 100m * height / 100m), 2);
+                return new BmiCommandModel
+                {
+                    Bmi = bmi,
+                    Date = w.Date.Date,
+                    Category = bmi switch
+                    {
+                        < 18.5m => "Underweight",
+                        < 25m => "Normal",
+                        < 30m => "Overweight",
+                        _ => "Obese"
+                    }
+                };
             }); 
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().BeEquivalentTo(expected);
