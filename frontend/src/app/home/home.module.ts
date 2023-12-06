@@ -7,6 +7,7 @@ import {WeightControlsModule} from '../pages/weight-controls/weight-controls.mod
 import {WeightLineChartComponent} from "../charts/weight-line-chart/weight-line-chart.component";
 import {CurrentStatsCardComponent} from "./current-stats-card/current-stats-card.component";
 import {DaysStatsCardComponent} from "./days-stats-card/days-stats-card.component";
+import {BmiLineChartComponent} from "../charts/bmi-line-chart/bmi-line-chart.component";
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import {DaysStatsCardComponent} from "./days-stats-card/days-stats-card.componen
         RouterOutlet,
         WeightControlsModule,
         WeightLineChartComponent,
+        BmiLineChartComponent,
     ]
 })
 export class HomeModule {
