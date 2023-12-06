@@ -12,13 +12,11 @@ export class DaysStatsCardComponent implements OnInit {
   statService: StatisticsService = inject(StatisticsService);
   daysToGo : number | undefined;
   dayIn: number | undefined;
-  predictedTargetWeight: WeightDto | undefined;
   constructor() {
   }
 
   async ngOnInit() {
     this.daysToGo = await this.statService.getDaysToGo();
     this.dayIn = await this.statService.getDayIn();
-    this.predictedTargetWeight = await this.statService.getPredictedTargetWeight();
   }
 }

@@ -163,7 +163,6 @@ export class BmiLineChartComponent implements OnInit {
     const height = this.userService.user!.height / 100;
     const targetWeight = this.userService.user!.targetWeight;
     const targetWeightBmi = targetWeight / (height * height);
-    console.log(targetWeightBmi)
     const targetDate = this.userService.user!.targetDate;
 
     const bmi = await this.weightService.getBmi() ?? [];

@@ -86,4 +86,13 @@ export class StatisticsService implements OnInit{
       throw e;
     }
   }
+
+  async getBmiChange(){
+    try {
+      const call = this.http.get<number>(environment.baseUrl + "/statistics/bmiChange");
+      return await firstValueFrom<number>(call);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

@@ -10,6 +10,7 @@ import {DaysStatsCardComponent} from "../pages/stat-cards/days-stats-card/days-s
 import {BmiLineChartComponent} from "../charts/bmi-line-chart/bmi-line-chart.component";
 import {BmiStatsCardComponent} from "../pages/stat-cards/bmi-stats-card/bmi-stats-card.component";
 import {TrendLineChartComponent} from "../charts/trend-line-chart/trend-line-chart.component";
+import {PredictedStatsCardComponent} from "../pages/stat-cards/predicted-stats-card/predicted-stats-card.component";
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import {TrendLineChartComponent} from "../charts/trend-line-chart/trend-line-cha
     BmiLineChartComponent,
     BmiStatsCardComponent,
     TrendLineChartComponent,
+    PredictedStatsCardComponent,
   ]
 })
 export class HomeModule {

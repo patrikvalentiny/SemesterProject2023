@@ -15,15 +15,13 @@ import {Bmi} from "../../../dtos/bmi";
 export class BmiStatsCardComponent implements OnInit {
   weightService: WeightService = inject(WeightService);
   statService: StatisticsService = inject(StatisticsService);
-  currentWeight : WeightDto | undefined;
   bmi: Bmi | undefined;
-  currentLoss: number = 0;
+  bmiChange: number = 0;
   constructor() {
   }
 
   async ngOnInit() {
-    this.currentWeight = await this.weightService.getLatestWeight();
     this.bmi = await this.weightService.getLatestBmi();
-    this.currentLoss = await this.statService.getCurrentTotalLoss();
+    this.bmiChange = await this.statService.getBmiChange();
   }
 }
