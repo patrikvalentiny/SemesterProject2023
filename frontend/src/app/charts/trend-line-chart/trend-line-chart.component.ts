@@ -15,6 +15,7 @@ import {
 } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
+import {StatisticsService} from "../../services/statistics.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -29,22 +30,21 @@ export type ChartOptions = {
   colors: string[];
   tooltip: ApexTooltip;
 };
-
 @Component({
-  selector: 'app-weight-line-chart',
+  selector: 'app-trend-line-chart',
   standalone: true,
-  imports: [CommonModule, NgApexchartsModule],
-  templateUrl: './weight-line-chart.component.html',
-  styleUrl: './weight-line-chart.component.css'
+    imports: [CommonModule, NgApexchartsModule],
+  templateUrl: './trend-line-chart.component.html',
+  styleUrl: './trend-line-chart.component.css'
 })
-export class WeightLineChartComponent implements OnInit {
+export class TrendLineChartComponent {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
+  private readonly statService: StatisticsService = inject(StatisticsService);
 
   constructor() {
-
     this.chartOptions = {
       colors: ["#dca54c"],
       series: [
@@ -54,7 +54,7 @@ export class WeightLineChartComponent implements OnInit {
         }
       ],
       chart: {
-        height: 500,
+        height: 200,
         type: "area",
         background: "rgba(0,0,0,0)",
         toolbar: {
@@ -90,7 +90,7 @@ export class WeightLineChartComponent implements OnInit {
         palette: "palette10"
       },
       title: {
-        text: "Your weight history"
+        text: "Weight Prediction"
       },
       stroke: {
         show: true,
@@ -101,27 +101,28 @@ export class WeightLineChartComponent implements OnInit {
       },
       tooltip:{
         shared: true,
-      }
+      },
     };
   }
 
   async ngOnInit() {
     await this.weightService.getWeights();
     await this.userService.getProfile();
+
     const targetWeight = this.userService.user!.targetWeight;
     const targetDate = this.userService.user!.targetDate;
 
-    const weights = this.weightService.weights;
+    const weights = await this.statService.getTrend();
     const weightNums = weights.map(w => w.weight);
 
-    const startDate = new Date(this.weightService.weights[0].date);
+    const startDate = new Date(weights[0].date);
     const endDate = new Date(targetDate);
     const maxWeight = Math.max(...weightNums) + 2;
     let minWeight = Math.min(...weightNums) - 2;
     minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
     this.chartOptions.yaxis![0].max = maxWeight;
     this.chartOptions.yaxis![0].min = minWeight;
-    this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight)  / 10) + 2;
+    this.chartOptions.yaxis![0].tickAmount = 3;
 
     const seriesData = weights.map(weight => ({
       x: new Date(weight.date).getTime(),

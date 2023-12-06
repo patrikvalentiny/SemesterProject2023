@@ -53,7 +53,7 @@ export class BmiLineChartComponent implements OnInit {
         }
       ],
       chart: {
-        height: 350,
+        height: 400,
         type: "area",
         background: "rgba(0,0,0,0)",
         toolbar: {
@@ -93,7 +93,7 @@ export class BmiLineChartComponent implements OnInit {
         palette: "palette10"
       },
       title: {
-        text: "Your weight history"
+        text: "Your BMI history"
       },
       stroke: {
         show: true,
@@ -160,7 +160,10 @@ export class BmiLineChartComponent implements OnInit {
 
   async ngOnInit() {
     await this.userService.getProfile();
+    const height = this.userService.user!.height / 100;
     const targetWeight = this.userService.user!.targetWeight;
+    const targetWeightBmi = targetWeight / (height * height);
+    console.log(targetWeightBmi)
     const targetDate = this.userService.user!.targetDate;
 
     const bmi = await this.weightService.getBmi() ?? [];
@@ -169,8 +172,9 @@ export class BmiLineChartComponent implements OnInit {
     const startDate = new Date(this.weightService.weights[0].date);
     const endDate = new Date(targetDate);
 
-    const maxBmi = Math.max(...bmiNums) + 2;
-    const minBmi = Math.min(...bmiNums) - 2;
+    const maxBmi = Math.max(...bmiNums) + 1;
+    let minBmi = Math.min(...bmiNums) - 1;
+    minBmi = minBmi < targetWeightBmi ? minBmi : targetWeightBmi - 1;
     this.chartOptions.yaxis![0].max = maxBmi;
     this.chartOptions.yaxis![0].min = minBmi;
 
@@ -215,7 +219,27 @@ export class BmiLineChartComponent implements OnInit {
         },
         text: "Obese"
       }
-    });
+    },
+      {
+        yAxisIndex:0,
+        y: targetWeightBmi,
+        y2: targetWeightBmi + 0.1,
+        borderColor: "#000",
+        fillColor: "#00dbe3",
+        opacity: 1,
+        label: {
+          position: "left",
+          textAnchor: "start",
+          offsetX: 10,
+          borderColor: "#333",
+          style: {
+            fontSize: "10px",
+            color: "#333",
+            background: "#00dbe3"
+          },
+          text: "Target BMI"
+        }
+      });
 
   }
 }

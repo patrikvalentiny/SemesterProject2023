@@ -5,9 +5,11 @@ import {RouterOutlet} from "@angular/router";
 import {HomeViewComponent} from './home-view/home-view.component';
 import {WeightControlsModule} from '../pages/weight-controls/weight-controls.module';
 import {WeightLineChartComponent} from "../charts/weight-line-chart/weight-line-chart.component";
-import {CurrentStatsCardComponent} from "./current-stats-card/current-stats-card.component";
-import {DaysStatsCardComponent} from "./days-stats-card/days-stats-card.component";
+import {CurrentStatsCardComponent} from "../pages/stat-cards/current-stats-card/current-stats-card.component";
+import {DaysStatsCardComponent} from "../pages/stat-cards/days-stats-card/days-stats-card.component";
 import {BmiLineChartComponent} from "../charts/bmi-line-chart/bmi-line-chart.component";
+import {BmiStatsCardComponent} from "../pages/stat-cards/bmi-stats-card/bmi-stats-card.component";
+import {TrendLineChartComponent} from "../charts/trend-line-chart/trend-line-chart.component";
 
 
 @NgModule({
@@ -23,13 +25,15 @@ import {BmiLineChartComponent} from "../charts/bmi-line-chart/bmi-line-chart.com
         CurrentStatsCardComponent,
         DaysStatsCardComponent
     ],
-    imports: [
-        CommonModule,
-        RouterOutlet,
-        WeightControlsModule,
-        WeightLineChartComponent,
-        BmiLineChartComponent,
-    ]
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    WeightControlsModule,
+    WeightLineChartComponent,
+    BmiLineChartComponent,
+    BmiStatsCardComponent,
+    TrendLineChartComponent,
+  ]
 })
 export class HomeModule {
 }

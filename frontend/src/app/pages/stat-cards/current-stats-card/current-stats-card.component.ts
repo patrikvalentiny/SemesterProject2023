@@ -1,9 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {WeightService} from "../../services/weight.service";
-import {UserDetailsService} from "../../services/user-details.service";
-import {WeightDto} from "../../dtos/weight-dto";
-import {Bmi} from "../../dtos/bmi";
-import {StatisticsService} from "../../services/statistics.service";
+import {WeightService} from "../../../services/weight.service";
+import {UserDetailsService} from "../../../services/user-details.service";
+import {WeightDto} from "../../../dtos/weight-dto";
+import {Bmi} from "../../../dtos/bmi";
+import {StatisticsService} from "../../../services/statistics.service";
 
 @Component({
   selector: 'app-current-stats-card',
@@ -12,17 +12,15 @@ import {StatisticsService} from "../../services/statistics.service";
 })
 export class CurrentStatsCardComponent implements OnInit {
   weightService: WeightService = inject(WeightService);
-  userService: UserDetailsService = inject(UserDetailsService);
   statService: StatisticsService = inject(StatisticsService);
   currentWeight : WeightDto | undefined;
-  bmi: Bmi | undefined;
   currentLoss: number = 0;
+  predictedTargetWeight: WeightDto | undefined;
   constructor() {
   }
 
   async ngOnInit() {
     this.currentWeight = await this.weightService.getLatestWeight();
-    this.bmi = await this.weightService.getLatestBmi();
     this.currentLoss = await this.statService.getCurrentTotalLoss();
   }
 }

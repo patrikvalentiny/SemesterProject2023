@@ -5,16 +5,10 @@
     <div class="stat-desc">{{(currentWeight?.difference ?? 0) <= 0 ? '↘︎' : '↗'}} {{(currentWeight?.difference ?? 0)}}</div>
   </div>
 
-
-  <div class="stat place-items-center">
-    <div class="stat-title">Current BMI</div>
-    <div class="stat-value">{{bmi?.bmi}}</div>
-    <div class="stat-desc">{{bmi?.category}}</div>
-  </div>
-
   <div class="stat place-items-center">
     <div class="stat-title">Current loss</div>
     <div class="stat-value">{{-currentLoss}}kg</div>
     <div class="stat-desc">{{(currentWeight?.difference ?? 0) <= 0 ? '↘︎' : '↗'}} {{(currentWeight?.difference ?? 0)}}</div>
   </div>
+
 </div>

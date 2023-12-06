@@ -1,5 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {StatisticsService} from "../../services/statistics.service";
+import {Component, OnInit} from '@angular/core';
 
 @Component({
     selector: 'app-home-view',
