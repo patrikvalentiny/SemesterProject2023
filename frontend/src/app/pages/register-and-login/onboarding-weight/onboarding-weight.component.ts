@@ -2,6 +2,7 @@ import {Component, inject} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {WeightService} from "../../../services/weight.service";
 import {Router} from "@angular/router";
+import {WeightInput} from "../../../dtos/weight-input";
 
 @Component({
   selector: 'app-onboarding-weight',
@@ -24,7 +25,11 @@ export class OnboardingWeightComponent {
 
   async saveWeight() {
     try {
-      await this.weightService.postWeight(this.numberInput.value!, new Date().toISOString().substring(0, 10));
+      const weight: WeightInput = {
+        weight: this.numberInput.value!,
+        date: new Date()
+      };
+      await this.weightService.postWeight(weight);
       await this.router.navigate(["../onboarding/profile"])
     } catch (e) {
 

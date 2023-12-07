@@ -1,4 +1,4 @@
-<div class="drawer lg:drawer-open w-screen h-max bg-base-200">
+<div class="drawer lg:drawer-open w-screen h-screen bg-base-200">
   <input class="drawer-toggle" id="my-drawer-2" type="checkbox"/>
   <!--    navbar-->
   <div *ngIf="!this.isHidden"
@@ -28,11 +28,9 @@
   </div>
 
   <div [ngClass]="!this.isHidden ? 'pt-16' : ''"
-       class="drawer-content items-center justify-center h-max w-full lg:justify-start">
+       class="drawer-content items-center justify-center h-screen w-full lg:justify-start">
     <!-- Page content here -->
-    <div class="w-full h-full">
-      <router-outlet class="h-fit w-full"></router-outlet>
-    </div>
+      <router-outlet></router-outlet>
 
 
   </div>
