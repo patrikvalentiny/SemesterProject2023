@@ -3,26 +3,39 @@ import {CommonModule} from '@angular/common';
 import {HomeSkeletonComponent} from './home-skeleton/home-skeleton.component';
 import {RouterOutlet} from "@angular/router";
 import {HomeViewComponent} from './home-view/home-view.component';
-import {WeightControlsModule} from '../weight-controls/weight-controls.module';
+import {WeightControlsModule} from '../pages/weight-controls/weight-controls.module';
 import {WeightLineChartComponent} from "../charts/weight-line-chart/weight-line-chart.component";
-import {CurrentWeightCardComponent} from "./current-weight-card/current-weight-card.component";
+import {CurrentStatsCardComponent} from "../pages/stat-cards/current-stats-card/current-stats-card.component";
+import {DaysStatsCardComponent} from "../pages/stat-cards/days-stats-card/days-stats-card.component";
+import {BmiLineChartComponent} from "../charts/bmi-line-chart/bmi-line-chart.component";
+import {BmiStatsCardComponent} from "../pages/stat-cards/bmi-stats-card/bmi-stats-card.component";
+import {TrendLineChartComponent} from "../charts/trend-line-chart/trend-line-chart.component";
+import {PredictedStatsCardComponent} from "../pages/stat-cards/predicted-stats-card/predicted-stats-card.component";
 
 
 @NgModule({
     declarations: [
         HomeSkeletonComponent,
         HomeViewComponent,
-        CurrentWeightCardComponent
+        CurrentStatsCardComponent,
+        DaysStatsCardComponent
     ],
     exports: [
-        HomeSkeletonComponent
+        HomeSkeletonComponent,
+        HomeViewComponent,
+        CurrentStatsCardComponent,
+        DaysStatsCardComponent
     ],
-    imports: [
-        CommonModule,
-        RouterOutlet,
-        WeightControlsModule,
-        WeightLineChartComponent,
-    ]
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    WeightControlsModule,
+    WeightLineChartComponent,
+    BmiLineChartComponent,
+    BmiStatsCardComponent,
+    TrendLineChartComponent,
+    PredictedStatsCardComponent,
+  ]
 })
 export class HomeModule {
 }

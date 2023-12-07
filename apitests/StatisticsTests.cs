@@ -601,6 +601,61 @@ public class StatisticsTests
         }
     }
 
+    [Test]
+    public async Task BmiChangeTest()
+    {
+        await using var conn = Helper.OpenConnection();
+        const int startWeight = 100;
+        const decimal averageLoss = 1;
+        const int inputSize = 10;
+        var startDate = DateTime.Now.AddDays(-inputSize).Date;
+        for (var i = 0; i < inputSize + 1; i++)
+        {
+            var weight = new WeightInput
+            {
+                Weight = startWeight - i * averageLoss,
+                Date = startDate.AddDays(i),
+                UserId = 1
+            };
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+        }
+
+        const int height = 180;
+        const decimal targetWeight = 80.0m;
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id) VALUES (@Height, @TargetWeight, @UserId)",
+            new { Height = height, TargetWeight = targetWeight, UserId = 1 });
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/bmiChange");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        decimal responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<decimal>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        using (new AssertionScope())
+        {
+            var expected = (startWeight - inputSize * averageLoss) / (height / 100m * height / 100m) - startWeight / (height / 100m * height / 100m);
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().Be(decimal.Round(expected, 2));
+        }
+    }
+
     [TearDown]
     public void TearDown()
     {

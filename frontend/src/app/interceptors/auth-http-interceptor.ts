@@ -1,7 +1,7 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {inject, Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {TokenService} from "src/app/token.service";
+import {TokenService} from "../services/token.service";
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {

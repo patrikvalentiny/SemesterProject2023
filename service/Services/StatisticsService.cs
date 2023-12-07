@@ -1,8 +1,5 @@
-﻿using System.Linq.Expressions;
-using infrastructure.DataModels;
+﻿using infrastructure.DataModels;
 using infrastructure.Repositories;
-using Microsoft.AspNetCore.Routing;
-using Serilog;
 
 namespace service.Services;
 
@@ -18,8 +15,10 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         List<WeightInput> weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
         if (weights.Count == 0) throw new Exception("No weights found");
         // calculate average loss per day
+        
         var oldestWeightInput = weights.First();
         var newestWeightInput = weights.Last();
+        
         var totalLoss = GetCurrentTotalLoss(weights); // start weight - current weight ex. 100 - 90 = 10
         var firstToLastDateDaysDiff = FirstToLastDateDaysDiff(weights); // days between start and current weight ex. -10
         var averageLoss = AverageLoss(totalLoss, firstToLastDateDaysDiff); // average loss per day ex. -1
@@ -45,6 +44,7 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
 
     private decimal AverageLoss(decimal totalLoss, int firstToLastDateDaysDiff)
     {
+        if(firstToLastDateDaysDiff == 0) return -0.1m;
         return decimal.Round(totalLoss / firstToLastDateDaysDiff, 4);
     }
     
@@ -115,9 +115,30 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         var totalLoss = GetCurrentTotalLoss(weights);
         var firstToLastDateDaysDiff = FirstToLastDateDaysDiff(weights);
         var averageLoss = AverageLoss(totalLoss, firstToLastDateDaysDiff);
-        Log.Information("Average loss: {averageLoss}", averageLoss);
         var daysToTarget = Math.Round((user.TargetWeight - weights.First().Weight) / averageLoss);
-        Log.Information("Days to target: {daysToTarget}", daysToTarget);
         return weights.First().Date.AddDays(Decimal.ToDouble(daysToTarget));
+    }
+    
+    public WeightInput? GetPredictedWeightOnTargetDate(int dataUserId)
+    {
+        var currentTrend = GetCurrentTrend(dataUserId).ToList();
+        if (currentTrend.Count == 0) throw new Exception("No weights found");
+        var user = userDetailsRepository.GetById(dataUserId);
+        if (user == null) throw new Exception("User details not found");
+        if (currentTrend.Count == 1) return currentTrend.First();
+        var targetDate = user.TargetDate ?? currentTrend.Last().Date;
+        return currentTrend.FirstOrDefault(x => x.Date == targetDate);
+    }
+
+    public decimal BmiChange(int dataUserId)
+    {
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        if (weights.Count == 0) throw new Exception("No weights found");
+        var userDetails = userDetailsRepository.GetById(dataUserId);
+        if (userDetails == null) throw new Exception("User details not found");
+        var heightInMeters = userDetails.Height / 100m;
+        var startBmi = weights.First().Weight / (heightInMeters * heightInMeters);
+        var currentBmi = weights.Last().Weight / (heightInMeters * heightInMeters);
+        return decimal.Round(currentBmi - startBmi, 2);
     }
 }

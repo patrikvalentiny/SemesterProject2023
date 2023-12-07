@@ -153,4 +153,37 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         
     }
+    
+    [HttpGet("predictedTargetWeight")]
+    public IActionResult GetPredictedTargetWeight()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(service.GetPredictedWeightOnTargetDate(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
+    
+    [HttpGet("bmiChange")]
+    public IActionResult GetBmiChange()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(service.BmiChange(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
+    
 }
