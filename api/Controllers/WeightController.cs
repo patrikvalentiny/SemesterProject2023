@@ -1,4 +1,5 @@
-﻿using api.Filters;
+﻿using api.Dtos;
+using api.Filters;
 using infrastructure.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using service.Models;
@@ -16,7 +17,14 @@ public class WeightController(WeightService weightService) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        return Ok(weightService.AddWeight(model, data.UserId));
+        var weight = weightService.AddWeight(model, data.UserId);
+        var weightDto = new WeightDto
+        {
+            Weight = weight.Weight,
+            Date = weight.Date,
+            Difference = weight.Difference
+        };
+        return Ok(weightDto);
     }
 
     [HttpPut]
@@ -24,13 +32,14 @@ public class WeightController(WeightService weightService) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        var input = new WeightInput
+        var weight = weightService.UpdateWeight(model, data.UserId);
+        var weightDto = new WeightDto
         {
-            Weight = model.Weight,
-            Date = model.Date,
-            UserId = data.UserId
+            Weight = weight.Weight,
+            Date = weight.Date,
+            Difference = weight.Difference
         };
-        return Ok(weightService.UpdateWeight(input));
+        return Ok(weightDto);
     }
 
 
@@ -39,7 +48,14 @@ public class WeightController(WeightService weightService) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        return Ok(weightService.GetAllWeightForUser(data.UserId));
+        var weights = weightService.GetAllWeightForUser(data.UserId);
+        var weightDtos = weights.Select(weight => new WeightDto
+        {
+            Weight = weight.Weight,
+            Date = weight.Date,
+            Difference = weight.Difference
+        });
+        return Ok(weightDtos);
     }
 
 
@@ -48,6 +64,13 @@ public class WeightController(WeightService weightService) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        return Ok(weightService.DeleteWeight(date, data.UserId));
+        var weight = weightService.DeleteWeight(date, data.UserId);
+        var weightDto = new WeightDto
+        {
+            Weight = weight.Weight,
+            Date = weight.Date,
+            Difference = weight.Difference
+        };
+        return Ok(weightDto);
     }
 }

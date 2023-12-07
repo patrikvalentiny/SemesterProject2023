@@ -42,10 +42,10 @@ export class WeightService {
 
   async deleteWeight(weight: WeightDto) {
     try {
-      const call = this.httpClient.delete<WeightDto>(environment.baseUrl + `/weight/${weight.id}`);
+      const call = this.httpClient.delete<WeightDto>(environment.baseUrl + `/weight/${weight.date}`);
       await firstValueFrom<WeightDto>(call);
-      this.weights = this.weights.filter(i => i.id !== weight.id)
-      this.toastService.success("Item deleted")
+      this.weights = this.weights.filter(i => i.date !== weight.date);
+      this.toastService.success("Item deleted");
     } catch (e) {
 
     }
@@ -60,13 +60,9 @@ export class WeightService {
     }
   }
 
-  async putWeight(id: number, weight: number, date: string, time: string = "00:00") {
+  async putWeight(value:WeightDto) {
     try {
-      const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", {
-        id: id,
-        weight: weight,
-        date: date
-      });
+      const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", value);
       const response = await firstValueFrom<WeightDto>(call);
 
       this.toastService.success("Weight successfully updated")
@@ -77,8 +73,8 @@ export class WeightService {
     }
   }
 
-  setEditingWeight(id: number) {
-    this.editingWeight.next(this.weights.find(i => i.id === id)!);
+  setEditingWeight(date: Date) {
+    this.editingWeight.next(this.weights.find(i => i.date === date)!);
   }
 
   async getLatestBmi() {

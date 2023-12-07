@@ -9,7 +9,8 @@ import {WeightDto} from "../../../dtos/weight-dto";
 })
 export class WeightsTableComponent implements OnInit {
     public readonly weightService = inject(WeightService);
-    selectedId = 0;
+    public selectedDate: Date | null = null;
+
 
     constructor() {
     }
@@ -22,8 +23,8 @@ export class WeightsTableComponent implements OnInit {
         await this.weightService.deleteWeight(weight);
     }
 
-    setEditingWeight(id: number) {
-        this.selectedId = id;
-        this.weightService.setEditingWeight(id);
+    setEditingWeight(date: Date) {
+
+        this.weightService.setEditingWeight(date);
     }
 }
