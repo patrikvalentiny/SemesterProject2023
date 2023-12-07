@@ -4,7 +4,7 @@ import {
   ApexAnnotations,
   ApexAxisChartSeries,
   ApexChart,
-  ApexDataLabels,
+  ApexDataLabels, ApexMarkers,
   ApexStroke,
   ApexTheme,
   ApexTitleSubtitle, ApexTooltip,
@@ -29,6 +29,7 @@ export type ChartOptions = {
   annotations: ApexAnnotations;
   colors: string[];
   tooltip: ApexTooltip;
+  markers: ApexMarkers;
 };
 @Component({
   selector: 'app-trend-line-chart',
@@ -46,6 +47,12 @@ export class TrendLineChartComponent {
 
   constructor() {
     this.chartOptions = {
+      markers: {
+        size: 2,
+        hover: {
+          size: 6
+        }
+      },
       colors: ["#dca54c"],
       series: [
         {
@@ -54,8 +61,10 @@ export class TrendLineChartComponent {
         }
       ],
       chart: {
+        id: "trend",
         height: 200,
         type: "area",
+        group: "weight",
         background: "rgba(0,0,0,0)",
         toolbar: {
           show: true,
@@ -71,8 +80,9 @@ export class TrendLineChartComponent {
           }
         },
         zoom: {
+          type: "x",
           enabled: true,
-          type: "xy"
+          autoScaleYaxis: true
 
         }
       },

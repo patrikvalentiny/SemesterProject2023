@@ -4,7 +4,7 @@ import {
   ApexAnnotations,
   ApexAxisChartSeries,
   ApexChart,
-  ApexDataLabels,
+  ApexDataLabels, ApexMarkers,
   ApexStroke,
   ApexTheme,
   ApexTitleSubtitle, ApexTooltip,
@@ -28,6 +28,7 @@ export type ChartOptions = {
   annotations: ApexAnnotations;
   colors: string[];
   tooltip: ApexTooltip;
+  markers: ApexMarkers;
 };
 
 @Component({
@@ -46,6 +47,12 @@ export class WeightLineChartComponent implements OnInit {
   constructor() {
 
     this.chartOptions = {
+      markers: {
+        size: 2,
+        hover: {
+          size: 6
+        }
+      },
       colors: ["#dca54c"],
       series: [
         {
@@ -54,8 +61,10 @@ export class WeightLineChartComponent implements OnInit {
         }
       ],
       chart: {
-        height: 500,
+        id: "weight",
+        height: 400,
         type: "area",
+        group: "weight",
         background: "rgba(0,0,0,0)",
         toolbar: {
           show: true,
@@ -68,11 +77,12 @@ export class WeightLineChartComponent implements OnInit {
             zoomin: true,
             zoomout: true,
             pan: true,
-          }
+          },
         },
         zoom: {
+          type: "x",
           enabled: true,
-          type: "xy"
+          autoScaleYaxis: true
 
         }
       },
@@ -140,12 +150,10 @@ export class WeightLineChartComponent implements OnInit {
       type: "datetime",
       max: endDate.getTime(),
       min: startDate.getTime(),
-      tickAmount: 10,
       labels: {
         format: "dd/MM/yy",
         datetimeUTC: false,
       },
-      // categories: dates
     };
 
     this.chartOptions.annotations!.yaxis! =  [

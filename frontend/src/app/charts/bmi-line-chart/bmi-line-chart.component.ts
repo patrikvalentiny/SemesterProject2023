@@ -4,7 +4,7 @@ import {
   ApexAnnotations,
   ApexAxisChartSeries,
   ApexChart,
-  ApexDataLabels,
+  ApexDataLabels, ApexMarkers,
   ApexStroke,
   ApexTheme,
   ApexTitleSubtitle, ApexTooltip,
@@ -28,6 +28,7 @@ export type ChartOptions = {
   annotations: ApexAnnotations;
   colors: string[];
   tooltip: ApexTooltip;
+  markers: ApexMarkers;
 };
 
 @Component({
@@ -45,6 +46,12 @@ export class BmiLineChartComponent implements OnInit {
 
   constructor() {
     this.chartOptions = {
+        markers: {
+            size: 2,
+            hover: {
+            size: 6
+            }
+        },
       colors:['#dca54c'],
       series: [
         {
@@ -53,8 +60,10 @@ export class BmiLineChartComponent implements OnInit {
         }
       ],
       chart: {
-        height: 400,
+        id: "bmi",
+        height: 300,
         type: "area",
+        group: "weight",
         background: "rgba(0,0,0,0)",
         toolbar: {
           show: true,
@@ -70,8 +79,9 @@ export class BmiLineChartComponent implements OnInit {
           }
         },
         zoom: {
+          type: "x",
           enabled: true,
-          type: "xy"
+          autoScaleYaxis: true
 
         }
       },
