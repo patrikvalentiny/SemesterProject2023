@@ -32,8 +32,14 @@ public class WeightService(WeightRepository weightRepository)
         return weightRepository.Delete(date, dataUserId);
     }
 
-    public WeightInput UpdateWeight(WeightInput model)
+    public WeightInput UpdateWeight(WeightInputCommandModel model, int userId)
     {
-        return weightRepository.Update(model);
+        var latestWeight = new WeightInput
+        {
+            Weight = model.Weight,
+            Date = model.Date,
+            UserId = userId
+        };
+        return weightRepository.Update(latestWeight);
     }
 }

@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../../services/weight.service";
 import {FormControl, Validators} from "@angular/forms";
 import {WeightDto} from "../../../dtos/weight-dto";
+import {WeightInput} from "../../../dtos/weight-input";
 
 @Component({
     selector: 'app-edit-weight',
@@ -11,13 +12,9 @@ import {WeightDto} from "../../../dtos/weight-dto";
 export class EditWeightComponent implements OnInit {
     weightService: WeightService = inject(WeightService);
 
-
-    weightId = 0;
-    numberInput = new FormControl(0, [Validators.required, Validators.min(0.0), Validators.max(600.0)],);
-    dateInput = new FormControl({value:'', disabled:true}, [Validators.required ]);
-
+    numberInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0.0), Validators.max(600.0)],);
+    dateInput:FormControl<string | null> = new FormControl({value:null, disabled:true}, [Validators.required ]);
     // timeInput = new FormControl('', [Validators.required]);
-
     constructor() {
 
     }
@@ -32,11 +29,14 @@ export class EditWeightComponent implements OnInit {
     }
 
     async saveWeight() {
-        await this.weightService.putWeight(this.weightId, this.numberInput.value!, this.dateInput.value!);
+        const weight: WeightInput = {
+            weight: this.numberInput.value!,
+            date: new Date(this.dateInput.value!)
+        }
+        await this.weightService.putWeight(weight);
     }
 
     processData(data: WeightDto) {
-        this.weightId = data.id;
         this.numberInput.setValue(data.weight);
         this.dateInput.setValue(data.date.toLocaleString().substring(0, 10));
         // this.timeInput.setValue(data.date.toLocaleString().substring(11, 16));
@@ -44,6 +44,13 @@ export class EditWeightComponent implements OnInit {
         return data;
     }
 
+    async deleteWeight() {
+        const weight: WeightInput = {
+            weight: this.numberInput.value!,
+            date: new Date(this.dateInput.value!)
+        }
+        await this.weightService.deleteWeight(weight);
+    }
     async ngOnInit() {
         this.weightService.editingWeight.subscribe(i => this.processData(i));
     }

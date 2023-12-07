@@ -5,6 +5,7 @@ import {environment} from "../../environments/environment";
 import {HotToastService} from "@ngneat/hot-toast";
 import {WeightDto} from "../dtos/weight-dto";
 import {Bmi} from "../dtos/bmi";
+import {WeightInput} from "../dtos/weight-input";
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +19,13 @@ export class WeightService {
   constructor() {
   }
 
-  async postWeight(value: number, date: string, time: string = "00:00") {
+  async postWeight(weight:WeightInput) {
     try {
-      const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight", {weight: value, date: date});
+      const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight", weight);
       const response = await firstValueFrom<WeightDto>(call);
 
-      this.toastService.success("Weight successfully added")
-      this.weights.unshift(response)
+      this.toastService.success("Weight successfully added");
+      this.weights.unshift(response);
     } catch (e) {
       throw e;
     }
@@ -40,12 +41,13 @@ export class WeightService {
     }
   }
 
-  async deleteWeight(weight: WeightDto) {
+  async deleteWeight(weight: WeightInput) {
     try {
-      const call = this.httpClient.delete<WeightDto>(environment.baseUrl + `/weight/${weight.id}`);
+      const date = weight.date.toISOString().substring(0, 10);
+      const call = this.httpClient.delete<WeightDto>(environment.baseUrl + `/weight/${date}`);
       await firstValueFrom<WeightDto>(call);
-      this.weights = this.weights.filter(i => i.id !== weight.id)
-      this.toastService.success("Item deleted")
+      await this.getWeights();
+      this.toastService.success("Item deleted");
     } catch (e) {
 
     }
@@ -54,31 +56,25 @@ export class WeightService {
   async getLatestWeight() {
     try {
       if (this.weights.length === 0) await this.getWeights();
-      return this.weights[this.weights.length - 1]
+      return this.weights[this.weights.length - 1];
     } catch (e) {
       return;
     }
   }
 
-  async putWeight(id: number, weight: number, date: string, time: string = "00:00") {
+  async putWeight(weightInput:WeightInput) {
     try {
-      const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", {
-        id: id,
-        weight: weight,
-        date: date
-      });
+      const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", weightInput);
       const response = await firstValueFrom<WeightDto>(call);
-
-      this.toastService.success("Weight successfully updated")
       await this.getWeights();
-
+      this.toastService.success("Weight successfully updated");
     } catch (e) {
 
     }
   }
 
-  setEditingWeight(id: number) {
-    this.editingWeight.next(this.weights.find(i => i.id === id)!);
+  setEditingWeight(date: Date) {
+    this.editingWeight.next(this.weights.find(i => i.date === date)!);
   }
 
   async getLatestBmi() {

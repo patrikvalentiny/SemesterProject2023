@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {WeightService} from "../../../services/weight.service";
+import {WeightInput} from "../../../dtos/weight-input";
 
 @Component({
     selector: 'app-weight-input',
@@ -14,7 +15,6 @@ export class WeightInputComponent implements OnInit {
 
     // timeInput = new FormControl(new Date().toISOString().substring(11, 16), [Validators.required]);
 
-
     decrement() {
         this.numberInput.setValue(Number((this.numberInput.value! - 0.1).toFixed(1)))
     }
@@ -24,7 +24,11 @@ export class WeightInputComponent implements OnInit {
     }
 
     async saveWeight() {
-        await this.weightService.postWeight(this.numberInput.value!, this.dateInput.value!);
+        const weight: WeightInput = {
+            weight: this.numberInput.value!,
+            date: new Date(this.dateInput.value!)
+        }
+        await this.weightService.postWeight(weight);
     }
 
     async ngOnInit() {
