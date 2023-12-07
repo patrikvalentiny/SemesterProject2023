@@ -20,7 +20,6 @@ export class PredictedStatsCardComponent implements OnInit {
   async ngOnInit() {
     this.predictedTargetWeight = await this.statService.getPredictedTargetWeight();
     this.predictedTargetDate = new Date(await this.statService.getPredictedTargetDate());
-    console.log(this.predictedTargetDate)
   }
 
 }

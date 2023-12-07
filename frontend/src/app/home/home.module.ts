@@ -11,6 +11,7 @@ import {BmiLineChartComponent} from "../charts/bmi-line-chart/bmi-line-chart.com
 import {BmiStatsCardComponent} from "../pages/stat-cards/bmi-stats-card/bmi-stats-card.component";
 import {TrendLineChartComponent} from "../charts/trend-line-chart/trend-line-chart.component";
 import {PredictedStatsCardComponent} from "../pages/stat-cards/predicted-stats-card/predicted-stats-card.component";
+import {WeightProgressBarChartComponent} from "../charts/weight-progress-bar-chart/weight-progress-bar-chart.component";
 
 
 @NgModule({
@@ -26,16 +27,17 @@ import {PredictedStatsCardComponent} from "../pages/stat-cards/predicted-stats-c
         CurrentStatsCardComponent,
         DaysStatsCardComponent
     ],
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    WeightControlsModule,
-    WeightLineChartComponent,
-    BmiLineChartComponent,
-    BmiStatsCardComponent,
-    TrendLineChartComponent,
-    PredictedStatsCardComponent,
-  ]
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        WeightControlsModule,
+        WeightLineChartComponent,
+        BmiLineChartComponent,
+        BmiStatsCardComponent,
+        TrendLineChartComponent,
+        PredictedStatsCardComponent,
+        WeightProgressBarChartComponent,
+    ]
 })
 export class HomeModule {
 }
