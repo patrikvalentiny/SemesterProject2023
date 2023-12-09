@@ -12,7 +12,7 @@ export class LoginViewComponent {
     private readonly fb: FormBuilder = inject(FormBuilder);
     loginForm = this.fb.group({
         username: [null, Validators.required],
-        password: [null, Validators.required]
+        password: [null, [Validators.required, Validators.minLength(4)]]
     });
 
 

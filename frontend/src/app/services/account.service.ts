@@ -28,7 +28,7 @@ export class AccountService {
             await this.router.navigate(["/"])
             this.user = response.user;
         } catch (e) {
-
+          return;
         }
     }
 
@@ -42,7 +42,7 @@ export class AccountService {
             this.tokenService.setToken(response.token);
             await this.router.navigate(["/onboarding/weight"])
         } catch (e) {
-          this.toastService.error("Username or email already taken");
+          return;
         }
     }
 

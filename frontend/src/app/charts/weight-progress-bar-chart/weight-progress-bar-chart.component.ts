@@ -4,7 +4,7 @@ import {Component, inject, OnInit, ViewChild} from "@angular/core";
 import {
   ApexNonAxisChartSeries,
   ApexPlotOptions,
-  ApexChart, ChartComponent, NgApexchartsModule, ApexTheme, ApexDataLabels, ApexTooltip
+  ApexChart, ChartComponent, NgApexchartsModule, ApexTheme, ApexDataLabels, ApexTooltip, ApexLegend
 } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
 
@@ -17,6 +17,7 @@ export type ChartOptions = {
   theme: ApexTheme;
   dataLabels: ApexDataLabels;
   tooltip: ApexTooltip;
+  legend:ApexLegend;
 };
 @Component({
   selector: 'app-weight-progress-bar-chart',
@@ -32,6 +33,10 @@ export class WeightProgressBarChartComponent implements OnInit {
 
   constructor() {
     this.chartOptions = {
+      legend:{
+        show: true,
+        position: 'bottom',
+      },
       colors: ["#dca54c", "#152747"],
       series: [0],
       tooltip: {
@@ -43,12 +48,15 @@ export class WeightProgressBarChartComponent implements OnInit {
         }
       },
       chart: {
-        height: '100%',
+        height: 250,
         type: "donut",
         background: 'transparent',
       },
       plotOptions: {
         pie: {
+          dataLabels: {
+            offset: 50,
+          },
           donut: {
             size: "70%",
             labels:{
@@ -68,7 +76,7 @@ export class WeightProgressBarChartComponent implements OnInit {
                   if (sum === 0) {
                     return "0%";
                   }
-                  return Math.round(seriesTotals[0] / sum * 100) + "%";
+                  return (seriesTotals[0] / sum * 100).toFixed(1) + "%";
                 }
               },
 
@@ -94,6 +102,11 @@ export class WeightProgressBarChartComponent implements OnInit {
       theme:{mode: 'dark'},
       dataLabels: {
         enabled: true,
+        style: {
+          fontSize: '18px',
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          fontWeight: 400,
+        },
         formatter: function (val: number, opts: any) {
           return opts.w.config.series[opts.seriesIndex] + "kg";
         }

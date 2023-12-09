@@ -27,7 +27,7 @@ export class WeightService {
       this.toastService.success("Weight successfully added");
       this.weights.unshift(response);
     } catch (e) {
-      throw e;
+      return;
     }
   }
 
