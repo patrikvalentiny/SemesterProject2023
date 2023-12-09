@@ -11,7 +11,6 @@ import {WeightDto} from "../../../dtos/weight-dto";
 export class WeightsTableComponent implements OnInit {
     public readonly weightService = inject(WeightService);
     public selectedDate: Date | null = null;
-    daysPad: null[] = [];
     days: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 
@@ -19,8 +18,7 @@ export class WeightsTableComponent implements OnInit {
     }
 
     async ngOnInit() {
-        let weights = await this.weightService.getWeights();
-        this.setDayPad(weights![0]);
+        await this.weightService.getWeights();
     }
 
     async deleteWeight(weight: WeightInput) {
@@ -32,13 +30,4 @@ export class WeightsTableComponent implements OnInit {
         this.weightService.setEditingWeight(date);
     }
 
-    setDayPad(weight: WeightDto | undefined) {
-        if (!weight) {
-            return;
-        }
-        const date = new Date(weight.date);
-        // get day number starting monday
-        const day = date.getDay() === 0 ? 6 : date.getDay() - 1;
-        this.daysPad = new Array(day);
-    }
 }

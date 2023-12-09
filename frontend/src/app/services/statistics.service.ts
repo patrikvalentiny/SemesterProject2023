@@ -33,9 +33,9 @@ export class StatisticsService implements OnInit{
     }
   }
 
-  public async getWeighToGo() {
+  public async getWeightToGo() {
     try {
-      const call = this.http.get<number>(environment.baseUrl + "/statistics/weighToGo");
+      const call = this.http.get<number>(environment.baseUrl + "/statistics/weightToGo");
       return await firstValueFrom<number>(call);
     } catch (e) {
       throw e;

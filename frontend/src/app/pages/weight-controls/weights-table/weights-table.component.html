@@ -1,14 +1,14 @@
-<div class="flex flex-col gap-2 w-full h-full ">
-    <div class="w-full h-4">
+<div class="flex flex-col gap-2 w-full h-full rounded-box drop-shadow-2xl bg-transparent pt-2">
+    <div class="w-full h-4 bg-transparent drop-shadow">
         <div class="grid grid-cols-7 gap-2">
             <label *ngFor="let day of days" class="text-center text-sm">
                 {{day}}
             </label>
         </div>
     </div>
-    <div class="w-full h-full overflow-y-auto rounded-box no-scrollbar snap-y">
+    <div class="w-full h-full overflow-y-auto rounded-b-box no-scrollbar snap-y bg-transparent">
         <div class="grid grid-cols-7 gap-0.5 my-2">
-            <div *ngFor="let i of daysPad"></div>
+
 
             <div (click)="setEditingWeight(weight.date)" *ngFor="let weight of weightService.weights"
                  [ngClass]="{
@@ -23,9 +23,9 @@
                     'col-start-7':(weight.date.toLocaleString() | date:'EEE')?.substring(0,3) === 'Sun',
                   }"
                  class="bg-base-100 stat place-items-center w-full rounded-md snap-start px-0 hover:bg-base-300 col-span-1">
-                <div class="stat-title text-sm">{{weight.date.toLocaleString() | date : 'dd/M'}}</div>
-                <div class="stat-value lg:text-2xl text-sm">{{weight.weight.toFixed(1)}}</div>
-                <div class="stat-desc" [ngClass]="(weight.difference ?? 0) > 0 ? 'text-error' : 'text-success'">
+                <div class="stat-title lg:text-lg text-xs">{{weight.date.toLocaleString() | date : 'd/M/yy'}}</div>
+                <div class="stat-value lg:text-2xl text-base">{{weight.weight.toFixed(1)}}</div>
+                <div class="stat-desc text-xs" [ngClass]="(weight.difference ?? 0) > 0 ? 'text-error' : 'text-success'">
                     {{weight.difference?.toFixed(1) ?? 0}}kg
                 </div>
             </div>
