@@ -17,14 +17,14 @@ public class WeightService(WeightRepository weightRepository)
         return weightRepository.Create(latestWeight);
     }
 
-    public WeightInput? GetLatestWeightForUser(int userId)
-    {
-        return weightRepository.GetLatestWeightForUser(userId);
-    }
-
     public IEnumerable<WeightInput> GetAllWeightForUser(int dataUserId)
     {
-        return weightRepository.GetAllWeightsForUser(dataUserId);
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        for (int i = 0; i < weights.Count; i++)
+        {
+            weights[i].Difference = i == 0 ? 0 : weights[i].Weight - weights[i - 1].Weight;
+        }
+        return weights;
     }
 
     public WeightInput DeleteWeight(DateTime date, int dataUserId)
@@ -32,8 +32,14 @@ public class WeightService(WeightRepository weightRepository)
         return weightRepository.Delete(date, dataUserId);
     }
 
-    public WeightInput UpdateWeight(WeightInput model)
+    public WeightInput UpdateWeight(WeightInputCommandModel model, int userId)
     {
-        return weightRepository.Update(model);
+        var latestWeight = new WeightInput
+        {
+            Weight = model.Weight,
+            Date = model.Date,
+            UserId = userId
+        };
+        return weightRepository.Update(latestWeight);
     }
 }

@@ -1,0 +1,38 @@
+<div class="hero min-h-screen w-screen bg-base-200">
+    <div class="hero-content flex-col lg:flex-row-reverse lg:gap-10">
+        <div class="text-center lg:text-left">
+            <h1 class="text-5xl font-bold">Login now!</h1>
+            <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
+                quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+        </div>
+        <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+            <form [formGroup]="loginForm" class="card-body">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Username or email</span>
+                    </label>
+                    <input class="input input-bordered" formControlName="username" autocomplete="username" placeholder="Username"/>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Password</span>
+                    </label>
+                    <input class="input input-bordered" formControlName="password" placeholder="Password" autocomplete="current-password"
+                           type="password"/>
+                    <label class="label">
+                        <a class="label-text-alt link link-hover" href="#">Forgot password? (Coming soon)</a>
+                    </label>
+                </div>
+                <div class="form-control mt-6">
+                    <button (click)="login()" [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
+                </div>
+                <a href="../register">
+                    <div class="text-center pt-4">
+                        <h3 class="text-xl">Don't have an account</h3>
+                        <p class="py-0.5">Register here</p>
+                    </div>
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
