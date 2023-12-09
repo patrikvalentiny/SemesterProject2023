@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {WeightService} from "../../../services/weight.service";
 import {WeightInput} from "../../../dtos/weight-input";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-weight-input',
@@ -9,9 +10,11 @@ import {WeightInput} from "../../../dtos/weight-input";
     styleUrls: ['./weight-input.component.css']
 })
 export class WeightInputComponent implements OnInit {
-    weightService: WeightService = inject(WeightService);
+    private readonly weightService: WeightService = inject(WeightService);
+    private readonly router: Router = inject(Router);
     numberInput: FormControl<number | null> = new FormControl(0, [Validators.required, Validators.min(0.0), Validators.max(600.0)]);
     dateInput = new FormControl(new Date().toISOString().substring(0, 10), [Validators.required]);
+    dayBeforeWeight: number | undefined;
 
     // timeInput = new FormControl(new Date().toISOString().substring(11, 16), [Validators.required]);
 
@@ -29,10 +32,13 @@ export class WeightInputComponent implements OnInit {
             date: new Date(this.dateInput.value!)
         }
         await this.weightService.postWeight(weight);
+        await this.router.navigate(['../home']);
     }
 
     async ngOnInit() {
-        const weightDto = await this.weightService.getLatestWeight();
-        this.numberInput.setValue(weightDto?.weight ?? 0.0);
+        const weights = await this.weightService.getWeights();
+        if (weights?.length === 0 || weights === undefined) return;
+        this.numberInput.setValue(weights[weights.length -1].weight);
+        this.dayBeforeWeight = weights[weights.length -2].weight;
     }
 }
