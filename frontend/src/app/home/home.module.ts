@@ -13,6 +13,7 @@ import {TrendLineChartComponent} from "../charts/trend-line-chart/trend-line-cha
 import {PredictedStatsCardComponent} from "../pages/stat-cards/predicted-stats-card/predicted-stats-card.component";
 import {WeightProgressBarChartComponent} from "../charts/weight-progress-bar-chart/weight-progress-bar-chart.component";
 import {DaysProgressBarChartComponent} from "../charts/days-progress-bar-chart/days-progress-bar-chart.component";
+import {PagesModule} from "../pages/pages.module";
 
 
 @NgModule({
@@ -28,18 +29,19 @@ import {DaysProgressBarChartComponent} from "../charts/days-progress-bar-chart/d
         CurrentStatsCardComponent,
         DaysStatsCardComponent
     ],
-    imports: [
-        CommonModule,
-        RouterOutlet,
-        WeightControlsModule,
-        WeightLineChartComponent,
-        BmiLineChartComponent,
-        BmiStatsCardComponent,
-        TrendLineChartComponent,
-        PredictedStatsCardComponent,
-        WeightProgressBarChartComponent,
-        DaysProgressBarChartComponent,
-    ]
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    WeightControlsModule,
+    WeightLineChartComponent,
+    BmiLineChartComponent,
+    BmiStatsCardComponent,
+    TrendLineChartComponent,
+    PredictedStatsCardComponent,
+    WeightProgressBarChartComponent,
+    DaysProgressBarChartComponent,
+    PagesModule,
+  ]
 })
 export class HomeModule {
 }
