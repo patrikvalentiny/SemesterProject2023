@@ -164,6 +164,12 @@ export class BmiLineChartComponent implements OnInit {
       },
       tooltip:{
         shared: true,
+        y:{
+          formatter(val: number, opts?: any): string {
+            return val + "BMI (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1 ] ).toFixed(2)+ ")";
+
+          }
+        },
       }
     };
   }
