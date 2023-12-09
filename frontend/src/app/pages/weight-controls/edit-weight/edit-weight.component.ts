@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../../services/weight.service";
-import {FormControl, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {WeightDto} from "../../../dtos/weight-dto";
 import {WeightInput} from "../../../dtos/weight-input";
 
@@ -10,16 +10,20 @@ import {WeightInput} from "../../../dtos/weight-input";
     styleUrls: ['./edit-weight.component.css']
 })
 export class EditWeightComponent implements OnInit {
-    weightService: WeightService = inject(WeightService);
+    private readonly weightService: WeightService = inject(WeightService);
 
-    numberInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0.0), Validators.max(600.0)],);
-    dateInput:FormControl<string | null> = new FormControl({value:null, disabled:true}, [Validators.required ]);
+    numberInput: FormControl<number | null> = new FormControl(0.0, [Validators.required, Validators.min(20.0), Validators.max(600.0)]);
+    dateInput:FormControl<string | null> = new FormControl({value:"", disabled:true}, [Validators.required]);
+    editingWeight: WeightDto | null = null;
     // timeInput = new FormControl('', [Validators.required]);
+
+    formGroup = new FormGroup({
+        numberInput: this.numberInput,
+        dateInput: this.dateInput,
+        // timeInput: this.timeInput
+    })
     constructor() {
-
     }
-
-
     decrement() {
         this.numberInput.setValue(Number((this.numberInput.value! - 0.1).toFixed(1)))
     }
@@ -34,12 +38,14 @@ export class EditWeightComponent implements OnInit {
             date: new Date(this.dateInput.value!)
         }
         await this.weightService.putWeight(weight);
+        this.editingWeight = weight;
     }
 
     processData(data: WeightDto) {
         this.numberInput.setValue(data.weight);
         this.dateInput.setValue(data.date.toLocaleString().substring(0, 10));
         // this.timeInput.setValue(data.date.toLocaleString().substring(11, 16));
+        this.editingWeight = data;
 
         return data;
     }
@@ -52,6 +58,6 @@ export class EditWeightComponent implements OnInit {
         await this.weightService.deleteWeight(weight);
     }
     async ngOnInit() {
-        this.weightService.editingWeight.subscribe(i => this.processData(i));
+        this.weightService.editingWeight.subscribe(i => this.processData(i!));
     }
 }
