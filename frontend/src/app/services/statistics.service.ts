@@ -113,4 +113,13 @@ export class StatisticsService implements OnInit{
       throw e;
     }
   }
+
+  async getLowestWeight() {
+    try {
+      const call = this.http.get<WeightDto>(environment.baseUrl + "/statistics/lowestWeight");
+      return await firstValueFrom<WeightDto>(call);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

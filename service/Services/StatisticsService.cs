@@ -141,4 +141,11 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         var currentBmi = weights.Last().Weight / (heightInMeters * heightInMeters);
         return decimal.Round(currentBmi - startBmi, 2);
     }
+
+    public WeightInput GetLowestWeight(int dataUserId)
+    {
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        if (weights.Count == 0) throw new Exception("No weights found");
+        return weights.OrderBy(x => x.Weight).First();
+    }
 }

@@ -35,7 +35,7 @@ export class DaysProgressBarChartComponent implements OnInit {
     this.chartOptions = {
       legend:{
         show: true,
-        position: 'right',
+        position: 'bottom',
       },
       colors: ["#dca54c", "#152747"],
       series: [0],
@@ -48,7 +48,6 @@ export class DaysProgressBarChartComponent implements OnInit {
         }
       },
       chart: {
-        width: 350,
         height: 250,
         type: "donut",
         background: 'transparent',

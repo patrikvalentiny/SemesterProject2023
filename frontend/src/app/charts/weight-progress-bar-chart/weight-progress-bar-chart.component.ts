@@ -35,7 +35,7 @@ export class WeightProgressBarChartComponent implements OnInit {
     this.chartOptions = {
       legend:{
         show: true,
-        position: 'left',
+        position: 'bottom',
       },
       colors: ["#dca54c", "#152747"],
       series: [0],
@@ -48,7 +48,6 @@ export class WeightProgressBarChartComponent implements OnInit {
         }
       },
       chart: {
-        width: 350,
         height: 250,
         type: "donut",
         background: 'transparent',

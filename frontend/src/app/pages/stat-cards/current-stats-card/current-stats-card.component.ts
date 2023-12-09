@@ -14,13 +14,12 @@ export class CurrentStatsCardComponent implements OnInit {
   weightService: WeightService = inject(WeightService);
   statService: StatisticsService = inject(StatisticsService);
   currentWeight : WeightDto | undefined;
-  currentLoss: number = 0;
-  predictedTargetWeight: WeightDto | undefined;
+  lowestWeight: WeightDto | undefined;
+  lowestWeightText: string | undefined;
   constructor() {
   }
 
   async ngOnInit() {
     this.currentWeight = await this.weightService.getLatestWeight();
-    this.currentLoss = await this.statService.getCurrentTotalLoss();
-  }
+    this.lowestWeight = await this.statService.getLowestWeight();}
 }

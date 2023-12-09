@@ -1,4 +1,5 @@
-﻿using api.Filters;
+﻿using api.Dtos;
+using api.Filters;
 using Microsoft.AspNetCore.Mvc;
 using service.Services;
 
@@ -178,6 +179,28 @@ public class StatisticsController(StatisticsService service) : Controller
         try
         {
             return Ok(service.BmiChange(data.UserId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
+    
+    [HttpGet("lowestWeight")]
+    public IActionResult GetLowestWeight()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            var weightDto = new WeightDto
+            {
+                Weight = service.GetLowestWeight(data.UserId).Weight,
+                Date = service.GetLowestWeight(data.UserId).Date,
+                Difference = service.GetLowestWeight(data.UserId).Difference
+            };
+            return Ok(service.GetLowestWeight(data.UserId));
         }
         catch (Exception e)
         {
