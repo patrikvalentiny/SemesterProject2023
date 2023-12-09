@@ -20,13 +20,13 @@ export type ChartOptions = {
   legend:ApexLegend;
 };
 @Component({
-  selector: 'app-weight-progress-bar-chart',
+  selector: 'app-days-progress-bar-chart',
   standalone: true,
-  imports: [CommonModule, NgApexchartsModule],
-  templateUrl: './weight-progress-bar-chart.component.html',
-  styleUrl: './weight-progress-bar-chart.component.css'
+    imports: [CommonModule, NgApexchartsModule],
+  templateUrl: './days-progress-bar-chart.component.html',
+  styleUrl: './days-progress-bar-chart.component.css'
 })
-export class WeightProgressBarChartComponent implements OnInit {
+export class DaysProgressBarChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   private readonly statService: StatisticsService = inject(StatisticsService);
@@ -35,7 +35,7 @@ export class WeightProgressBarChartComponent implements OnInit {
     this.chartOptions = {
       legend:{
         show: true,
-        position: 'left',
+        position: 'right',
       },
       colors: ["#dca54c", "#152747"],
       series: [0],
@@ -43,7 +43,7 @@ export class WeightProgressBarChartComponent implements OnInit {
         enabled: true,
         y:{
           formatter(val: number, opts?: any): string {
-            return val + "kg";
+            return val + " Days";
           }
         }
       },
@@ -55,28 +55,19 @@ export class WeightProgressBarChartComponent implements OnInit {
       },
       plotOptions: {
         pie: {
+          dataLabels: {
+            offset: 0,
+          },
           donut: {
-
             size: "70%",
             labels:{
               total:{
+                label: 'Total days',
                 show: true,
                 showAlways: true,
-                label: '% of goal',
                 fontSize: '11px',
                 fontFamily: 'Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                formatter: function (w: any): string {
-                  const seriesTotals = w.globals.seriesTotals
-                  const sum = seriesTotals.reduce((a: number, b: number) => {
-                    return a + b;
-                  }, 0);
-                  // check for division by 0
-                  if (sum === 0) {
-                    return "0%";
-                  }
-                  return (seriesTotals[0] / sum * 100).toFixed(1) + "%";
-                }
               },
 
               show: true,
@@ -97,17 +88,19 @@ export class WeightProgressBarChartComponent implements OnInit {
           }
         }
       },
-      labels: ["Total Loss", "Weight to go"],
+      labels: ["Days in", "Days to go"],
       theme:{mode: 'dark'},
       dataLabels: {
         enabled: true,
+
         style: {
           fontSize: '18px',
           fontFamily: 'Helvetica, Arial, sans-serif',
           fontWeight: 400,
+          colors: ['#fff']
         },
-        formatter: function (val: number, opts: any) {
-          return opts.w.config.series[opts.seriesIndex] + "kg";
+        formatter: function (val: number, opts?: any): string {
+          return opts.w.config.series[opts.seriesIndex] + " Days";
         }
       }
 
@@ -115,9 +108,8 @@ export class WeightProgressBarChartComponent implements OnInit {
   }
 
   async ngOnInit(){
-    const percentageOfGoal = await this.statService.getPercentageOfGoal();
-    const totalLoss = await this.statService.getCurrentTotalLoss();
-    const weightToGo = await this.statService.getWeightToGo();
-    this.chartOptions.series = [totalLoss, weightToGo];
+    const daysToGo = await this.statService.getDaysToGo();
+    const daysIn = await this.statService.getDayIn();
+    this.chartOptions.series = [daysIn, daysToGo];
   }
 }
