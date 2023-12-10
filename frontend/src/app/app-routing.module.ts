@@ -1,16 +1,16 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginViewComponent} from "./register-and-login/login-view/login-view.component";
-import {RegisterViewComponent} from "./register-and-login/register-view/register-view.component";
-import {AuthGuardService} from "./auth-guard.service";
+import {LoginViewComponent} from "./pages/register-and-login/login-view/login-view.component";
+import {RegisterViewComponent} from "./pages/register-and-login/register-view/register-view.component";
 import {HomeViewComponent} from "./home/home-view/home-view.component";
-import {NotFoundComponent} from "./not-found/not-found.component";
+import {NotFoundComponent} from "./pages/not-found/not-found.component";
 import {RecordsEditorComponent} from "./pages/records-editor/records-editor.component";
-import {AccountDetailsComponent} from "./user-details/account-details/account-details.component";
-import {WeightInputComponent} from "./weight-controls/weight-input/weight-input.component";
-import {OnboardingComponent} from "./register-and-login/onboarding/onboarding.component";
-import {SignupGuardService} from "./signup-guard.service";
-import {OnboardingWeightComponent} from "./register-and-login/onboarding-weight/onboarding-weight.component";
+import {AccountDetailsComponent} from "./pages/user-details/account-details/account-details.component";
+import {WeightInputComponent} from "./pages/weight-controls/weight-input/weight-input.component";
+import {OnboardingComponent} from "./pages/register-and-login/onboarding/onboarding.component";
+import {OnboardingWeightComponent} from "./pages/register-and-login/onboarding-weight/onboarding-weight.component";
+import {AuthGuardService} from "./services/auth-guard.service";
+import {SignupGuardService} from "./services/signup-guard.service";
 
 const routes: Routes = [
     {

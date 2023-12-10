@@ -1,4 +1,37 @@
-<div class="flex flex-col gap-10 w-full h-full justify-center items-center py-8 px-4">
-  <app-current-weight-card class="w-full"></app-current-weight-card>
-  <app-weight-line-chart class="w-full"></app-weight-line-chart>
+<div class="flex flex-col gap-1 w-full h-full justify-start items-center lg:pt-8 lg:pb-8 pb-28 pt-4 lg:px-4 px-2 overflow-y-auto">
+
+  <div class="grid lg:grid-cols-3 grid-cols-1 w-full gap-1 drop-shadow-2xl rounded-3xl lg:-order-2">
+    <app-weight-progress-bar-chart class="w-full h-full col-span-1 -order-2"></app-weight-progress-bar-chart>
+    <app-average-loss-card class="w-full h-full lg:col-span-1 col-span-full hidden lg:inline-grid"></app-average-loss-card>
+    <app-days-progress-bar-chart class="w-full h-full col-span-1 lg:order-1 -order-1"></app-days-progress-bar-chart>
+  </div>
+
+  <div class="grid lg:grid-cols-3 grid-cols-2 w-full gap-1 drop-shadow-2xl rounded-3xl -order-1 ">
+    <app-current-stats-card class="w-full lg:col-span-1 col-span-2 h-64 lg:h-full"></app-current-stats-card>
+    <app-weight-line-chart class="col-span-2"></app-weight-line-chart>
+  </div>
+
+  <div class="grid lg:grid-cols-3 grid-cols-2 w-full gap-1 drop-shadow-2xl rounded-3xl">
+    <app-bmi-stats-card class="w-full lg:col-span-1 col-span-2"></app-bmi-stats-card>
+    <app-bmi-line-chart class="col-span-2 "></app-bmi-line-chart>
+  </div>
+
+  <div class="grid lg:grid-cols-3 grid-cols-2 w-full gap-1 drop-shadow-2xl rounded-3xl">
+    <app-predicted-stats-card class="w-full lg:col-span-1 col-span-2"></app-predicted-stats-card>
+    <app-trend-line-chart class="col-span-2"></app-trend-line-chart>
+  </div>
+
+<!--  floating button add entry at bottom-->
+  <div class="flex w-full items-center lg:justify-end justify-center fixed px-8 lg:py-8 py-10 bottom-0 right-0">
+    <a class="btn btn-primary w-48 h-14 rounded-full text-xl text-center drop-shadow-2xl" href="../input">
+      <div class="flex flex-row justify-center items-center gap-1 w-full">
+        <svg class="stroke-primary-content stroke-1" height="20" viewBox="0 0 24 24" width="20"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/>
+        </svg>
+        <label class="w-full font-semibold text-center h-full">Add entry</label>
+      </div>
+    </a>
+  </div>
 </div>
+
