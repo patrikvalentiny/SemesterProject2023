@@ -38,7 +38,7 @@ export class WeightInputComponent implements OnInit {
     async ngOnInit() {
         const weights = await this.weightService.getWeights();
         if (weights?.length === 0 || weights === undefined) return;
-        this.numberInput.setValue(weights[weights.length -1].weight);
-        this.dayBeforeWeight = weights[weights.length -2].weight;
+        this.dayBeforeWeight = weights[weights.length - 1].weight;
+        this.numberInput.setValue(this.dayBeforeWeight);
     }
 }
