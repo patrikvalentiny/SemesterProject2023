@@ -19,7 +19,7 @@ export class HomeSkeletonComponent implements OnInit {
         this.accountService.tokenService.getToken();
         this.router.events.subscribe((value) => {
           if (value instanceof NavigationEnd) {
-            this.isHidden = value.url.includes("login") || value.url.includes("register") || value.url.includes("onboarding");
+            this.isHidden = value.url.includes("404") || value.url.includes("login") || value.url.includes("register") || value.url.includes("onboarding");
           }
           }
         );

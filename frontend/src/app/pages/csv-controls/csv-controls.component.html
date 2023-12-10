@@ -1,4 +1,4 @@
-<div class="">
-  <input type="file" accept=".csv" class="file-input file-input-bordered w-full max-w-xs" />
-  <button class="btn btn-primary">Primary</button>
+<div class="flex flex-col gap-4 w-full h-full justify-start items-center lg:py-8 lg:pb-8 py-4 lg:px-4 px-2 overflow-y-auto">
+  <input (change)="onFileChange($event)" type="file" accept=".csv" class="file-input file-input-bordered w-full max-w-xs"/>
+  <button (click)="uploadCSV()" class="btn btn-primary w-full max-w-xs">Submit</button>
 </div>
