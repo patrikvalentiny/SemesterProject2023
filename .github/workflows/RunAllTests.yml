@@ -1,4 +1,4 @@
-name: Run Playwright Tests
+name: Run All Tests
 
 on:
   # Trigger when there is a pull request to main or development branches
@@ -53,8 +53,6 @@ jobs:
           cd ../frontend
           npm run start &
           sleep 5
-          # Switch to PlaywrightTests directory and run tests
-          cd ../E2ETests/
           dotnet test
           # Kill the API process running on port 5000
           kill -9 $(lsof -t -i:5000)
