@@ -47,11 +47,11 @@ jobs:
         run: |
           # Start the API in the background
           cd api
-          dotnet run 
-          &
+          dotnet run & 
+          
           cd ../frontend
-          npm run start
-          &
+          npm run start &
+          
           sleep 5
           # Switch to PlaywrightTests directory and run tests
           cd ../E2ETests/
