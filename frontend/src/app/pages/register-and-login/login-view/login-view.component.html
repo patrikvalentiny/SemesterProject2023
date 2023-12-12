@@ -11,14 +11,14 @@
           <label class="label">
             <span class="label-text">Username or email</span>
           </label>
-          <input class="input input-bordered" formControlName="username" autocomplete="username"
+          <input data-testid="usernameInput" class="input input-bordered" formControlName="username" autocomplete="username"
                  placeholder="Username"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">Password</span>
           </label>
-          <input class="input input-bordered" formControlName="password" placeholder="Password"
+          <input data-testid="passwordInput" class="input input-bordered" formControlName="password" placeholder="Password"
                  autocomplete="current-password"
                  type="password"/>
           <label class="label">
@@ -26,7 +26,7 @@
           </label>
         </div>
         <div class="form-control mt-6">
-          <button (click)="login()" [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
+          <button data-testid="loginButton" (click)="login()" [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
         </div>
         <a data-testid="registerLink" href="../register">
           <div class="text-center pt-4">

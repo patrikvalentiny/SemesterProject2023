@@ -1,6 +1,9 @@
 ﻿using System.Data.Common;
+using System.Security.Cryptography;
+using System.Text;
 using Dapper;
 using infrastructure;
+using Konscious.Security.Cryptography;
 using Npgsql;
 
 namespace apitests;
@@ -94,11 +97,35 @@ create table weight_tracker.user_details
         return Environment.GetEnvironmentVariable("ASPNETCORE_TestJwt");
     }
 
-    public static void InsertUser1()
+    public static readonly User User1 = new()
     {
-        const string sql =
-            "INSERT INTO weight_tracker.users (id, username, email) VALUES (1, 'testUserHelper', 'testUserHelper@test.test')";
-        using var conn = Helper.OpenConnection();
-        conn.Execute(sql);
+        Id = 1,
+        Username = "testUserHelper",
+        Email = "testUserHelper@test.test",
+    };
+    
+    public static readonly string UserPassword = "testPasswordHelper";
+    
+    public static async Task InsertUser1()
+    {
+        var sql =
+            "INSERT INTO weight_tracker.users (id, username, email) VALUES (@Id, @Username, @Email)";
+        
+        await using var conn = OpenConnection();
+        
+        await conn.ExecuteAsync(sql, User1);
+        sql =
+            "insert into weight_tracker.passwords (user_id, password_hash, salt, algorithm) values (@Id, @Password, @Salt, 'argon2id')";
+        using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(UserPassword));
+        hashAlgo.Salt = RandomNumberGenerator.GetBytes(128);
+        hashAlgo.MemorySize = 12288;
+        hashAlgo.Iterations = 3;
+        hashAlgo.DegreeOfParallelism = 1;
+        await conn.ExecuteAsync(sql, new
+        {
+            Id = User1.Id,
+            Password = Convert.ToBase64String(await hashAlgo.GetBytesAsync(256)),
+            Salt = Convert.ToBase64String(hashAlgo.Salt)
+        }); 
     }
 }

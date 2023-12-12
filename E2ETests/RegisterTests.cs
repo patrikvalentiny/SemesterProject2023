@@ -67,4 +67,11 @@ public class RegisterTests : PageTest
         
         await Expect(Page).ToHaveURLAsync(new Regex(".*onboarding"));
     }
+    
+    [TearDown]
+    public async Task TearDown()
+    {
+        await Page.CloseAsync();
+        Helper.TriggerRebuild();
+    }
 }
