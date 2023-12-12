@@ -46,11 +46,11 @@ jobs:
       - name: Run API and PlaywrightTests
         run: |
           # Start the API in the background
-          (cd api
+          cd api
           dotnet run 
           &
           cd ../frontend
-          npm run start)
+          npm run start
           &
           sleep 5
           # Switch to PlaywrightTests directory and run tests
@@ -58,6 +58,8 @@ jobs:
           dotnet test
           # Kill the API process running on port 5000
           kill -9 $(lsof -t -i:5000)
+          # Kill the frontend process running on port 4200
+          kill -9 $(lsof -t -i:4200)
         env:
           ASPNETCORE_ENVIRONMENT: Development
           ASPNETCORE_ConnectionStrings__WebApiDatabase: ${{ secrets.WEBAPIDATABASE }}
