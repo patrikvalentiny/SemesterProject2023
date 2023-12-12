@@ -1,4 +1,4 @@
-﻿name: Run API Tests
+name: Run All Tests
 
 on:
   # Trigger when there is a pull request to main or development branches
@@ -15,8 +15,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  testApi:
+  runAllTests:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
@@ -26,23 +28,37 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Run API and Tests
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'latest'
+
+      - name: Build Frontend
         run: |
-          # Change directory to the API folder
-          cd api/
-          
+          cd frontend/
+          npm install
+          npm run build
+
+      - name: Build PlaywrightTests
+        run: |
+          cd E2ETests/
+          dotnet build
+          pwsh bin/Debug/net8.0/playwright.ps1 install
+
+      - name: Run API and PlaywrightTests
+        run: |
           # Start the API in the background
+          cd api
           dotnet run &
-          
-          # Sleep for 20 seconds (adjust as needed)
-          sleep 20
-          
-          # Change directory to ApiTests and run tests
-          cd ../apitests/
+          cd ../frontend
+          npm run start &
+          sleep 5
+          cd ..
           dotnet test
-          
           # Kill the API process running on port 5000
           kill -9 $(lsof -t -i:5000)
+          # Kill the frontend process running on port 4200
+          kill -9 $(lsof -t -i:4200)
         env:
           ASPNETCORE_ENVIRONMENT: Development
           ASPNETCORE_ConnectionStrings__WebApiDatabase: ${{ secrets.WEBAPIDATABASE }}

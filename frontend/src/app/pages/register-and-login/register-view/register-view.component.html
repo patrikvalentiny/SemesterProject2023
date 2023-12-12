@@ -9,38 +9,38 @@
       <form [formGroup]="registerForm" class="card-body">
         <div class="form-control">
           <label class="label">
-            <span class="label-text">* Email</span>
+            <span  class="label-text">* Email</span>
           </label>
-          <input class="input input-bordered" formControlName="email" placeholder="Email" autocomplete="email" type="email"/>
+          <input data-testid="emailInput" class="input input-bordered" formControlName="email" placeholder="Email" autocomplete="email" type="email"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Username</span>
           </label>
-          <input class="input input-bordered" formControlName="username" autocomplete="off" placeholder="Username"/>
+          <input data-testid="usernameInput" class="input input-bordered" formControlName="username" autocomplete="off" placeholder="Username"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Password</span>
           </label>
-          <input class="input input-bordered" formControlName="password" autocomplete="new-password" placeholder="Password 4+ chars"
+          <input data-testid="passwordInput" class="input input-bordered" formControlName="password" autocomplete="new-password" placeholder="Password 4+ chars"
                  type="password"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Confirm Password</span>
           </label>
-          <input [ngClass]="passwordMatching ? '' :'input-error'" class="input input-bordered"
+          <input data-testid="confirmPasswordInput" [ngClass]="passwordMatching ? '' :'input-error'" class="input input-bordered"
                  formControlName="confirmPassword"
                  autocomplete="new-password"
                  placeholder="Confirm Password" type="password"/>
         </div>
 
         <div class="form-control mt-6">
-          <button (click)="register()" [disabled]="registerForm.invalid" class="btn btn-primary">Register
+          <button data-testid="registerButton" (click)="register()" [disabled]="registerForm.invalid" class="btn btn-primary">Register
           </button>
         </div>
-        <a href="../login">
+        <a data-testid="loginLink" href="../login">
           <div class="text-center pt-4">
             <h3 class="text-xl">Already have an account?</h3>
             <p class="py-0.5">Login here</p>

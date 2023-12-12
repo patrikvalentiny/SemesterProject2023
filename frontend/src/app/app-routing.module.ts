@@ -11,6 +11,7 @@ import {OnboardingComponent} from "./pages/register-and-login/onboarding/onboard
 import {OnboardingWeightComponent} from "./pages/register-and-login/onboarding-weight/onboarding-weight.component";
 import {AuthGuardService} from "./services/auth-guard.service";
 import {SignupGuardService} from "./services/signup-guard.service";
+import {CsvControlsComponent} from "./pages/csv-controls/csv-controls.component";
 
 const routes: Routes = [
     {
@@ -56,6 +57,11 @@ const routes: Routes = [
     path:"onboarding/weight",
     component: OnboardingWeightComponent
   },
+  {
+    path:"csvInput",
+    component: CsvControlsComponent,
+  }
+  ,
   {path: '404', component: NotFoundComponent},
   {path: '**', redirectTo: '404'},
 
