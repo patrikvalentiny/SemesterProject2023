@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  runAllTests:
+  runPlaywrightTests:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -53,6 +53,7 @@ jobs:
           cd ../frontend
           npm run start &
           sleep 5
+          cd ..
           dotnet test
           # Kill the API process running on port 5000
           kill -9 $(lsof -t -i:5000)
