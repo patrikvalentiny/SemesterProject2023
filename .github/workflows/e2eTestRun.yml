@@ -39,7 +39,7 @@ jobs:
 
       - name: Build PlaywrightTests
         run: |
-          cd PlaywrightTests/
+          cd E2ETests/
           dotnet build
           pwsh bin/Debug/net8.0/playwright.ps1 install
 
