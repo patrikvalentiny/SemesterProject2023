@@ -11,7 +11,7 @@ public class AuthTests : PageTest
     public async Task SetUp()
     {
         await Page.GotoAsync("http://localhost:4200");
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
         await Helper.InsertUser1();
         
     }

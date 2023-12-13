@@ -74,12 +74,12 @@ create table weight_tracker.user_details
         DataSource.OpenConnection().Close();
     }
 
-    public static void TriggerRebuild()
+    public static async Task TriggerRebuild()
     {
-        using var conn = DataSource.OpenConnection();
+        await using var conn = DataSource.OpenConnection();
         try
         {
-            conn.Execute(RebuildScript);
+            await conn.ExecuteAsync(RebuildScript);
         }
         catch (Exception e)
         {

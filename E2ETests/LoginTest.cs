@@ -10,7 +10,7 @@ public class LoginTest :PageTest
     public async Task Setup()
     {
         await Page.GotoAsync("http://localhost:4200");
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
         await Helper.InsertUser1();
     }
 

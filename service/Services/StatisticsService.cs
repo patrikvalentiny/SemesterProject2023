@@ -25,7 +25,6 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         
         // get target date
         var targetDate = user.TargetDate ?? newestWeightInput.Date; // if target date is null, use last input date
-        targetDate = targetDate.AddDays(1);
         // create list of dates from first date to target date
         var dates = new List<DateTime>();
         for (var dt = oldestWeightInput.Date; dt <= targetDate; dt = dt.AddDays(1))

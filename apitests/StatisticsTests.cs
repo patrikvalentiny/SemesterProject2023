@@ -13,10 +13,10 @@ public class StatisticsTests
     private HttpClient _httpClient = null!;
 
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
-        Helper.TriggerRebuild();
-        Helper.InsertUser1();
+        await Helper.TriggerRebuild();
+        await Helper.InsertUser1();
 
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());

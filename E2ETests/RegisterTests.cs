@@ -11,7 +11,7 @@ public class RegisterTests : PageTest
     public async Task Setup()
     {
         await Page.GotoAsync("http://localhost:4200");
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
     }
     [Test]
     public async Task UserCanNavigateFromLoginToRegister()

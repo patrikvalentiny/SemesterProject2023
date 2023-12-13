@@ -10,9 +10,9 @@ namespace apitests;
 public class LoginTest
 {
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
     }
 
     [Test]
