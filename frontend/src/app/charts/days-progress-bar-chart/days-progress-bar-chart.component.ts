@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import {Component, inject, OnInit, ViewChild} from "@angular/core";
 
 import {
   ApexNonAxisChartSeries,
   ApexPlotOptions,
-  ApexChart, ChartComponent, NgApexchartsModule, ApexTheme, ApexDataLabels, ApexTooltip, ApexLegend
+  ApexChart, ChartComponent, ApexTheme, ApexDataLabels, ApexTooltip, ApexLegend
 } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
 
@@ -21,8 +20,6 @@ export type ChartOptions = {
 };
 @Component({
   selector: 'app-days-progress-bar-chart',
-  standalone: true,
-    imports: [CommonModule, NgApexchartsModule],
   templateUrl: './days-progress-bar-chart.component.html',
   styleUrl: './days-progress-bar-chart.component.css'
 })

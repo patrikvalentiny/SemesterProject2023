@@ -9,7 +9,6 @@ import {AuthHttpInterceptor} from "./interceptors/auth-http-interceptor";
 import {provideHotToastConfig} from '@ngneat/hot-toast';
 import {ErrorHttpInterceptor} from "./interceptors/error-http-interceptor";
 import {HomeModule} from "./home/home.module";
-import {NotFoundComponent} from "./pages/not-found/not-found.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PagesModule} from "./pages/pages.module";
 import {NgApexchartsModule} from "ng-apexcharts";
@@ -19,7 +18,6 @@ import {TokenService} from "./services/token.service";
 @NgModule({
     declarations: [
         AppComponent,
-        NotFoundComponent,
     ],
     imports: [
         BrowserModule,

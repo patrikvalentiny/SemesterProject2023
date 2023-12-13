@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import {Component, inject, OnInit, ViewChild} from "@angular/core";
 
 import {
   ApexNonAxisChartSeries,
   ApexPlotOptions,
-  ApexChart, ChartComponent, NgApexchartsModule, ApexTheme, ApexDataLabels, ApexTooltip, ApexLegend
+  ApexChart, ChartComponent, ApexTheme, ApexDataLabels, ApexTooltip, ApexLegend
 } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
 
@@ -21,8 +20,6 @@ export type ChartOptions = {
 };
 @Component({
   selector: 'app-weight-progress-bar-chart',
-  standalone: true,
-  imports: [CommonModule, NgApexchartsModule],
   templateUrl: './weight-progress-bar-chart.component.html',
   styleUrl: './weight-progress-bar-chart.component.css'
 })
@@ -114,7 +111,6 @@ export class WeightProgressBarChartComponent implements OnInit {
   }
 
   async ngOnInit(){
-    const percentageOfGoal = await this.statService.getPercentageOfGoal();
     const totalLoss = await this.statService.getCurrentTotalLoss();
     const weightToGo = await this.statService.getWeightToGo();
     this.chartOptions.series = [totalLoss, weightToGo];

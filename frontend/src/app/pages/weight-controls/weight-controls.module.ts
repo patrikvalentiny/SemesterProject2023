@@ -4,7 +4,7 @@ import {WeightInputComponent} from './weight-input/weight-input.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {WeightsTableComponent} from './weights-table/weights-table.component';
 import {EditWeightComponent} from './edit-weight/edit-weight.component';
-import {WeightLineChartComponent} from "../../charts/weight-line-chart/weight-line-chart.component";
+import {ChartsModule} from "../../charts/charts.module";
 
 
 @NgModule({
@@ -18,12 +18,12 @@ import {WeightLineChartComponent} from "../../charts/weight-line-chart/weight-li
         WeightsTableComponent,
         EditWeightComponent
     ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        WeightLineChartComponent,
-    ]
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ChartsModule,
+  ]
 })
 export class WeightControlsModule {
 }

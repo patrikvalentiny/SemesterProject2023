@@ -1,5 +1,4 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {
   ApexAnnotations,
   ApexAxisChartSeries,
@@ -10,8 +9,7 @@ import {
   ApexTitleSubtitle, ApexTooltip,
   ApexXAxis,
   ApexYAxis,
-  ChartComponent,
-  NgApexchartsModule
+  ChartComponent
 } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
@@ -33,12 +31,10 @@ export type ChartOptions = {
 };
 @Component({
   selector: 'app-trend-line-chart',
-  standalone: true,
-    imports: [CommonModule, NgApexchartsModule],
   templateUrl: './trend-line-chart.component.html',
   styleUrl: './trend-line-chart.component.css'
 })
-export class TrendLineChartComponent {
+export class TrendLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);

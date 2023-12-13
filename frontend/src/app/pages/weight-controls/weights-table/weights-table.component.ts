@@ -1,7 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../../services/weight.service";
-import {WeightInput} from "../../../dtos/weight-input";
-import {WeightDto} from "../../../dtos/weight-dto";
 
 @Component({
     selector: 'app-weights-table',
@@ -21,11 +19,7 @@ export class WeightsTableComponent implements OnInit {
         await this.weightService.getWeights();
     }
 
-    async deleteWeight(weight: WeightInput) {
-        await this.weightService.deleteWeight(weight);
-    }
-
-    setEditingWeight(date: Date) {
+  setEditingWeight(date: Date) {
         this.selectedDate = date;
         this.weightService.setEditingWeight(date);
     }

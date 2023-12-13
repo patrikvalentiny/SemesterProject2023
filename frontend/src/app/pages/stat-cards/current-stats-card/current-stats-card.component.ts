@@ -1,8 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../../services/weight.service";
-import {UserDetailsService} from "../../../services/user-details.service";
 import {WeightDto} from "../../../dtos/weight-dto";
-import {Bmi} from "../../../dtos/bmi";
 import {StatisticsService} from "../../../services/statistics.service";
 
 @Component({

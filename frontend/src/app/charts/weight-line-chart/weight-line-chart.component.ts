@@ -1,5 +1,4 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {
   ApexAnnotations,
   ApexAxisChartSeries,
@@ -10,8 +9,7 @@ import {
   ApexTitleSubtitle, ApexTooltip,
   ApexXAxis,
   ApexYAxis,
-  ChartComponent,
-  NgApexchartsModule
+  ChartComponent
 } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
@@ -33,8 +31,6 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-weight-line-chart',
-  standalone: true,
-  imports: [CommonModule, NgApexchartsModule],
   templateUrl: './weight-line-chart.component.html',
   styleUrl: './weight-line-chart.component.css'
 })
