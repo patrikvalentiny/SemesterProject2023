@@ -5,6 +5,7 @@ import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
 import {HotToastService} from "@ngneat/hot-toast";
 import {FormGroup} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import {FormGroup} from "@angular/forms";
 export class UserDetailsService {
   private readonly httpClient = inject(HttpClient);
   private readonly toastService = inject(HotToastService);
+  private readonly router = inject(Router);
   user:UserDetails | null = null;
   async getProfile() {
     try {
@@ -30,6 +32,7 @@ export class UserDetailsService {
       const call = this.httpClient.post<UserDetails>(environment.baseUrl + "/profile", formGroup.value);
       this.user = await firstValueFrom<UserDetails>(call);
       this.toastService.success("Profile created")
+      await this.router.navigate(["/home"])
     } catch (e) {
       this.toastService.error("Failed to create profile")
     }
