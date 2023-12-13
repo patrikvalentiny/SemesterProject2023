@@ -37,6 +37,6 @@ public class LoginTest :PageTest
     public async Task TearDown()
     {
         await Page.CloseAsync();
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
     }
 }

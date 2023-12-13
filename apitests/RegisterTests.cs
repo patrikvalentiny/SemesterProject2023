@@ -130,8 +130,8 @@ public class RegisterTests
     }
 
     [TearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
     }
 }

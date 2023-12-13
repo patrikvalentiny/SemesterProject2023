@@ -25,4 +25,11 @@ public class AuthTests : PageTest
 
         await Expect(Page).ToHaveURLAsync("http://localhost:4200/login");
     }
+    
+    [TearDown]
+    public async Task TearDown()
+    {
+        await Page.CloseAsync();
+        await Helper.TriggerRebuild();
+    }
 }

@@ -657,9 +657,9 @@ public class StatisticsTests
     }
 
     [TearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
         _httpClient.Dispose();
     }
 }
