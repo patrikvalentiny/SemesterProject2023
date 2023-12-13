@@ -14,51 +14,51 @@ import {SignupGuardService} from "./services/signup-guard.service";
 import {CsvControlsComponent} from "./pages/csv-controls/csv-controls.component";
 
 const routes: Routes = [
-    {
-        path: "home",
-        component: HomeViewComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: "",
-        redirectTo: "home",
-        pathMatch: "full"
-    },
-    {
-        path: "login",
-        component: LoginViewComponent,
-        canActivate: [SignupGuardService]
-    },
-    {
-        path: "register",
-        component: RegisterViewComponent,
-      canActivate: [SignupGuardService]
-    },
-    {
-        path: "editor",
-        component: RecordsEditorComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-      path: "profile",
-      component: AccountDetailsComponent,
-      canActivate: [AuthGuardService]
-    },
+  {
+    path: "home",
+    component: HomeViewComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "",
+    redirectTo: "home",
+    pathMatch: "full"
+  },
+  {
+    path: "login",
+    component: LoginViewComponent,
+    canActivate: [SignupGuardService]
+  },
+  {
+    path: "register",
+    component: RegisterViewComponent,
+    canActivate: [SignupGuardService]
+  },
+  {
+    path: "editor",
+    component: RecordsEditorComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "profile",
+    component: AccountDetailsComponent,
+    canActivate: [AuthGuardService]
+  },
   {
     path: "input",
     component: WeightInputComponent,
     canActivate: [AuthGuardService]
   },
   {
-    path:"onboarding/profile",
+    path: "onboarding/profile",
     component: OnboardingComponent
   },
   {
-    path:"onboarding/weight",
+    path: "onboarding/weight",
     component: OnboardingWeightComponent
   },
   {
-    path:"csvInput",
+    path: "csvInput",
     component: CsvControlsComponent,
   }
   ,
@@ -68,8 +68,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {bindToComponentInputs: true})],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, {bindToComponentInputs: true})],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {
 }

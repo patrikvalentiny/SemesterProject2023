@@ -10,14 +10,14 @@ import {StatCardsModule} from "../pages/stat-cards/stat-cards.module";
 
 
 @NgModule({
-    declarations: [
-        HomeSkeletonComponent,
-        HomeViewComponent,
-    ],
-    exports: [
-        HomeSkeletonComponent,
-        HomeViewComponent,
-    ],
+  declarations: [
+    HomeSkeletonComponent,
+    HomeViewComponent,
+  ],
+  exports: [
+    HomeSkeletonComponent,
+    HomeViewComponent,
+  ],
   imports: [
     CommonModule,
     RouterOutlet,

@@ -3,10 +3,12 @@ import {
   ApexAnnotations,
   ApexAxisChartSeries,
   ApexChart,
-  ApexDataLabels, ApexMarkers,
+  ApexDataLabels,
+  ApexMarkers,
   ApexStroke,
   ApexTheme,
-  ApexTitleSubtitle, ApexTooltip,
+  ApexTitleSubtitle,
+  ApexTooltip,
   ApexXAxis,
   ApexYAxis,
   ChartComponent
@@ -105,11 +107,11 @@ export class WeightLineChartComponent implements OnInit {
       annotations: {
         yaxis: []
       },
-      tooltip:{
+      tooltip: {
         shared: true,
         y: {
           formatter(val: number, opts?: any): string {
-            return val + "kg (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1 ] ).toFixed(2)+ ")";
+            return val + "kg (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1]).toFixed(2) + ")";
           }
         }
       }
@@ -132,13 +134,12 @@ export class WeightLineChartComponent implements OnInit {
     minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
     this.chartOptions.yaxis![0].max = maxWeight;
     this.chartOptions.yaxis![0].min = minWeight;
-    this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight)  / 10) + 2;
+    this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight) / 10) + 2;
 
     const seriesData = weights.map(weight => ({
       x: new Date(weight.date).getTime(),
       y: weight.weight
     }));
-
 
 
     this.chartOptions.series = [
@@ -157,7 +158,7 @@ export class WeightLineChartComponent implements OnInit {
       },
     };
 
-    this.chartOptions.annotations!.yaxis! =  [
+    this.chartOptions.annotations!.yaxis! = [
       {
         yAxisIndex: 0,
         y: targetWeight,

@@ -9,35 +9,40 @@
       <form [formGroup]="registerForm" class="card-body">
         <div class="form-control">
           <label class="label">
-            <span  class="label-text">* Email</span>
+            <span class="label-text">* Email</span>
           </label>
-          <input data-testid="emailInput" class="input input-bordered" formControlName="email" placeholder="Email" autocomplete="email" type="email"/>
+          <input autocomplete="email" class="input input-bordered" data-testid="emailInput" formControlName="email"
+                 placeholder="Email" type="email"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Username</span>
           </label>
-          <input data-testid="usernameInput" class="input input-bordered" formControlName="username" autocomplete="off" placeholder="Username"/>
+          <input autocomplete="off" class="input input-bordered" data-testid="usernameInput" formControlName="username"
+                 placeholder="Username"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Password</span>
           </label>
-          <input data-testid="passwordInput" class="input input-bordered" formControlName="password" autocomplete="new-password" placeholder="Password 4+ chars"
+          <input autocomplete="new-password" class="input input-bordered" data-testid="passwordInput"
+                 formControlName="password" placeholder="Password 4+ chars"
                  type="password"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Confirm Password</span>
           </label>
-          <input data-testid="confirmPasswordInput" [ngClass]="{'input-error':!passwordMatching}" class="input input-bordered"
+          <input [ngClass]="{'input-error':!passwordMatching}" autocomplete="new-password"
+                 class="input input-bordered"
+                 data-testid="confirmPasswordInput"
                  formControlName="confirmPassword"
-                 autocomplete="new-password"
                  placeholder="Confirm Password" type="password"/>
         </div>
 
         <div class="form-control mt-6">
-          <button data-testid="registerButton" (click)="register()" [disabled]="registerForm.invalid" class="btn btn-primary">Register
+          <button (click)="register()" [disabled]="registerForm.invalid" class="btn btn-primary"
+                  data-testid="registerButton">Register
           </button>
         </div>
         <a data-testid="loginLink" href="../login">

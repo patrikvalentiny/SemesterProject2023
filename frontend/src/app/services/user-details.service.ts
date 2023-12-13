@@ -11,10 +11,11 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class UserDetailsService {
+  user: UserDetails | null = null;
   private readonly httpClient = inject(HttpClient);
   private readonly toastService = inject(HotToastService);
   private readonly router = inject(Router);
-  user:UserDetails | null = null;
+
   async getProfile() {
     try {
       const call = this.httpClient.get<UserDetails>(environment.baseUrl + "/profile");
@@ -27,7 +28,7 @@ export class UserDetailsService {
     return null;
   }
 
-  async createProfile(formGroup : FormGroup) {
+  async createProfile(formGroup: FormGroup) {
     try {
       const call = this.httpClient.post<UserDetails>(environment.baseUrl + "/profile", formGroup.value);
       this.user = await firstValueFrom<UserDetails>(call);
@@ -37,7 +38,8 @@ export class UserDetailsService {
       this.toastService.error("Failed to create profile")
     }
   }
-  async updateProfile(formGroup : FormGroup) {
+
+  async updateProfile(formGroup: FormGroup) {
     if (this.user == null) {
       return await this.createProfile(formGroup)
     }

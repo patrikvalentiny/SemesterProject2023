@@ -13,6 +13,7 @@ export class BmiStatsCardComponent implements OnInit {
   statService: StatisticsService = inject(StatisticsService);
   bmi: Bmi | undefined;
   bmiChange: number = 0;
+
   constructor() {
   }
 

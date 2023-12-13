@@ -1,14 +1,14 @@
-<div id="chart" class="stats stats-vertical w-full items-center justify-center p-2 h-full">
+<div class="stats stats-vertical w-full items-center justify-center p-2 h-full" id="chart">
   <apx-chart
-    [series]="chartOptions.series!"
     [chart]="chartOptions.chart!"
-    [plotOptions]="chartOptions.plotOptions!"
-    [labels]="chartOptions.labels!"
     [colors]="chartOptions.colors!"
-    [theme]="chartOptions.theme!"
     [dataLabels]="chartOptions.dataLabels!"
-    [tooltip]="chartOptions.tooltip!"
+    [labels]="chartOptions.labels!"
     [legend]="chartOptions.legend!"
+    [plotOptions]="chartOptions.plotOptions!"
+    [series]="chartOptions.series!"
+    [theme]="chartOptions.theme!"
+    [tooltip]="chartOptions.tooltip!"
     class="w-full items-center justify-center"
   ></apx-chart>
 </div>

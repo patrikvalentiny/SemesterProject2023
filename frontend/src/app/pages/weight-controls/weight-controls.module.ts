@@ -8,16 +8,16 @@ import {ChartsModule} from "../../charts/charts.module";
 
 
 @NgModule({
-    declarations: [
-        WeightInputComponent,
-        WeightsTableComponent,
-        EditWeightComponent
-    ],
-    exports: [
-        WeightInputComponent,
-        WeightsTableComponent,
-        EditWeightComponent
-    ],
+  declarations: [
+    WeightInputComponent,
+    WeightsTableComponent,
+    EditWeightComponent
+  ],
+  exports: [
+    WeightInputComponent,
+    WeightsTableComponent,
+    EditWeightComponent
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

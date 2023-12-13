@@ -1,9 +1,14 @@
 import {Component, inject, OnInit, ViewChild} from "@angular/core";
 
 import {
+  ApexChart,
+  ApexDataLabels,
+  ApexLegend,
   ApexNonAxisChartSeries,
   ApexPlotOptions,
-  ApexChart, ChartComponent, ApexTheme, ApexDataLabels, ApexTooltip, ApexLegend
+  ApexTheme,
+  ApexTooltip,
+  ChartComponent
 } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
 
@@ -16,8 +21,9 @@ export type ChartOptions = {
   theme: ApexTheme;
   dataLabels: ApexDataLabels;
   tooltip: ApexTooltip;
-  legend:ApexLegend;
+  legend: ApexLegend;
 };
+
 @Component({
   selector: 'app-weight-progress-bar-chart',
   templateUrl: './weight-progress-bar-chart.component.html',
@@ -30,7 +36,7 @@ export class WeightProgressBarChartComponent implements OnInit {
 
   constructor() {
     this.chartOptions = {
-      legend:{
+      legend: {
         show: true,
         position: 'bottom',
       },
@@ -38,7 +44,7 @@ export class WeightProgressBarChartComponent implements OnInit {
       series: [0],
       tooltip: {
         enabled: true,
-        y:{
+        y: {
           formatter(val: number, opts?: any): string {
             return val + "kg";
           }
@@ -54,8 +60,8 @@ export class WeightProgressBarChartComponent implements OnInit {
           donut: {
 
             size: "70%",
-            labels:{
-              total:{
+            labels: {
+              total: {
                 show: true,
                 showAlways: true,
                 label: '% of goal',
@@ -83,7 +89,7 @@ export class WeightProgressBarChartComponent implements OnInit {
                 fontWeight: 600,
                 color: '#373d3f',
               },
-              value:{
+              value: {
                 formatter(val: string): string {
                   return val;
                 }
@@ -94,7 +100,7 @@ export class WeightProgressBarChartComponent implements OnInit {
         }
       },
       labels: ["Total Loss", "Weight to go"],
-      theme:{mode: 'dark'},
+      theme: {mode: 'dark'},
       dataLabels: {
         enabled: true,
         style: {
@@ -110,7 +116,7 @@ export class WeightProgressBarChartComponent implements OnInit {
     };
   }
 
-  async ngOnInit(){
+  async ngOnInit() {
     const totalLoss = await this.statService.getCurrentTotalLoss();
     const weightToGo = await this.statService.getWeightToGo();
     this.chartOptions.series = [totalLoss, weightToGo];

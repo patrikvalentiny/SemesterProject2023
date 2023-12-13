@@ -8,9 +8,9 @@ import {HotToastService} from "@ngneat/hot-toast";
   styleUrl: './csv-controls.component.css'
 })
 export class CsvControlsComponent {
+  file: File | null = null;
   private readonly csvService = inject(CsvServiceService);
   private readonly toast = inject(HotToastService);
-  file: File | null = null;
 
   async uploadCSV() {
     if (!this.file) {

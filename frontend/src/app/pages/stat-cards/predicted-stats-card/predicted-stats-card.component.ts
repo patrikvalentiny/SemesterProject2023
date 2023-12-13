@@ -11,6 +11,7 @@ export class PredictedStatsCardComponent implements OnInit {
   statService: StatisticsService = inject(StatisticsService);
   predictedTargetWeight: WeightDto | undefined;
   predictedTargetDate: Date | undefined;
+
   constructor() {
   }
 

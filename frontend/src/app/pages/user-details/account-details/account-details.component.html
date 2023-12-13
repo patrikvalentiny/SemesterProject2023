@@ -1,26 +1,32 @@
 <div class="flex flex-col gap-8 items-center justify-center px-4 py-8 h-full">
   <div class="flex flex-col gap-2 items-center w-full">
     <div class="flex flex-row items-center gap-2 w-full max-w-sm">
-      <input data-testid="firstnameInput" [formControl]="firstName" class="input input-bordered w-full max-w-xs" placeholder="First name"
+      <input [formControl]="firstName" class="input input-bordered w-full max-w-xs" data-testid="firstnameInput"
+             placeholder="First name"
              type="text"/>
-      <input data-testid="lastnameInput" [formControl]="lastName" class="input input-bordered w-full max-w-xs" placeholder="Last name"
-      type="text"/>
+      <input [formControl]="lastName" class="input input-bordered w-full max-w-xs" data-testid="lastnameInput"
+             placeholder="Last name"
+             type="text"/>
     </div>
     <div class="flex flex-row items-center gap-2 w-full max-w-sm">
       <label class="w-3/5">Height (cm)</label>
-      <input data-testid="heightInput" [formControl]="heightInput" class="input input-bordered w-full max-w-xs" placeholder="Height in cm"
+      <input [formControl]="heightInput" class="input input-bordered w-full max-w-xs" data-testid="heightInput"
+             placeholder="Height in cm"
              type="number"/>
     </div>
     <div class="flex flex-row items-center gap-2 w-full max-w-sm">
       <label class="w-3/5">Goal weight (kg)</label>
-      <input data-testid="goalWeightInput" [formControl]="targetWeightInput" class="input input-bordered w-full max-w-xs" placeholder="Your target weight"
+      <input [formControl]="targetWeightInput" class="input input-bordered w-full max-w-xs"
+             data-testid="goalWeightInput" placeholder="Your target weight"
              type="number"/>
     </div>
     <div class="flex flex-row items-center gap-2 w-full max-w-sm">
       <label class="w-3/5">Target date</label>
-      <input data-testid="targetDateInput" [formControl]="targetDateInput" class="input input-bordered w-full max-w-xs" placeholder="Your target date"
+      <input [formControl]="targetDateInput" class="input input-bordered w-full max-w-xs" data-testid="targetDateInput"
+             placeholder="Your target date"
              type="date"/>
     </div>
   </div>
-  <button data-testid="udpateDetailsButton" (click)="updateDetails()" class="btn btn-primary w-full max-w-sm">Update</button>
+  <button (click)="updateDetails()" class="btn btn-primary w-full max-w-sm" data-testid="udpateDetailsButton">Update
+  </button>
 </div>

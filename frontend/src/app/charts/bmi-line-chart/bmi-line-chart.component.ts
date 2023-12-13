@@ -3,10 +3,12 @@ import {
   ApexAnnotations,
   ApexAxisChartSeries,
   ApexChart,
-  ApexDataLabels, ApexMarkers,
+  ApexDataLabels,
+  ApexMarkers,
   ApexStroke,
   ApexTheme,
-  ApexTitleSubtitle, ApexTooltip,
+  ApexTitleSubtitle,
+  ApexTooltip,
   ApexXAxis,
   ApexYAxis,
   ChartComponent
@@ -42,13 +44,13 @@ export class BmiLineChartComponent implements OnInit {
 
   constructor() {
     this.chartOptions = {
-        markers: {
-            size: 2,
-            hover: {
-            size: 6
-            }
-        },
-      colors:['#dca54c'],
+      markers: {
+        size: 2,
+        hover: {
+          size: 6
+        }
+      },
+      colors: ['#dca54c'],
       series: [
         {
           name: "Weight",
@@ -158,11 +160,11 @@ export class BmiLineChartComponent implements OnInit {
             }
           }]
       },
-      tooltip:{
+      tooltip: {
         shared: true,
-        y:{
+        y: {
           formatter(val: number, opts?: any): string {
-            return val + "BMI (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1 ] ).toFixed(2)+ ")";
+            return val + "BMI (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1]).toFixed(2) + ")";
 
           }
         },
@@ -196,7 +198,6 @@ export class BmiLineChartComponent implements OnInit {
     }));
 
 
-
     this.chartOptions.series = [
       {
         name: "BMI",
@@ -215,24 +216,24 @@ export class BmiLineChartComponent implements OnInit {
 
     this.chartOptions.annotations!.yaxis!.push(
       {
-      yAxisIndex: 0,
-      y: 30,
-      y2: maxBmi,
-      borderColor: "#000",
-      fillColor: "#ff6f6f",
-      opacity: 0.2,
-      label: {
-        borderColor: "#333",
-        style: {
-          fontSize: "10px",
-          color: "#333",
-          background: "#ff6f6f"
-        },
-        text: "Obese"
-      }
-    },
+        yAxisIndex: 0,
+        y: 30,
+        y2: maxBmi,
+        borderColor: "#000",
+        fillColor: "#ff6f6f",
+        opacity: 0.2,
+        label: {
+          borderColor: "#333",
+          style: {
+            fontSize: "10px",
+            color: "#333",
+            background: "#ff6f6f"
+          },
+          text: "Obese"
+        }
+      },
       {
-        yAxisIndex:0,
+        yAxisIndex: 0,
         y: targetWeightBmi,
         y2: targetWeightBmi + 0.1,
         borderColor: "#000",

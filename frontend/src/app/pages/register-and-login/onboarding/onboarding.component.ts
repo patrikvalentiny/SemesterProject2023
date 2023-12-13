@@ -1,7 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {UserDetailsService} from "../../../services/user-details.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserDetails} from "../../../dtos/user-details";
 
 @Component({
   host: {class: 'h-full'},
@@ -11,8 +10,8 @@ import {UserDetails} from "../../../dtos/user-details";
 })
 export class OnboardingComponent {
   userService = inject(UserDetailsService);
-  heightInput:FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
-  targetWeightInput:FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
+  heightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
+  targetWeightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetDateInput: FormControl<string | null> = new FormControl(null, [Validators.required]);
   firstName: FormControl<string | null> = new FormControl(null);
   lastName: FormControl<string | null> = new FormControl(null);
@@ -26,7 +25,9 @@ export class OnboardingComponent {
     lastName: this.lastName,
     lossPerWeek: this.lossPerWeek
   })
-  constructor() { }
+
+  constructor() {
+  }
 
   async createDetails() {
     await this.userService.createProfile(this.formGroup)

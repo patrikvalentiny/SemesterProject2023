@@ -8,11 +8,11 @@ import {NotFoundComponent} from "./not-found/not-found.component";
 
 
 @NgModule({
-    declarations: [
-      RecordsEditorComponent,
-      CsvControlsComponent,
-      NotFoundComponent
-    ],
+  declarations: [
+    RecordsEditorComponent,
+    CsvControlsComponent,
+    NotFoundComponent
+  ],
   imports: [
     CommonModule,
     WeightControlsModule,

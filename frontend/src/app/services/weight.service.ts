@@ -19,7 +19,7 @@ export class WeightService {
   constructor() {
   }
 
-  async postWeight(weight:WeightInput) {
+  async postWeight(weight: WeightInput) {
     try {
       const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight", weight);
       const response = await firstValueFrom<WeightDto>(call);
@@ -62,7 +62,7 @@ export class WeightService {
     }
   }
 
-  async putWeight(weightInput:WeightInput) {
+  async putWeight(weightInput: WeightInput) {
     try {
       const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", weightInput);
       const response = await firstValueFrom<WeightDto>(call);

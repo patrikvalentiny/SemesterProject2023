@@ -8,9 +8,11 @@ import {firstValueFrom} from "rxjs";
 })
 export class CsvServiceService {
   private readonly http = inject(HttpClient);
-  constructor() { }
 
-  async uploadCSV(file: File){
+  constructor() {
+  }
+
+  async uploadCSV(file: File) {
     try {
       const formData = new FormData();
       formData.append('file', file);

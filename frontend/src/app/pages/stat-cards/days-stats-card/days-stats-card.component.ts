@@ -8,8 +8,9 @@ import {StatisticsService} from "../../../services/statistics.service";
 })
 export class DaysStatsCardComponent implements OnInit {
   statService: StatisticsService = inject(StatisticsService);
-  daysToGo : number | undefined;
+  daysToGo: number | undefined;
   dayIn: number | undefined;
+
   constructor() {
   }
 

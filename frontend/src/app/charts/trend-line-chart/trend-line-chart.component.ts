@@ -3,10 +3,12 @@ import {
   ApexAnnotations,
   ApexAxisChartSeries,
   ApexChart,
-  ApexDataLabels, ApexMarkers,
+  ApexDataLabels,
+  ApexMarkers,
   ApexStroke,
   ApexTheme,
-  ApexTitleSubtitle, ApexTooltip,
+  ApexTitleSubtitle,
+  ApexTooltip,
   ApexXAxis,
   ApexYAxis,
   ChartComponent
@@ -29,6 +31,7 @@ export type ChartOptions = {
   tooltip: ApexTooltip;
   markers: ApexMarkers;
 };
+
 @Component({
   selector: 'app-trend-line-chart',
   templateUrl: './trend-line-chart.component.html',
@@ -105,7 +108,7 @@ export class TrendLineChartComponent implements OnInit {
       annotations: {
         yaxis: []
       },
-      tooltip:{
+      tooltip: {
         shared: true,
       },
     };
@@ -136,7 +139,6 @@ export class TrendLineChartComponent implements OnInit {
     }));
 
 
-
     this.chartOptions.series = [
       {
         name: "Weight",
@@ -155,7 +157,7 @@ export class TrendLineChartComponent implements OnInit {
       // categories: dates
     };
 
-    this.chartOptions.annotations!.yaxis! =  [
+    this.chartOptions.annotations!.yaxis! = [
       {
         yAxisIndex: 0,
         y: targetWeight,
