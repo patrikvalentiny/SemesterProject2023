@@ -30,7 +30,7 @@
           <label class="label">
             <span class="label-text">* Confirm Password</span>
           </label>
-          <input data-testid="confirmPasswordInput" [ngClass]="passwordMatching ? '' :'input-error'" class="input input-bordered"
+          <input data-testid="confirmPasswordInput" [ngClass]="{'input-error':!passwordMatching}" class="input input-bordered"
                  formControlName="confirmPassword"
                  autocomplete="new-password"
                  placeholder="Confirm Password" type="password"/>

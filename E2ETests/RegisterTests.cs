@@ -100,6 +100,35 @@ public class RegisterTests : PageTest
     }
 
     [Test]
+    public async Task UserPasswordsMustMatch()
+    {
+        await Page.GotoAsync("http://localhost:4200/register");
+        
+        var registerButton = Page.GetByTestId("registerButton");
+        await registerButton.IsVisibleAsync();
+        await registerButton.IsDisabledAsync();
+        
+        var emailInput = Page.GetByTestId("emailInput");
+        await emailInput.IsVisibleAsync();
+        await emailInput.FillAsync("test@test.test");
+        var usernameInput = Page.GetByTestId("usernameInput");
+        await usernameInput.IsVisibleAsync();
+        await usernameInput.FillAsync("test");
+        var passwordInput = Page.GetByTestId("passwordInput");
+        await passwordInput.IsVisibleAsync();
+        await passwordInput.FillAsync("test");
+        var confirmPasswordInput = Page.GetByTestId("confirmPasswordInput");
+        await confirmPasswordInput.IsVisibleAsync();
+        await confirmPasswordInput.FillAsync("notTest");
+        
+        await registerButton.ClickAsync();
+        
+        await Expect(confirmPasswordInput).ToHaveClassAsync(new Regex(".*input-error"));
+        
+        await Expect(Page).Not.ToHaveURLAsync(new Regex(".*onboarding"));
+    }
+
+    [Test]
     public async Task UserCanRegisterAndOnBoard()
     {
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
