@@ -9,16 +9,15 @@ public class LoginTest :PageTest
     public async Task Setup()
     {
         await Helper.TriggerRebuild();
+        await Helper.InsertUser1();
+
+        await Page.GotoAsync("http://localhost:4200");
 
     }
 
     [Test]
     public async Task UserCanLogin()
     {
-        await Helper.InsertUser1();
-
-        await Page.GotoAsync("http://localhost:4200");
-
         await Page.WaitForURLAsync(new Regex(".*login"));
         var loginButton = Page.GetByTestId("loginButton");
         await loginButton.IsVisibleAsync();

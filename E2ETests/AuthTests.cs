@@ -11,14 +11,15 @@ public class AuthTests : PageTest
     public async Task Setup()
     {
         await Helper.TriggerRebuild();
+        await Helper.InsertUser1();
+        
+        await Page.GotoAsync("http://localhost:4200");
 
     }
 
     [Test]
     public async Task TestNotLoggedInUserCantAccessHome()
     {
-        await Page.GotoAsync("http://localhost:4200");
-
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
         await Page.GotoAsync("http://localhost:4200/home");
@@ -29,14 +30,8 @@ public class AuthTests : PageTest
     [Test]
     public async Task TestLoggedInUserCantAccessLogin()
     {
-        await Helper.InsertUser1();
-        
-        await Page.GotoAsync("http://localhost:4200");
-        
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
-
-        await Page.GotoAsync("http://localhost:4200/login");
-
+        
         var usernameInput = Page.GetByTestId("usernameInput");
         await usernameInput.IsVisibleAsync();
         await usernameInput.FillAsync(Helper.User1.Username);

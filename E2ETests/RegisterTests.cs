@@ -10,11 +10,12 @@ public class RegisterTests : PageTest
     public async Task Setup()
     {
         await Helper.TriggerRebuild();
+        await Page.GotoAsync("http://localhost:4200");
     }
     [Test]
     public async Task UserCanNavigateFromLoginToRegister()
     {
-        await Page.GotoAsync("http://localhost:4200");
+       
 
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
@@ -38,8 +39,6 @@ public class RegisterTests : PageTest
     [Test]
     public async Task UserCanRegister()
     {
-        await Page.GotoAsync("http://localhost:4200");
-
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
         var registerLink = Page.GetByTestId("registerLink");
@@ -73,8 +72,6 @@ public class RegisterTests : PageTest
     [TestCase("valid@email.dk", "test", "ts", "ts", TestName = "InvalidPasswordLength")]
     public async Task UserCanNotRegisterWithInvalidData(string email, string username, string password, string confirmPassword)
     {
-        await Page.GotoAsync("http://localhost:4200");
-
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
         var registerLink = Page.GetByTestId("registerLink");
@@ -105,8 +102,6 @@ public class RegisterTests : PageTest
     [Test]
     public async Task UserPasswordsMustMatch()
     {
-        await Page.GotoAsync("http://localhost:4200");
-
         await Page.GotoAsync("http://localhost:4200/register");
         
         var registerButton = Page.GetByTestId("registerButton");
@@ -136,7 +131,6 @@ public class RegisterTests : PageTest
     [Test]
     public async Task UserCanRegisterAndOnBoard()
     {
-        await Page.GotoAsync("http://localhost:4200");
 
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
@@ -217,8 +211,6 @@ public class RegisterTests : PageTest
     [Test]
     public async Task UserCanRegisterAndOnBoardAndLogout()
     {
-        await Page.GotoAsync("http://localhost:4200");
-
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
         var registerLink = Page.GetByTestId("registerLink");
@@ -305,8 +297,6 @@ public class RegisterTests : PageTest
     [Test]
     public async Task UserCanRegisterAndOnBoardAndUserProfileExists()
     {
-        await Page.GotoAsync("http://localhost:4200");
-        
         const string userFirstname = "Test";
         const string userLastname = "Test";
         const string userHeight = "180";
