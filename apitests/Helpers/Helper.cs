@@ -112,8 +112,14 @@ create table weight_tracker.user_details
             "INSERT INTO weight_tracker.users (id, username, email) VALUES (@Id, @Username, @Email)";
         
         await using var conn = OpenConnection();
-        
-        await conn.ExecuteAsync(sql, User1);
+        try
+        {
+            await conn.ExecuteAsync(sql, User1);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(@"THERE WAS AN ERROR INSERTING USER 1", e);
+        }
         sql =
             "insert into weight_tracker.passwords (user_id, password_hash, salt, algorithm) values (@Id, @Password, @Salt, 'argon2id')";
         using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(UserPassword));
@@ -121,11 +127,16 @@ create table weight_tracker.user_details
         hashAlgo.MemorySize = 12288;
         hashAlgo.Iterations = 3;
         hashAlgo.DegreeOfParallelism = 1;
-        await conn.ExecuteAsync(sql, new
+        try { await conn.ExecuteAsync(sql, new
         {
             Id = User1.Id,
             Password = Convert.ToBase64String(await hashAlgo.GetBytesAsync(256)),
             Salt = Convert.ToBase64String(hashAlgo.Salt)
-        }); 
+        }); }
+        catch (Exception e)
+        {
+            throw new Exception(@"THERE WAS AN ERROR INSERTING USER 1 PASSWORD", e);
+        }
+        await conn.CloseAsync();
     }
 }
