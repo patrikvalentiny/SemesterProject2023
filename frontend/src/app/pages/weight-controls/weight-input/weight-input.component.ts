@@ -29,7 +29,7 @@ export class WeightInputComponent implements OnInit {
   async saveWeight() {
     const weight: WeightInput = {
       weight: this.numberInput.value!,
-      date: new Date(this.dateInput.value!)
+      date: new Date(this.dateInput.value!).getTimezoneOffset() === 0 ? new Date(this.dateInput.value!) : new Date(this.dateInput.value! + "T00:00:00Z")
     }
     await this.weightService.postWeight(weight);
     await this.router.navigate(['../home']);

@@ -13,17 +13,9 @@
       <div (click)="setEditingWeight(weight.date)" *ngFor="let weight of weightService.weights"
            [ngClass]="{
                  'bg-neutral':weight.date === selectedDate,
-
-                 'col-start-1':(weight.date.toLocaleString() | date:'EEE')?.substring(0,3) === 'Mon',
-                    'col-start-2':(weight.date.toLocaleString() | date:'EEE')?.substring(0,3) === 'Tue',
-                    'col-start-3':(weight.date.toLocaleString() | date:'EEE')?.substring(0,3) === 'Wed',
-                    'col-start-4':(weight.date.toLocaleString() | date:'EEE')?.substring(0,3) === 'Thu',
-                    'col-start-5':(weight.date.toLocaleString() | date:'EEE')?.substring(0,3) === 'Fri',
-                    'col-start-6':(weight.date.toLocaleString() | date:'EEE')?.substring(0,3) === 'Sat',
-                    'col-start-7':(weight.date.toLocaleString() | date:'EEE')?.substring(0,3) === 'Sun',
                   }"
-           class="bg-base-100 stat place-items-center w-full rounded-md snap-start px-0 hover:bg-base-300 col-span-1">
-        <div class="stat-title lg:text-lg text-xs">{{ weight.date.toLocaleString() | date : 'd/M/yy' }}</div>
+           class="bg-base-100 stat place-items-center w-full rounded-md snap-start px-0 hover:bg-base-300 col-span-1 col-start-{{setColStart(weight)}}">
+        <div class="stat-title lg:text-lg text-xs">{{ weight.date.toString() | date : 'd/M/yy' }}</div>
         <div class="stat-value lg:text-2xl text-base">{{ weight.weight.toFixed(1) }}</div>
         <div [ngClass]="(weight.difference ?? 0) > 0 ? 'text-error' : 'text-success'" class="stat-desc text-xs">
           {{ weight.difference?.toFixed(1) ?? 0 }}kg

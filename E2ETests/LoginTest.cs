@@ -2,7 +2,6 @@
 
 namespace E2ETests;
 
-[Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class LoginTest :PageTest
 {

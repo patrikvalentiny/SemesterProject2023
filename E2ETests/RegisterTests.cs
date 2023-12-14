@@ -2,7 +2,6 @@ using apitests;
 
 namespace E2ETests;
 
-[Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class RegisterTests : PageTest
 {

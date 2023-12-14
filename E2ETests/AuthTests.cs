@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace E2ETests;
 
-[Parallelizable(ParallelScope.Self)]
+
 [TestFixture]
 public class AuthTests : PageTest
 {

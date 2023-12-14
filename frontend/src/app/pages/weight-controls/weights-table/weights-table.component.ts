@@ -1,5 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../../services/weight.service";
+import {WeightDto} from "../../../dtos/weight-dto";
 
 @Component({
   selector: 'app-weights-table',
@@ -24,4 +25,7 @@ export class WeightsTableComponent implements OnInit {
     this.weightService.setEditingWeight(date);
   }
 
+  setColStart(weight: WeightDto) {
+    return new Date(weight.date).getDay() != 0 ? new Date(weight.date).getDay() : 7;
+  }
 }
