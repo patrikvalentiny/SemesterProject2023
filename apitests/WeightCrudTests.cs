@@ -1,4 +1,6 @@
-﻿namespace apitests;
+﻿using api.Dtos;
+
+namespace apitests;
 
 public class WeightCrudTests
 {
@@ -11,6 +13,7 @@ public class WeightCrudTests
     public async Task Setup()
     {
         await Helper.TriggerRebuild();
+        await Helper.InsertUser1();
 
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());
@@ -18,9 +21,6 @@ public class WeightCrudTests
         _weightFaker = new Faker<WeightInputCommandModel>()
             .RuleFor(w => w.Weight, f => Math.Round(f.Random.Decimal(50, 200), 2))
             .RuleFor(w => w.Date, f => f.Date.Past().Date);
-
-
-        await Helper.InsertUser1();
     }
 
     [Test]
@@ -227,6 +227,52 @@ public class WeightCrudTests
             response.IsSuccessStatusCode.Should().BeTrue();
             weight.Should().BeEquivalentTo(responseObject,
                 options => options.Excluding(o => o!.UserId).Excluding(o => o!.Difference));
+        }
+    }
+
+    [Test]
+    public async Task TestMultipleWeightInput()
+    {
+        var weights = new List<WeightInputCommandModel>();
+        for (var i = 0; i < 10; i++)
+        {
+            WeightInputCommandModel weight;
+            do
+            {
+                weight = _weightFaker.Generate();
+            } while (weights.Exists(w => w.Date == weight.Date));
+
+            weights.Add(weight);
+        }
+
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync(Url + "/multiple", weights);
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        WeightDto[]? responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<WeightDto[]>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            weights.Should().BeEquivalentTo(responseObject!,
+                options => options.Excluding(o => o.Difference));
+            weights.Count.Should().Be(responseObject!.Length);
         }
     }
 
