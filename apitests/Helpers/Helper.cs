@@ -42,7 +42,7 @@ create table weight_tracker.passwords
 create table weight_tracker.weights
 (
     weight  real      not null,
-    date    timestamp not null,
+    date    date not null,
     user_id integer   not null
         constraint user_weights_users_id_fk
             references weight_tracker.users
