@@ -35,7 +35,6 @@ export class PasteDataFromExcelComponent {
       weight.date.setUTCHours(0,0,0,0);
       this.weights.push(weight);
     }
-    console.log(this.weights)
   }
 
   async uploadData(){

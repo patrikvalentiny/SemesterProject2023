@@ -55,7 +55,7 @@ export class WeightService {
 
   async getLatestWeight() {
     try {
-      if (this.weights.length === 0) await this.getWeights();
+      await this.getWeights();
       return this.weights[this.weights.length - 1];
     } catch (e) {
       return;
@@ -65,11 +65,11 @@ export class WeightService {
   async putWeight(weightInput: WeightInput) {
     try {
       const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", weightInput);
-      const response = await firstValueFrom<WeightDto>(call);
+      await firstValueFrom<WeightDto>(call);
       await this.getWeights();
       this.toastService.success("Weight successfully updated");
     } catch (e) {
-
+      throw e;
     }
   }
 

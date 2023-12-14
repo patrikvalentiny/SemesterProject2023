@@ -28,6 +28,6 @@
              type="date"/>
     </div>
   </div>
-  <button (click)="createDetails()" class="btn btn-primary w-full max-w-sm" data-testid="createProfileButton">Create
+  <button (click)="createDetails()" [disabled]="formGroup.invalid" class="btn btn-primary w-full max-w-sm" data-testid="createProfileButton">Create
   </button>
 </div>

@@ -26,6 +26,7 @@ export class WeightsTableComponent implements OnInit {
   }
 
   setColStart(weight: WeightDto) {
-    return new Date(weight.date).getDay() != 0 ? new Date(weight.date).getDay() : 7;
+    const day = new Date(weight.date).getDay();
+    return day != 0 ? day : 7;
   }
 }

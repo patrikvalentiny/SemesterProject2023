@@ -111,6 +111,9 @@ export class WeightLineChartComponent implements OnInit {
         shared: true,
         y: {
           formatter(val: number, opts?: any): string {
+            if (opts.dataPointIndex === 0) {
+              return val + "kg";
+            }
             return val + "kg (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1]).toFixed(2) + ")";
           }
         }

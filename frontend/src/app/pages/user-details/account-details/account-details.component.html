@@ -27,6 +27,6 @@
              type="date"/>
     </div>
   </div>
-  <button (click)="updateDetails()" class="btn btn-primary w-full max-w-sm" data-testid="udpateDetailsButton">Update
+  <button (click)="updateDetails()" [disabled]="formGroup.invalid" class="btn btn-primary w-full max-w-sm" data-testid="udpateDetailsButton">Update
   </button>
 </div>
