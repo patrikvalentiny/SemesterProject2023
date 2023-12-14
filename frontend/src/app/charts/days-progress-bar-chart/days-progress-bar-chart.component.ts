@@ -1,10 +1,14 @@
-import { CommonModule } from '@angular/common';
 import {Component, inject, OnInit, ViewChild} from "@angular/core";
 
 import {
+  ApexChart,
+  ApexDataLabels,
+  ApexLegend,
   ApexNonAxisChartSeries,
   ApexPlotOptions,
-  ApexChart, ChartComponent, NgApexchartsModule, ApexTheme, ApexDataLabels, ApexTooltip, ApexLegend
+  ApexTheme,
+  ApexTooltip,
+  ChartComponent
 } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
 
@@ -17,12 +21,11 @@ export type ChartOptions = {
   theme: ApexTheme;
   dataLabels: ApexDataLabels;
   tooltip: ApexTooltip;
-  legend:ApexLegend;
+  legend: ApexLegend;
 };
+
 @Component({
   selector: 'app-days-progress-bar-chart',
-  standalone: true,
-    imports: [CommonModule, NgApexchartsModule],
   templateUrl: './days-progress-bar-chart.component.html',
   styleUrl: './days-progress-bar-chart.component.css'
 })
@@ -33,7 +36,7 @@ export class DaysProgressBarChartComponent implements OnInit {
 
   constructor() {
     this.chartOptions = {
-      legend:{
+      legend: {
         show: true,
         position: 'bottom',
       },
@@ -41,7 +44,7 @@ export class DaysProgressBarChartComponent implements OnInit {
       series: [0],
       tooltip: {
         enabled: true,
-        y:{
+        y: {
           formatter(val: number, opts?: any): string {
             return val + " Days";
           }
@@ -59,8 +62,8 @@ export class DaysProgressBarChartComponent implements OnInit {
           },
           donut: {
             size: "70%",
-            labels:{
-              total:{
+            labels: {
+              total: {
                 label: 'Total days',
                 show: true,
                 showAlways: true,
@@ -77,7 +80,7 @@ export class DaysProgressBarChartComponent implements OnInit {
                 fontWeight: 600,
                 color: '#373d3f',
               },
-              value:{
+              value: {
                 formatter(val: string): string {
                   return val;
                 }
@@ -88,7 +91,7 @@ export class DaysProgressBarChartComponent implements OnInit {
         }
       },
       labels: ["Days in", "Days to go"],
-      theme:{mode: 'dark'},
+      theme: {mode: 'dark'},
       dataLabels: {
         enabled: true,
 
@@ -106,7 +109,7 @@ export class DaysProgressBarChartComponent implements OnInit {
     };
   }
 
-  async ngOnInit(){
+  async ngOnInit() {
     const daysToGo = await this.statService.getDaysToGo();
     const daysIn = await this.statService.getDayIn();
     this.chartOptions.series = [daysIn, daysToGo];

@@ -1,14 +1,16 @@
 <div class="stats stats-vertical shadow w-full h-full">
   <div class="stat place-items-center">
     <div class="stat-title">Current weight</div>
-    <div class="stat-value">{{currentWeight?.weight}} kg</div>
-    <div class="stat-desc">{{(currentWeight?.difference ?? 0) <= 0 ? '↘︎' : '↗'}} {{(currentWeight?.difference ?? 0)}}</div>
+    <div class="stat-value" data-testid="currentWeightLabel">{{ currentWeight?.weight }} kg</div>
+    <div
+      class="stat-desc">{{ (currentWeight?.difference ?? 0) <= 0 ? '↘︎' : '↗' }} {{ (currentWeight?.difference ?? 0) }}
+    </div>
   </div>
 
   <div class="stat place-items-center">
     <div class="stat-title">Lowest weight so far</div>
-    <div class="stat-value">{{lowestWeight?.weight}} kg</div>
-    <div class="stat-desc">{{lowestWeight?.date | date :"EEEE dd MMMM yyyy"}}</div>
+    <div class="stat-value" data-testid="lowestWeigthLabel">{{ lowestWeight?.weight }} kg</div>
+    <div class="stat-desc">{{ lowestWeight?.date | date :"EEEE dd MMMM yyyy" }}</div>
   </div>
 
 

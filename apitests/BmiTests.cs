@@ -6,10 +6,10 @@ public class BmiTests
     private const string Url = "http://localhost:5000/api/v1/bmi";
     private Faker<WeightInput> _weightFaker = null!;
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
-        Helper.TriggerRebuild();
-        Helper.InsertUser1();
+        await Helper.TriggerRebuild();
+        await Helper.InsertUser1();
         
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());
@@ -141,9 +141,9 @@ public class BmiTests
     }
     
     [TearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
         _httpClient.Dispose();
     }
 }

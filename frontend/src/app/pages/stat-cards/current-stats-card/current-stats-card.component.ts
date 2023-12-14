@@ -1,8 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../../services/weight.service";
-import {UserDetailsService} from "../../../services/user-details.service";
 import {WeightDto} from "../../../dtos/weight-dto";
-import {Bmi} from "../../../dtos/bmi";
 import {StatisticsService} from "../../../services/statistics.service";
 
 @Component({
@@ -13,13 +11,15 @@ import {StatisticsService} from "../../../services/statistics.service";
 export class CurrentStatsCardComponent implements OnInit {
   weightService: WeightService = inject(WeightService);
   statService: StatisticsService = inject(StatisticsService);
-  currentWeight : WeightDto | undefined;
+  currentWeight: WeightDto | undefined;
   lowestWeight: WeightDto | undefined;
   lowestWeightText: string | undefined;
+
   constructor() {
   }
 
   async ngOnInit() {
     this.currentWeight = await this.weightService.getLatestWeight();
-    this.lowestWeight = await this.statService.getLowestWeight();}
+    this.lowestWeight = await this.statService.getLowestWeight();
+  }
 }

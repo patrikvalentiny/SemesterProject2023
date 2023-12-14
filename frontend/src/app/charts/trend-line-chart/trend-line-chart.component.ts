@@ -1,17 +1,17 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {
   ApexAnnotations,
   ApexAxisChartSeries,
   ApexChart,
-  ApexDataLabels, ApexMarkers,
+  ApexDataLabels,
+  ApexMarkers,
   ApexStroke,
   ApexTheme,
-  ApexTitleSubtitle, ApexTooltip,
+  ApexTitleSubtitle,
+  ApexTooltip,
   ApexXAxis,
   ApexYAxis,
-  ChartComponent,
-  NgApexchartsModule
+  ChartComponent
 } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
@@ -31,14 +31,13 @@ export type ChartOptions = {
   tooltip: ApexTooltip;
   markers: ApexMarkers;
 };
+
 @Component({
   selector: 'app-trend-line-chart',
-  standalone: true,
-    imports: [CommonModule, NgApexchartsModule],
   templateUrl: './trend-line-chart.component.html',
   styleUrl: './trend-line-chart.component.css'
 })
-export class TrendLineChartComponent {
+export class TrendLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
@@ -109,7 +108,7 @@ export class TrendLineChartComponent {
       annotations: {
         yaxis: []
       },
-      tooltip:{
+      tooltip: {
         shared: true,
       },
     };
@@ -140,7 +139,6 @@ export class TrendLineChartComponent {
     }));
 
 
-
     this.chartOptions.series = [
       {
         name: "Weight",
@@ -159,7 +157,7 @@ export class TrendLineChartComponent {
       // categories: dates
     };
 
-    this.chartOptions.annotations!.yaxis! =  [
+    this.chartOptions.annotations!.yaxis! = [
       {
         yAxisIndex: 0,
         y: targetWeight,

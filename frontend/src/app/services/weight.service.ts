@@ -19,7 +19,7 @@ export class WeightService {
   constructor() {
   }
 
-  async postWeight(weight:WeightInput) {
+  async postWeight(weight: WeightInput) {
     try {
       const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight", weight);
       const response = await firstValueFrom<WeightDto>(call);
@@ -55,21 +55,21 @@ export class WeightService {
 
   async getLatestWeight() {
     try {
-      if (this.weights.length === 0) await this.getWeights();
+      await this.getWeights();
       return this.weights[this.weights.length - 1];
     } catch (e) {
       return;
     }
   }
 
-  async putWeight(weightInput:WeightInput) {
+  async putWeight(weightInput: WeightInput) {
     try {
       const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", weightInput);
-      const response = await firstValueFrom<WeightDto>(call);
+      await firstValueFrom<WeightDto>(call);
       await this.getWeights();
       this.toastService.success("Weight successfully updated");
     } catch (e) {
-
+      throw e;
     }
   }
 
@@ -92,6 +92,15 @@ export class WeightService {
       return await firstValueFrom<Bmi[]>(call);
     } catch (e) {
       return;
+    }
+  }
+
+  async postMulti(weights: WeightDto[]) {
+    try {
+      const call = this.httpClient.post<WeightDto[]>(environment.baseUrl + "/weight/multiple", weights);
+      await firstValueFrom<WeightDto[]>(call);
+    } catch (e) {
+      throw e;
     }
   }
 }

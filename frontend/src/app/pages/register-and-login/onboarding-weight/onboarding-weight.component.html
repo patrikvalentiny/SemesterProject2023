@@ -13,8 +13,8 @@
           </svg>
         </button>
         <div class="w-max">
-          <input [formControl]="numberInput"
-                 class="p-0 h-max w-24 text-3xl text-center bg-transparent border-0 base-content"
+          <input [formControl]="numberInput" class="p-0 h-max w-24 text-3xl text-center bg-transparent border-0 base-content"
+                 data-testid="weightInput"
                  placeholder="65.0" step='0.1' type="number" value="0.0">
           <label>kg</label>
         </div>
@@ -28,7 +28,9 @@
         </button>
       </div>
     </div>
-   <button (click)="saveWeight()" [disabled]="numberInput.invalid" class="btn btn-primary w-full h-2">Save</button>
+    <button (click)="saveWeight()" [disabled]="numberInput.invalid" class="btn btn-primary w-full h-2"
+            data-testid="saveButton">Save
+    </button>
   </div>
   <!-- End Input Number -->
 </div>

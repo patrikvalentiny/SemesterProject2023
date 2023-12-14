@@ -5,9 +5,9 @@ namespace apitests;
 public class RegisterTests
 {
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
     }
 
     [Test]
@@ -130,8 +130,8 @@ public class RegisterTests
     }
 
     [TearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
     }
 }

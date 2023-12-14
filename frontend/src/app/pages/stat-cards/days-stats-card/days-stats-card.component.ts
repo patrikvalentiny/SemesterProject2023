@@ -1,7 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {WeightService} from "../../../services/weight.service";
 import {StatisticsService} from "../../../services/statistics.service";
-import {WeightDto} from "../../../dtos/weight-dto";
 
 @Component({
   selector: 'app-days-stats-card',
@@ -10,8 +8,9 @@ import {WeightDto} from "../../../dtos/weight-dto";
 })
 export class DaysStatsCardComponent implements OnInit {
   statService: StatisticsService = inject(StatisticsService);
-  daysToGo : number | undefined;
+  daysToGo: number | undefined;
   dayIn: number | undefined;
+
   constructor() {
   }
 

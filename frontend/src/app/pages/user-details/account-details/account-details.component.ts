@@ -10,8 +10,8 @@ import {UserDetails} from "../../../dtos/user-details";
 })
 export class AccountDetailsComponent implements OnInit {
   userService = inject(UserDetailsService);
-  heightInput:FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
-  targetWeightInput:FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
+  heightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
+  targetWeightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetDateInput: FormControl<string | null> = new FormControl(null);
   firstName: FormControl<string | null> = new FormControl(null);
   lastName: FormControl<string | null> = new FormControl(null);
@@ -25,7 +25,9 @@ export class AccountDetailsComponent implements OnInit {
     lastName: this.lastName,
     lossPerWeek: this.lossPerWeek
   })
-  constructor() { }
+
+  constructor() {
+  }
 
   async ngOnInit() {
     const user = await this.userService.getProfile()

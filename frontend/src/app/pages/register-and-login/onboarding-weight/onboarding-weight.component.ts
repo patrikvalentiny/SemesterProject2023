@@ -27,7 +27,7 @@ export class OnboardingWeightComponent {
     try {
       const weight: WeightInput = {
         weight: this.numberInput.value!,
-        date: new Date()
+        date: new Date().getTimezoneOffset() === 0 ? new Date() : new Date(new Date().toISOString().substring(0, 10) + "T00:00:00Z")
       };
       await this.weightService.postWeight(weight);
       await this.router.navigate(["../onboarding/profile"])

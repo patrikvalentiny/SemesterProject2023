@@ -12,64 +12,69 @@ import {OnboardingWeightComponent} from "./pages/register-and-login/onboarding-w
 import {AuthGuardService} from "./services/auth-guard.service";
 import {SignupGuardService} from "./services/signup-guard.service";
 import {CsvControlsComponent} from "./pages/csv-controls/csv-controls.component";
+import {PasteDataFromExcelComponent} from "./pages/paste-data-from-excel/paste-data-from-excel.component";
 
 const routes: Routes = [
-    {
-        path: "home",
-        component: HomeViewComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: "",
-        redirectTo: "home",
-        pathMatch: "full"
-    },
-    {
-        path: "login",
-        component: LoginViewComponent,
-        canActivate: [SignupGuardService]
-    },
-    {
-        path: "register",
-        component: RegisterViewComponent,
-      canActivate: [SignupGuardService]
-    },
-    {
-        path: "editor",
-        component: RecordsEditorComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-      path: "profile",
-      component: AccountDetailsComponent,
-      canActivate: [AuthGuardService]
-    },
+  {
+    path: "home",
+    component: HomeViewComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "",
+    redirectTo: "home",
+    pathMatch: "full"
+  },
+  {
+    path: "login",
+    component: LoginViewComponent,
+    canActivate: [SignupGuardService]
+  },
+  {
+    path: "register",
+    component: RegisterViewComponent,
+    canActivate: [SignupGuardService]
+  },
+  {
+    path: "editor",
+    component: RecordsEditorComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "profile",
+    component: AccountDetailsComponent,
+    canActivate: [AuthGuardService]
+  },
   {
     path: "input",
     component: WeightInputComponent,
     canActivate: [AuthGuardService]
   },
   {
-    path:"onboarding/profile",
+    path: "onboarding/profile",
     component: OnboardingComponent
   },
   {
-    path:"onboarding/weight",
+    path: "onboarding/weight",
     component: OnboardingWeightComponent
   },
   {
-    path:"csvInput",
+    path: "csvInput",
     component: CsvControlsComponent,
-  }
-  ,
+  },
+  {
+    path: "pasteData",
+    component: PasteDataFromExcelComponent,
+    canActivate: [AuthGuardService]
+  },
   {path: '404', component: NotFoundComponent},
   {path: '**', redirectTo: '404'},
 
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {bindToComponentInputs: true})],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, {bindToComponentInputs: true})],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {
 }

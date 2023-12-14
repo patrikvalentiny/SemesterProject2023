@@ -42,4 +42,9 @@ public class WeightService(WeightRepository weightRepository)
         };
         return weightRepository.Update(latestWeight);
     }
+
+    public IEnumerable<WeightInput> AddMultipleWeights(WeightInputCommandModel[] weights, int userId)
+    {
+        return weights.Select(weight => AddWeight(weight, userId));
+    }
 }

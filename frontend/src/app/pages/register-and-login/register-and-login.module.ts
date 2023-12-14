@@ -9,15 +9,15 @@ import {OnboardingWeightComponent} from "./onboarding-weight/onboarding-weight.c
 
 
 @NgModule({
-    declarations: [
-        LoginViewComponent,
-        RegisterViewComponent,
-        OnboardingComponent,
-        OnboardingWeightComponent
-    ],
-    exports: [
-        LoginViewComponent
-    ],
+  declarations: [
+    LoginViewComponent,
+    RegisterViewComponent,
+    OnboardingComponent,
+    OnboardingWeightComponent
+  ],
+  exports: [
+    LoginViewComponent
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

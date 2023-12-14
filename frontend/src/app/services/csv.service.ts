@@ -6,11 +6,13 @@ import {firstValueFrom} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class CsvServiceService {
+export class CsvService {
   private readonly http = inject(HttpClient);
-  constructor() { }
 
-  async uploadCSV(file: File){
+  constructor() {
+  }
+
+  async uploadCSV(file: File) {
     try {
       const formData = new FormData();
       formData.append('file', file);

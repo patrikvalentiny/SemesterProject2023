@@ -73,4 +73,23 @@ public class WeightController(WeightService weightService) : Controller
         };
         return Ok(weightDto);
     }
+    
+    [HttpPost("multiple")]
+    public IActionResult AddMultipleWeights([FromBody] WeightInputCommandModel[] weights)
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(weightService.AddMultipleWeights(weights, data.UserId).Select(weight => new WeightDto
+            {
+                Weight = weight.Weight,
+                Date = weight.Date,
+                Difference = weight.Difference
+            }));
+        } catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
