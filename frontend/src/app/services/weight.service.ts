@@ -94,4 +94,13 @@ export class WeightService {
       return;
     }
   }
+
+  async postMulti(weights: WeightDto[]) {
+    try {
+      const call = this.httpClient.post<WeightDto[]>(environment.baseUrl + "/weight/multiple", weights);
+      await firstValueFrom<WeightDto[]>(call);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

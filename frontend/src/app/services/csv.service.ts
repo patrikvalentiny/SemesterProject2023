@@ -6,7 +6,7 @@ import {firstValueFrom} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class CsvServiceService {
+export class CsvService {
   private readonly http = inject(HttpClient);
 
   constructor() {

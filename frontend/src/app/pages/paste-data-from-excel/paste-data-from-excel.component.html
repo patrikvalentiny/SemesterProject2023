@@ -1,0 +1,32 @@
+<div class="flex flex-col items-center justify-center gap-4 h-full lg:py-8 py-4 lg:px-4 px-2">
+  <div class="flex flex-col gap-2 items-start justify-center w-full h-full max-h-80">
+    <h1 class="text-2xl font-bold">Paste data from excel here!</h1>
+    <p>Paste data without header in order Date in format (yyyy/mm/dd) and Weight in kg</p>
+    <textarea [formControl]="dataInput" class="textarea textarea-bordered w-full h-full no-scrollbar"
+              placeholder="Paste data here"></textarea>
+    <button class="btn btn-secondary lg:w-48 w-full ml-auto" (click)="parseData()">Parse</button>
+  </div>
+
+  <div class="flex flex-col gap-2 items-center justify-between w-full h-4/5">
+    <div class="w-full h-full overflow-y-scroll overflow-x-hidden">
+      <table class="table table-xs table-pin-cols table-pin-rows bg-base-100 h-full w-full max-h-full">
+        <thead>
+        <tr>
+          <th class="w-24">Date</th>
+          <th>Weight</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (weight of weights;track weight.date) {
+            <tr>
+              <th>{{ weight.date | date:"yyyy/MM/dd" }}</th>
+              <td>{{ weight.weight }}kg</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-primary lg:w-48 w-full ml-auto" (click)="uploadData()">Upload</button>
+
+  </div>
+</div>

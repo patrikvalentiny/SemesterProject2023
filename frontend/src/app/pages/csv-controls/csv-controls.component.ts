@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {CsvServiceService} from "../../services/csv-service.service";
+import {CsvService} from "../../services/csv.service";
 import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
@@ -9,7 +9,7 @@ import {HotToastService} from "@ngneat/hot-toast";
 })
 export class CsvControlsComponent {
   file: File | null = null;
-  private readonly csvService = inject(CsvServiceService);
+  private readonly csvService = inject(CsvService);
   private readonly toast = inject(HotToastService);
 
   async uploadCSV() {

@@ -5,13 +5,15 @@ import {WeightControlsModule} from "./weight-controls/weight-controls.module";
 import {CsvControlsComponent} from "./csv-controls/csv-controls.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import {PasteDataFromExcelComponent} from "./paste-data-from-excel/paste-data-from-excel.component";
 
 
 @NgModule({
   declarations: [
     RecordsEditorComponent,
     CsvControlsComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    PasteDataFromExcelComponent
   ],
   imports: [
     CommonModule,
