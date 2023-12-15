@@ -15,6 +15,7 @@ import {
 } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
+import {HotToastService} from "@ngneat/hot-toast";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -41,6 +42,7 @@ export class WeightLineChartComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
+  private readonly toast = inject(HotToastService);
 
   constructor() {
 
@@ -137,69 +139,72 @@ export class WeightLineChartComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.weightService.getWeights();
-    await this.userService.getProfile();
-    const targetWeight = this.userService.user!.targetWeight;
-    const targetDate = new Date(this.userService.user!.targetDate);
+    try {
+      await this.weightService.getWeights();
+      await this.userService.getProfile();
+      const targetWeight = this.userService.user!.targetWeight;
+      const targetDate = new Date(this.userService.user!.targetDate);
 
-    const weights = this.weightService.weights;
-    const weightNums = weights.map(w => w.weight);
+      const weights = this.weightService.weights;
+      const weightNums = weights.map(w => w.weight);
 
-    const startDate = new Date(this.weightService.weights[0].date);
-    const today = new Date();
-    const endDate = targetDate > today ? targetDate : today;
-    const maxWeight = Math.max(...weightNums) + 2;
-    let minWeight = Math.min(...weightNums) - 2;
-    minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
-    this.chartOptions.yaxis![0].max = maxWeight;
-    this.chartOptions.yaxis![0].min = minWeight;
-    this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight) / 10) + 2;
+      const startDate = new Date(this.weightService.weights[0].date);
+      const today = new Date();
+      const endDate = targetDate > today ? targetDate : today;
+      const maxWeight = Math.max(...weightNums) + 2;
+      let minWeight = Math.min(...weightNums) - 2;
+      minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
+      this.chartOptions.yaxis![0].max = maxWeight;
+      this.chartOptions.yaxis![0].min = minWeight;
+      this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight) / 10) + 2;
 
-    const seriesData = weights.map(weight => ({
-      x: new Date(weight.date).getTime(),
-      y: weight.weight
-    }));
+      const seriesData = weights.map(weight => ({
+        x: new Date(weight.date).getTime(),
+        y: weight.weight
+      }));
 
 
-    this.chartOptions.series = [
-      {
-        name: "Weight",
-        data: seriesData
-      },
-    ];
-    this.chartOptions.xaxis = {
-      type: "datetime",
-      max: endDate.getTime(),
-      min: startDate.getTime(),
-      labels: {
-        format: "dd/MM/yy",
-        datetimeUTC: false,
-      },
-    };
+      this.chartOptions.series = [
+        {
+          name: "Weight",
+          data: seriesData
+        },
+      ];
+      this.chartOptions.xaxis = {
+        type: "datetime",
+        max: endDate.getTime(),
+        min: startDate.getTime(),
+        labels: {
+          format: "dd/MM/yy",
+          datetimeUTC: false,
+        },
+      };
 
-    this.chartOptions.annotations!.yaxis! = [
-      {
-        yAxisIndex: 0,
-        y: targetWeight,
-        y2: targetWeight + 0.1,
-        borderColor: "#00dbe3",
-        fillColor: "#00dbe3",
-        opacity: 1,
-        label: {
-          position: "left",
-          textAnchor: "start",
-          offsetX: 10,
-          borderColor: "#333",
-          style: {
-            fontSize: "10px",
-            color: "#333",
-            background: "#00dbe3"
-          },
-          text: "Target weight"
+      this.chartOptions.annotations!.yaxis! = [
+        {
+          yAxisIndex: 0,
+          y: targetWeight,
+          y2: targetWeight + 0.1,
+          borderColor: "#00dbe3",
+          fillColor: "#00dbe3",
+          opacity: 1,
+          label: {
+            position: "left",
+            textAnchor: "start",
+            offsetX: 10,
+            borderColor: "#333",
+            style: {
+              fontSize: "10px",
+              color: "#333",
+              background: "#00dbe3"
+            },
+            text: "Target weight"
+          }
         }
-      }
-    ];
-
+      ];
+    } catch (e) {
+      this.toast.error("Could not load weight chart data");
+    }
   }
 
 }

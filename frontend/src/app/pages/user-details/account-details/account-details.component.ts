@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {UserDetailsService} from "../../../services/user-details.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserDetails} from "../../../dtos/user-details";
+import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
   selector: 'app-account-details',
@@ -9,7 +10,8 @@ import {UserDetails} from "../../../dtos/user-details";
   styleUrl: './account-details.component.css'
 })
 export class AccountDetailsComponent implements OnInit {
-  userService = inject(UserDetailsService);
+  private readonly userService = inject(UserDetailsService);
+  private readonly toast = inject(HotToastService);
   heightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetWeightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetDateInput: FormControl<string | null> = new FormControl(null);
@@ -46,10 +48,12 @@ export class AccountDetailsComponent implements OnInit {
   }
 
   async updateDetails() {
-    await this.userService.updateProfile(this.formGroup)
-  }
+    try {
+      await this.userService.updateProfile(this.formGroup)
+      this.toast.success("Profile updated")
+    } catch (e){
+      return;
+    }
 
-  async createDetails() {
-    await this.userService.createProfile(this.formGroup)
   }
 }

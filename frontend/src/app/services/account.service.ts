@@ -5,7 +5,6 @@ import {firstValueFrom} from "rxjs";
 
 import {FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
-import {HotToastService} from "@ngneat/hot-toast";
 import {TokenService} from "./token.service";
 import {User} from "../dtos/user";
 
@@ -17,7 +16,6 @@ export class AccountService {
   httpClient: HttpClient = inject(HttpClient);
   tokenService: TokenService = inject(TokenService);
   router: Router = inject(Router);
-  toastService = inject(HotToastService);
   user: User | null = null;
 
   async login(username: string, password: string) {
@@ -31,7 +29,7 @@ export class AccountService {
       await this.router.navigate(["/"])
       this.user = response.user;
     } catch (e) {
-      return;
+      throw e;
     }
   }
 
@@ -45,7 +43,7 @@ export class AccountService {
       this.tokenService.setToken(response.token);
       await this.router.navigate(["/onboarding/weight"])
     } catch (e) {
-      return;
+      throw e;
     }
   }
 

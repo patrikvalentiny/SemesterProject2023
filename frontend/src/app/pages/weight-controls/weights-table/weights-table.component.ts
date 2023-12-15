@@ -11,6 +11,7 @@ export class WeightsTableComponent implements OnInit {
   public readonly weightService = inject(WeightService);
   public selectedDate: Date | null = null;
   days: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  padding: number[] = Array.from({length: (7 - this.weightService.weights.length)}, (_, i) => i);
 
 
   constructor() {
@@ -28,7 +29,4 @@ export class WeightsTableComponent implements OnInit {
   setColStart(weight: WeightDto) {
     return "col-start-" + (this.days.indexOf(new Date(weight.date).toLocaleDateString("en-US", {weekday: "short"})) + 1);
   }
-
-  protected readonly Array = Array;
-  protected readonly length = length;
 }

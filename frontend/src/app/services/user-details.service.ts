@@ -3,7 +3,6 @@ import {HttpClient} from "@angular/common/http";
 import {UserDetails} from "../dtos/user-details";
 import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
-import {HotToastService} from "@ngneat/hot-toast";
 import {FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 
@@ -13,7 +12,6 @@ import {Router} from "@angular/router";
 export class UserDetailsService {
   user: UserDetails | null = null;
   private readonly httpClient = inject(HttpClient);
-  private readonly toastService = inject(HotToastService);
   private readonly router = inject(Router);
 
   async getProfile() {
@@ -23,19 +21,17 @@ export class UserDetailsService {
       this.user = user;
       return user;
     } catch (e) {
-      this.toastService.error("Failed to get profile")
+      throw e;
     }
-    return null;
   }
 
   async createProfile(formGroup: FormGroup) {
     try {
       const call = this.httpClient.post<UserDetails>(environment.baseUrl + "/profile", formGroup.value);
       this.user = await firstValueFrom<UserDetails>(call);
-      this.toastService.success("Profile created")
       await this.router.navigate(["/home"])
     } catch (e) {
-      this.toastService.error("Failed to create profile")
+      throw e;
     }
   }
 
@@ -46,9 +42,8 @@ export class UserDetailsService {
     try {
       const call = this.httpClient.put<UserDetails>(environment.baseUrl + "/profile", formGroup.value);
       this.user = await firstValueFrom<UserDetails>(call);
-      this.toastService.success("Profile updated")
     } catch (e) {
-      this.toastService.error("Failed to update profile")
+      throw e;
     }
 
   }

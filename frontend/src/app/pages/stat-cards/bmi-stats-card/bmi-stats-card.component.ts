@@ -18,7 +18,13 @@ export class BmiStatsCardComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.bmi = await this.weightService.getLatestBmi();
-    this.bmiChange = await this.statService.getBmiChange();
+    try {
+      this.bmi = await this.weightService.getLatestBmi();
+      this.bmiChange = await this.statService.getBmiChange();
+    } catch (e){
+      //caught by interceptor
+      return;
+    }
+
   }
 }
