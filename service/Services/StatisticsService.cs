@@ -10,32 +10,34 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         // get user for target date 
         var user = userDetailsRepository.GetById(dataUserId);
         if (user == null) throw new Exception("User details not found");
-        
+
         // get all weights for user
-        List<WeightInput> weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
         if (weights.Count == 0) throw new Exception("No weights found");
         // calculate average loss per day
-        
+
         var oldestWeightInput = weights.First();
         var newestWeightInput = weights.Last();
-        
+
         var totalLoss = GetCurrentTotalLoss(weights); // start weight - current weight ex. 100 - 90 = 10
         var firstToLastDateDaysDiff = FirstToLastDateDaysDiff(weights); // days between start and current weight ex. -10
         var averageLoss = AverageLoss(totalLoss, firstToLastDateDaysDiff); // average loss per day ex. -1
-        
+
         // get target date
         var targetDate = user.TargetDate ?? newestWeightInput.Date; // if target date is null, use last input date
+        targetDate =
+            targetDate < DateTime.Today.Date
+                ? DateTime.Today.Date.AddDays(30)
+                : targetDate; // if target date is in the past, use today
         // create list of dates from first date to target date
         var dates = new List<DateTime>();
-        for (var dt = oldestWeightInput.Date; dt <= targetDate; dt = dt.AddDays(1))
-        {
-            dates.Add(dt);
-        }
-        
+        for (var dt = oldestWeightInput.Date; dt <= targetDate; dt = dt.AddDays(1)) dates.Add(dt);
+
         // for each date, calculate weight
         return dates.Select(dt => new WeightInput
         {
-            Weight = decimal.Round(oldestWeightInput.Weight - ((oldestWeightInput.Date - dt.Date).Days) * averageLoss, 2), // start weight - days since start * average loss per day
+            Weight = decimal.Round(oldestWeightInput.Weight - (oldestWeightInput.Date - dt.Date).Days * averageLoss,
+                2), // start weight - days since start * average loss per day
             Date = dt.Date,
             UserId = dataUserId
         });
@@ -43,10 +45,10 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
 
     private decimal AverageLoss(decimal totalLoss, int firstToLastDateDaysDiff)
     {
-        if(firstToLastDateDaysDiff == 0) return 0.0m;
+        if (firstToLastDateDaysDiff == 0) return 0.0m;
         return decimal.Round(totalLoss / firstToLastDateDaysDiff, 4);
     }
-    
+
     public decimal AverageLoss(int dataUserId)
     {
         var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
@@ -59,19 +61,19 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
     {
         return (weights.First().Date - weights.Last().Date).Days;
     }
-    
+
     public int FirstToLastDateDaysDiff(int userId)
     {
         var weights = weightRepository.GetAllWeightsForUser(userId).ToList();
         return FirstToLastDateDaysDiff(weights);
     }
-    
+
     public decimal GetCurrentTotalLoss(int dataUserId)
     {
         var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
         return GetCurrentTotalLoss(weights);
     }
-    
+
     private decimal GetCurrentTotalLoss(IReadOnlyCollection<WeightInput> weights)
     {
         if (weights.Count == 0) throw new Exception("No weights found");
@@ -102,7 +104,6 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         if (weights.Count == 0) throw new Exception("No weights found");
         var totalLoss = GetCurrentTotalLoss(weights);
         return decimal.Round(totalLoss / (weights.First().Weight - user.TargetWeight) * 100, 2);
-        
     }
 
     public DateTime PredictedTargetDate(int dataUserId)
@@ -116,18 +117,18 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         var averageLoss = AverageLoss(totalLoss, firstToLastDateDaysDiff);
         if (averageLoss == 0) return user.TargetDate!.Value;
         var daysToTarget = Math.Round((user.TargetWeight - weights.First().Weight) / averageLoss);
-        return weights.First().Date.AddDays(Decimal.ToDouble(daysToTarget));
+        return weights.First().Date.AddDays(decimal.ToDouble(daysToTarget));
     }
-    
-    public WeightInput? GetPredictedWeightOnTargetDate(int dataUserId)
+
+    public WeightInput GetPredictedWeightOnTargetDate(int dataUserId)
     {
         var currentTrend = GetCurrentTrend(dataUserId).ToList();
-        if (currentTrend.Count == 0) throw new Exception("No weights found");
+        if (currentTrend.Count == 0) throw new Exception("No trend weights found");
         var user = userDetailsRepository.GetById(dataUserId);
         if (user == null) throw new Exception("User details not found");
         if (currentTrend.Count == 1) return currentTrend.First();
         var targetDate = user.TargetDate ?? currentTrend.Last().Date;
-        return currentTrend.FirstOrDefault(x => x.Date == targetDate);
+        return currentTrend.FirstOrDefault(x => x.Date == targetDate, currentTrend.Last());
     }
 
     public decimal BmiChange(int dataUserId)

@@ -12,15 +12,16 @@ import {Router} from "@angular/router";
   styleUrl: './paste-data-from-excel.component.css'
 })
 export class PasteDataFromExcelComponent {
+  dataInput: FormControl<string | null> = new FormControl(null, [Validators.required]);
+  weights: WeightDto[] = [];
   private readonly weightService = inject(WeightService);
   private readonly toastService = inject(HotToastService);
   private readonly router = inject(Router);
-  dataInput:FormControl<string | null> = new FormControl(null, [Validators.required]);
-  weights:WeightDto[] = [];
+
   constructor() {
   }
 
-  async parseData(){
+  async parseData() {
     try {
       this.weights = [];
       const data = this.dataInput.value!;
@@ -46,7 +47,7 @@ export class PasteDataFromExcelComponent {
     }
   }
 
-  async uploadData(){
+  async uploadData() {
     try {
       await this.weightService.postMulti(this.weights);
       this.toastService.success("Data successfully uploaded");
@@ -57,7 +58,7 @@ export class PasteDataFromExcelComponent {
 
   }
 
-  async downloadCsv(){
+  async downloadCsv() {
     try {
       await this.weightService.getWeightsCsv();
     } catch (e) {

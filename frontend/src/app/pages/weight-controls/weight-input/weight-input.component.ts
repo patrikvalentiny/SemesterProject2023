@@ -27,18 +27,30 @@ export class WeightInputComponent implements OnInit {
   }
 
   async saveWeight() {
-    const weight: WeightInput = {
-      weight: this.numberInput.value!,
-      date: new Date(this.dateInput.value!).getTimezoneOffset() === 0 ? new Date(this.dateInput.value!) : new Date(this.dateInput.value! + "T00:00:00Z")
+    try {
+      const weight: WeightInput = {
+        weight: this.numberInput.value!,
+        date: new Date(this.dateInput.value!).getTimezoneOffset() === 0 ? new Date(this.dateInput.value!) : new Date(this.dateInput.value! + "T00:00:00Z")
+      }
+      await this.weightService.postWeight(weight);
+      await this.router.navigate(['../home']);
+    } catch (e) {
+      //caught by interceptor
+      return;
     }
-    await this.weightService.postWeight(weight);
-    await this.router.navigate(['../home']);
+
   }
 
   async ngOnInit() {
-    const weights = await this.weightService.getWeights();
-    if (weights?.length === 0 || weights === undefined) return;
-    this.dayBeforeWeight = weights[weights.length - 1].weight;
-    this.numberInput.setValue(this.dayBeforeWeight);
+    try {
+      const weights = await this.weightService.getWeights();
+      if (weights?.length === 0 || weights === undefined) return;
+      this.dayBeforeWeight = weights.at(-1)!.weight;
+      this.numberInput.setValue(this.dayBeforeWeight);
+    } catch (e) {
+      //caught by interceptor
+      return;
+    }
+
   }
 }

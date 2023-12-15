@@ -29,8 +29,11 @@ export class RegisterViewComponent implements OnInit {
       return
     }
 
-    await this.accountService.register(this.registerForm);
-
+    try {
+      await this.accountService.register(this.registerForm);
+    } catch (e) {
+      return;
+    }
   }
 
   ngOnInit(): void {

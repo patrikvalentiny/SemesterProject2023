@@ -16,8 +16,14 @@ export class PredictedStatsCardComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.predictedTargetWeight = await this.statService.getPredictedTargetWeight();
-    this.predictedTargetDate = new Date(await this.statService.getPredictedTargetDate());
+    try {
+      this.predictedTargetWeight = await this.statService.getPredictedTargetWeight();
+      this.predictedTargetDate = new Date(await this.statService.getPredictedTargetDate());
+    } catch (e) {
+      //caught by interceptor
+      return;
+    }
+
   }
 
 }

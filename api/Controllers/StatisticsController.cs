@@ -1,6 +1,7 @@
 ﻿using api.Dtos;
 using api.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using service.Services;
 
 namespace api.Controllers;
@@ -10,7 +11,6 @@ namespace api.Controllers;
 [Route("api/v1/statistics")]
 public class StatisticsController(StatisticsService service) : Controller
 {
-    
     [HttpGet("currentTrend")]
     public IActionResult GetCurrentTrend()
     {
@@ -22,11 +22,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting current trend");
+            return BadRequest("Error getting current trend");
         }
-        
     }
-    
+
     [HttpGet("currentTotalLoss")]
     public IActionResult GetCurrentProgress()
     {
@@ -38,11 +38,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting current total loss");
+            return BadRequest("Error getting current total loss");
         }
-        
     }
-    
+
     [HttpGet("averageLoss")]
     public IActionResult GetAverageLoss()
     {
@@ -54,11 +54,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting average loss");
+            return BadRequest("Error getting average loss");
         }
-        
     }
-    
+
     [HttpGet("averageLossPerWeek")]
     public IActionResult GetAverageLossPerWeek()
     {
@@ -70,11 +70,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting average loss per week");
+            return BadRequest("Error getting average loss per week");
         }
-        
     }
-    
+
     [HttpGet("daysIn")]
     public IActionResult GetDaysIn()
     {
@@ -86,11 +86,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting days in");
+            return BadRequest("Error getting days in");
         }
-        
     }
-    
+
     [HttpGet("daysToTarget")]
     public IActionResult GetDaysToGo()
     {
@@ -102,11 +102,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting days to target");
+            return BadRequest("Error getting days to target");
         }
-        
     }
-    
+
     [HttpGet("weightToGo")]
     public IActionResult GetWeightToGo()
     {
@@ -118,11 +118,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting weight to go");
+            return BadRequest("Error getting weight to go");
         }
-        
     }
-    
+
     [HttpGet("percentageOfGoal")]
     public IActionResult GetPercentageLost()
     {
@@ -134,11 +134,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting percentage lost");
+            return BadRequest("Error getting percentage lost");
         }
-        
     }
-    
+
     [HttpGet("predictedTargetDate")]
     public IActionResult GetPredictedTargetDate()
     {
@@ -150,11 +150,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting predicted target date");
+            return BadRequest("Error getting predicted target date");
         }
-        
     }
-    
+
     [HttpGet("predictedTargetWeight")]
     public IActionResult GetPredictedTargetWeight()
     {
@@ -166,11 +166,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting predicted target weight");
+            return BadRequest("Error getting predicted target weight");
         }
-        
     }
-    
+
     [HttpGet("bmiChange")]
     public IActionResult GetBmiChange()
     {
@@ -182,11 +182,11 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting BMI change");
+            return BadRequest("Error getting BMI change");
         }
-        
     }
-    
+
     [HttpGet("lowestWeight")]
     public IActionResult GetLowestWeight()
     {
@@ -204,9 +204,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting lowest weight");
+            return BadRequest("Error getting lowest weight");
         }
-        
     }
-    
 }

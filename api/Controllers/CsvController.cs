@@ -26,7 +26,7 @@ public class CsvController(CsvService csvService) : Controller
             return BadRequest("Error parsing CSV file");
         }
     }
-    
+
     [HttpGet]
     public IActionResult DownloadCsv()
     {

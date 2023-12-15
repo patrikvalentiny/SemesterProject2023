@@ -1,5 +1,4 @@
 export interface UserDetails {
-  userId: number
   firstname: string
   lastname: string
   height: number

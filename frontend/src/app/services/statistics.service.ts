@@ -8,7 +8,7 @@ import {WeightDto} from "../dtos/weight-dto";
   providedIn: 'root'
 })
 export class StatisticsService implements OnInit {
-  http: HttpClient = inject(HttpClient);
+  private readonly http: HttpClient = inject(HttpClient);
 
   constructor() {
   }

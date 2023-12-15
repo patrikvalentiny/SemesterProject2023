@@ -1,9 +1,7 @@
 ﻿using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using Dapper;
 using Konscious.Security.Cryptography;
-using service.Models;
 
 namespace apitests;
 

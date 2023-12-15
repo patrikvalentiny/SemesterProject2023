@@ -1,5 +1,4 @@
-﻿using api.Filters;
-using infrastructure.DataModels;
+﻿using infrastructure.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using service;
@@ -31,9 +30,17 @@ public class AccountController(AccountService accountService, JwtService jwtServ
             return BadRequest("Unknown error");
         }
 
-        var token = jwtService.IssueToken(SessionData.FromUser(user));
-        Response.Headers.Append("Authorization", $"Bearer {token}");
-        return Ok(new { user, token });
+        try
+        {
+            var token = jwtService.IssueToken(SessionData.FromUser(user));
+            Response.Headers.Append("Authorization", $"Bearer {token}");
+            return Ok(new { user, token });
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error issuing token");
+            return BadRequest("Error issuing token");
+        }
     }
 
     [HttpPost]
@@ -41,20 +48,18 @@ public class AccountController(AccountService accountService, JwtService jwtServ
     public IActionResult Login([FromBody] LoginCommandModel model)
     {
         var user = accountService.Authenticate(model);
-        if (user == null) return Unauthorized();
+        if (user == null) return BadRequest("Invalid username or password");
 
-        var token = jwtService.IssueToken(SessionData.FromUser(user));
-        Response.Headers.Append("Authorization", $"Bearer {token}");
-        return Ok(new { user, token });
-    }
-
-    [RequireAuthentication]
-    [HttpGet]
-    [Route("whoami")]
-    public IActionResult WhoAmI()
-    {
-        var data = HttpContext.GetSessionData();
-        var user = accountService.Get(data!);
-        return Ok(user);
+        try
+        {
+            var token = jwtService.IssueToken(SessionData.FromUser(user));
+            Response.Headers.Append("Authorization", $"Bearer {token}");
+            return Ok(new { user, token });
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error issuing token");
+            return BadRequest("Error issuing token");
+        }
     }
 }

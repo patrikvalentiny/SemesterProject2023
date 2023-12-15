@@ -87,7 +87,7 @@ public class RegisterTests
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
-    
+
     [TestCase]
     [TestCase("", "test", "test@test.dk", TestName = "TestUsernameEmpty")]
     [TestCase("test", "", "test@test.dk", TestName = "TestPasswordEmpty")]

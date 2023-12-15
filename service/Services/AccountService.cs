@@ -6,7 +6,8 @@ using service.Password;
 
 namespace service.Services;
 
-public class AccountService(IRepository<User> userRepository,
+public class AccountService(
+    IRepository<User> userRepository,
     PasswordRepository passwordRepository)
 {
     public User? Authenticate(LoginCommandModel model)

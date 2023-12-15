@@ -11,6 +11,7 @@ import {
   ChartComponent
 } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
+import {HotToastService} from "@ngneat/hot-toast";
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -33,6 +34,7 @@ export class WeightProgressBarChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   private readonly statService: StatisticsService = inject(StatisticsService);
+  private readonly toast = inject(HotToastService);
 
   constructor() {
     this.chartOptions = {
@@ -45,7 +47,7 @@ export class WeightProgressBarChartComponent implements OnInit {
       tooltip: {
         enabled: true,
         y: {
-          formatter(val: number, opts?: any): string {
+          formatter(val: number): string {
             return val + "kg";
           }
         }
@@ -117,8 +119,13 @@ export class WeightProgressBarChartComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const totalLoss = await this.statService.getCurrentTotalLoss();
-    const weightToGo = await this.statService.getWeightToGo();
-    this.chartOptions.series = [totalLoss, weightToGo];
+    try {
+      const totalLoss = await this.statService.getCurrentTotalLoss();
+      const weightToGo = await this.statService.getWeightToGo();
+      this.chartOptions.series = [totalLoss, weightToGo];
+    } catch (e) {
+      this.toast.error("Could not load weight progress");
+    }
+
   }
 }

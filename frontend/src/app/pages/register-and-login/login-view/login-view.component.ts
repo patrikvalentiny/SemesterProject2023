@@ -17,6 +17,10 @@ export class LoginViewComponent {
 
 
   async login() {
-    await this.accountService.login(this.loginForm.value.username!, this.loginForm.value.password!);
+    try {
+      await this.accountService.login(this.loginForm.value.username!, this.loginForm.value.password!);
+    } catch (e) {
+      return;
+    }
   }
 }

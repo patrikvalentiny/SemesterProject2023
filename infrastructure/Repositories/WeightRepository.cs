@@ -1,9 +1,6 @@
-﻿using System.Data;
-using System.Data.Common;
+﻿using System.Data.Common;
 using Dapper;
 using infrastructure.DataModels;
-using Microsoft.AspNetCore.Components.Web;
-using Serilog;
 
 namespace infrastructure.Repositories;
 
@@ -19,7 +16,8 @@ RETURNING
     user_id as {nameof(WeightInput.UserId)};";
 
         using var conn = dataSource.OpenConnection();
-        return conn.QueryFirst<WeightInput>(sql, new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId });
+        return conn.QueryFirst<WeightInput>(sql,
+            new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId });
     }
 
     public WeightInput Update(WeightInput entity)

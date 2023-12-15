@@ -15,7 +15,13 @@ export class DaysStatsCardComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.daysToGo = await this.statService.getDaysToGo();
-    this.dayIn = await this.statService.getDayIn();
+    try {
+      this.daysToGo = await this.statService.getDaysToGo();
+      this.dayIn = await this.statService.getDayIn();
+    } catch (e) {
+      //caught by interceptor
+      return;
+    }
+
   }
 }

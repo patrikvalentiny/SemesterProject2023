@@ -32,7 +32,8 @@ export class OnboardingWeightComponent {
       await this.weightService.postWeight(weight);
       await this.router.navigate(["../onboarding/profile"])
     } catch (e) {
-
+      //caught by interceptor
+      return;
     }
 
   }
