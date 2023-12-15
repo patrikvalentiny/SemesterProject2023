@@ -8,7 +8,6 @@ namespace service.Services;
 
 public class CsvService(WeightRepository weightRepository)
 {
-
     public object? ParseCsv(int dataUserId, IFormFile formFile)
     {
         Log.Information("Parsing CSV file");
@@ -16,11 +15,11 @@ public class CsvService(WeightRepository weightRepository)
         Log.Information(formFile.FileName);
         return null;
     }
-    
+
     public byte[] CreateCsv(int dataUserId)
     {
         var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
-        var weightsStripped = weights.Select(w => new {w.Weight, w.Date.Date});
+        var weightsStripped = weights.Select(w => new { w.Weight, w.Date.Date });
         using var resource = new MemoryStream();
         using var writer = new StreamWriter(resource);
         using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);

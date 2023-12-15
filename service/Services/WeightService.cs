@@ -20,10 +20,8 @@ public class WeightService(WeightRepository weightRepository)
     public IEnumerable<WeightInput> GetAllWeightForUser(int dataUserId)
     {
         var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
-        for (int i = 0; i < weights.Count; i++)
-        {
+        for (var i = 0; i < weights.Count; i++)
             weights[i].Difference = i == 0 ? 0 : weights[i].Weight - weights[i - 1].Weight;
-        }
         return weights;
     }
 

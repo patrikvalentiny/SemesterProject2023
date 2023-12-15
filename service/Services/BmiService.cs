@@ -21,7 +21,7 @@ public class BmiService(WeightRepository weightRepository, IRepository<UserDetai
             Category = CategorizeBmi(bmi)
         };
     }
-    
+
     public IEnumerable<BmiCommandModel>? GetAllBmiForUser(int dataUserId)
     {
         var weights = weightRepository.GetAllWeightsForUser(dataUserId);
@@ -36,7 +36,7 @@ public class BmiService(WeightRepository weightRepository, IRepository<UserDetai
             Category = CategorizeBmi(weight.Weight / (heightInMeters * heightInMeters))
         });
     }
-    
+
     private string CategorizeBmi(decimal bmi)
     {
         return bmi switch

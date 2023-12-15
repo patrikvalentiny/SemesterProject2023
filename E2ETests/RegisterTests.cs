@@ -5,18 +5,23 @@ namespace E2ETests;
 [TestFixture]
 public class RegisterTests : PageTest
 {
-    
     [SetUp]
     public async Task Setup()
     {
         await Helper.TriggerRebuild();
         await Page.GotoAsync("http://localhost:4200");
     }
+
+    [TearDown]
+    public async Task TearDown()
+    {
+        await Helper.TriggerRebuild();
+        await Page.CloseAsync();
+    }
+
     [Test]
     public async Task UserCanNavigateFromLoginToRegister()
     {
-       
-
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
         var registerLink = Page.GetByTestId("registerLink");
@@ -24,18 +29,18 @@ public class RegisterTests : PageTest
         await registerLink.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*register"));
     }
-    
+
     [Test]
     public async Task UserCanNavigateFromRegisterToLogin()
     {
         await Page.GotoAsync("http://localhost:4200/register");
-        
+
         var loginLink = Page.GetByTestId("loginLink");
         await loginLink.IsVisibleAsync();
         await loginLink.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
     }
-    
+
     [Test]
     public async Task UserCanRegister()
     {
@@ -45,11 +50,11 @@ public class RegisterTests : PageTest
         await registerLink.IsVisibleAsync();
         await registerLink.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*register"));
-        
+
         var registerButton = Page.GetByTestId("registerButton");
         await registerButton.IsVisibleAsync();
         await registerButton.IsDisabledAsync();
-        
+
         var emailInput = Page.GetByTestId("emailInput");
         await emailInput.IsVisibleAsync();
         await emailInput.FillAsync("test@test.test");
@@ -62,15 +67,16 @@ public class RegisterTests : PageTest
         var confirmPasswordInput = Page.GetByTestId("confirmPasswordInput");
         await confirmPasswordInput.IsVisibleAsync();
         await confirmPasswordInput.FillAsync("test");
-        
+
         await registerButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*onboarding"));
     }
 
     [TestCase("invalidEmail", "test", "test", "test", TestName = "InvalidEmail")]
     [TestCase("valid@email.dk", "test", "ts", "ts", TestName = "InvalidPasswordLength")]
-    public async Task UserCanNotRegisterWithInvalidData(string email, string username, string password, string confirmPassword)
+    public async Task UserCanNotRegisterWithInvalidData(string email, string username, string password,
+        string confirmPassword)
     {
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
@@ -95,7 +101,7 @@ public class RegisterTests : PageTest
         var confirmPasswordInput = Page.GetByTestId("confirmPasswordInput");
         await confirmPasswordInput.IsVisibleAsync();
         await confirmPasswordInput.FillAsync(confirmPassword);
-        
+
         await registerButton.IsDisabledAsync();
     }
 
@@ -103,11 +109,11 @@ public class RegisterTests : PageTest
     public async Task UserPasswordsMustMatch()
     {
         await Page.GotoAsync("http://localhost:4200/register");
-        
+
         var registerButton = Page.GetByTestId("registerButton");
         await registerButton.IsVisibleAsync();
         await registerButton.IsDisabledAsync();
-        
+
         var emailInput = Page.GetByTestId("emailInput");
         await emailInput.IsVisibleAsync();
         await emailInput.FillAsync("test@test.test");
@@ -120,29 +126,28 @@ public class RegisterTests : PageTest
         var confirmPasswordInput = Page.GetByTestId("confirmPasswordInput");
         await confirmPasswordInput.IsVisibleAsync();
         await confirmPasswordInput.FillAsync("notTest");
-        
+
         await registerButton.ClickAsync();
-        
+
         await Expect(confirmPasswordInput).ToHaveClassAsync(new Regex(".*input-error"));
-        
+
         await Expect(Page).Not.ToHaveURLAsync(new Regex(".*onboarding"));
     }
 
     [Test]
     public async Task UserCanRegisterAndOnBoard()
     {
-
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
 
         var registerLink = Page.GetByTestId("registerLink");
         await registerLink.IsVisibleAsync();
         await registerLink.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*register"));
-        
+
         var registerButton = Page.GetByTestId("registerButton");
         await registerButton.IsVisibleAsync();
         await registerButton.IsDisabledAsync();
-        
+
         var emailInput = Page.GetByTestId("emailInput");
         await emailInput.IsVisibleAsync();
         await emailInput.FillAsync("test@test.test");
@@ -158,10 +163,10 @@ public class RegisterTests : PageTest
 
         await registerButton.IsEnabledAsync();
         await registerButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*onboarding/weight"));
-        
-        
+
+
         var weightInput = Page.GetByTestId("weightInput");
         await weightInput.IsVisibleAsync();
         await weightInput.IsEditableAsync();
@@ -171,9 +176,9 @@ public class RegisterTests : PageTest
         await saveButton.IsVisibleAsync();
         await saveButton.IsEnabledAsync();
         await saveButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*onboarding/profile"));
-        
+
         var firstnameInput = Page.GetByTestId("firstnameInput");
         await firstnameInput.IsVisibleAsync();
         await firstnameInput.IsEditableAsync();
@@ -203,11 +208,10 @@ public class RegisterTests : PageTest
         await createProfileButton.IsVisibleAsync();
         await createProfileButton.IsEnabledAsync();
         await createProfileButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*home"));
-        
     }
-    
+
     [Test]
     public async Task UserCanRegisterAndOnBoardAndLogout()
     {
@@ -217,11 +221,11 @@ public class RegisterTests : PageTest
         await registerLink.IsVisibleAsync();
         await registerLink.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*register"));
-        
+
         var registerButton = Page.GetByTestId("registerButton");
         await registerButton.IsVisibleAsync();
         await registerButton.IsDisabledAsync();
-        
+
         var emailInput = Page.GetByTestId("emailInput");
         await emailInput.IsVisibleAsync();
         await emailInput.FillAsync("test@test.test");
@@ -237,10 +241,10 @@ public class RegisterTests : PageTest
 
         await registerButton.IsEnabledAsync();
         await registerButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*onboarding/weight"));
-        
-        
+
+
         var weightInput = Page.GetByTestId("weightInput");
         await weightInput.IsVisibleAsync();
         await weightInput.IsEditableAsync();
@@ -250,9 +254,9 @@ public class RegisterTests : PageTest
         await saveButton.IsVisibleAsync();
         await saveButton.IsEnabledAsync();
         await saveButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*onboarding/profile"));
-        
+
         var firstnameInput = Page.GetByTestId("firstnameInput");
         await firstnameInput.IsVisibleAsync();
         await firstnameInput.IsEditableAsync();
@@ -282,7 +286,7 @@ public class RegisterTests : PageTest
         await createProfileButton.IsVisibleAsync();
         await createProfileButton.IsEnabledAsync();
         await createProfileButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*home"));
 
         var logoutButton = Page.GetByTestId("logoutButton");
@@ -293,7 +297,7 @@ public class RegisterTests : PageTest
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
     }
 
-    
+
     [Test]
     public async Task UserCanRegisterAndOnBoardAndUserProfileExists()
     {
@@ -309,11 +313,11 @@ public class RegisterTests : PageTest
         await registerLink.IsVisibleAsync();
         await registerLink.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*register"));
-        
+
         var registerButton = Page.GetByTestId("registerButton");
         await registerButton.IsVisibleAsync();
         await registerButton.IsDisabledAsync();
-        
+
         var emailInput = Page.GetByTestId("emailInput");
         await emailInput.IsVisibleAsync();
         await emailInput.FillAsync("test@test.test");
@@ -329,10 +333,10 @@ public class RegisterTests : PageTest
 
         await registerButton.IsEnabledAsync();
         await registerButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*onboarding/weight"));
-        
-        
+
+
         var weightInput = Page.GetByTestId("weightInput");
         await weightInput.IsVisibleAsync();
         await weightInput.IsEditableAsync();
@@ -342,9 +346,9 @@ public class RegisterTests : PageTest
         await saveButton.IsVisibleAsync();
         await saveButton.IsEnabledAsync();
         await saveButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*onboarding/profile"));
-        
+
         var firstnameInput = Page.GetByTestId("firstnameInput");
         await firstnameInput.IsVisibleAsync();
         await firstnameInput.IsEditableAsync();
@@ -374,14 +378,14 @@ public class RegisterTests : PageTest
         await createProfileButton.IsVisibleAsync();
         await createProfileButton.IsEnabledAsync();
         await createProfileButton.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*home"));
 
         var profileIcon = Page.GetByTestId("profileIcon");
         await profileIcon.IsVisibleAsync();
         await profileIcon.IsEnabledAsync();
         await profileIcon.ClickAsync();
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*profile"));
 
         firstnameInput = Page.GetByTestId("firstnameInput");
@@ -409,13 +413,5 @@ public class RegisterTests : PageTest
         await targetDateInput.IsEditableAsync();
         await targetDateInput.IsEnabledAsync();
         await Expect(targetDateInput).ToHaveValueAsync(targetDate);
-        
-    }
-    
-    [TearDown]
-    public async Task TearDown()
-    {
-        await Helper.TriggerRebuild();
-        await Page.CloseAsync();
     }
 }

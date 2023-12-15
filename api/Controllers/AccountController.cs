@@ -1,5 +1,4 @@
-﻿using api.Filters;
-using infrastructure.DataModels;
+﻿using infrastructure.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using service;
@@ -35,13 +34,13 @@ public class AccountController(AccountService accountService, JwtService jwtServ
         {
             var token = jwtService.IssueToken(SessionData.FromUser(user));
             Response.Headers.Append("Authorization", $"Bearer {token}");
-            return Ok(new { user, token }); 
-        } catch (Exception e)
+            return Ok(new { user, token });
+        }
+        catch (Exception e)
         {
             Log.Error(e, "Error issuing token");
             return BadRequest("Error issuing token");
         }
-        
     }
 
     [HttpPost]
@@ -55,12 +54,12 @@ public class AccountController(AccountService accountService, JwtService jwtServ
         {
             var token = jwtService.IssueToken(SessionData.FromUser(user));
             Response.Headers.Append("Authorization", $"Bearer {token}");
-            return Ok(new { user, token }); 
-        } catch (Exception e)
+            return Ok(new { user, token });
+        }
+        catch (Exception e)
         {
             Log.Error(e, "Error issuing token");
             return BadRequest("Error issuing token");
         }
-        
     }
 }

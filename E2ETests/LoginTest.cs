@@ -3,7 +3,7 @@
 namespace E2ETests;
 
 [TestFixture]
-public class LoginTest :PageTest
+public class LoginTest : PageTest
 {
     [SetUp]
     public async Task Setup()
@@ -12,7 +12,13 @@ public class LoginTest :PageTest
         await Helper.InsertUser1();
 
         await Page.GotoAsync("http://localhost:4200");
+    }
 
+    [TearDown]
+    public async Task TearDown()
+    {
+        await Page.CloseAsync();
+        await Helper.TriggerRebuild();
     }
 
     [Test]
@@ -22,7 +28,7 @@ public class LoginTest :PageTest
         var loginButton = Page.GetByTestId("loginButton");
         await loginButton.IsVisibleAsync();
         await loginButton.IsDisabledAsync();
-        
+
         var usernameInput = Page.GetByTestId("usernameInput");
         await usernameInput.IsVisibleAsync();
         await usernameInput.FillAsync(Helper.User1.Username);
@@ -32,12 +38,5 @@ public class LoginTest :PageTest
         await loginButton.IsEnabledAsync();
         await loginButton.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*home"));
-    }
-    
-    [TearDown]
-    public async Task TearDown()
-    {
-        await Page.CloseAsync();
-        await Helper.TriggerRebuild();
     }
 }

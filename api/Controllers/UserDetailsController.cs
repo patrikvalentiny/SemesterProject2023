@@ -35,8 +35,9 @@ public class UserDetailsController(UserDetailsService userDetailsService) : Cont
         if (data == null) return Unauthorized();
         try
         {
-            return Ok(userDetailsService.AddUserDetails(model, data.UserId)); 
-        } catch (Exception e)
+            return Ok(userDetailsService.AddUserDetails(model, data.UserId));
+        }
+        catch (Exception e)
         {
             Log.Error(e, "Error adding user details");
             return BadRequest("Error adding user details");
@@ -51,7 +52,8 @@ public class UserDetailsController(UserDetailsService userDetailsService) : Cont
         try
         {
             return Ok(userDetailsService.UpdateUserDetails(model, data.UserId));
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Log.Error(e, "Error updating user details");
             return BadRequest("Error updating user details");

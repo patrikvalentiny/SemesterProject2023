@@ -1,8 +1,6 @@
 ﻿using apitests;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace E2ETests;
-
 
 [TestFixture]
 public class AuthTests : PageTest
@@ -12,9 +10,15 @@ public class AuthTests : PageTest
     {
         await Helper.TriggerRebuild();
         await Helper.InsertUser1();
-        
-        await Page.GotoAsync("http://localhost:4200");
 
+        await Page.GotoAsync("http://localhost:4200");
+    }
+
+    [TearDown]
+    public async Task TearDown()
+    {
+        await Helper.TriggerRebuild();
+        await Page.CloseAsync();
     }
 
     [Test]
@@ -26,12 +30,12 @@ public class AuthTests : PageTest
 
         await Expect(Page).ToHaveURLAsync("http://localhost:4200/login");
     }
-    
+
     [Test]
     public async Task TestLoggedInUserCantAccessLogin()
     {
         await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
-        
+
         var usernameInput = Page.GetByTestId("usernameInput");
         await usernameInput.IsVisibleAsync();
         await usernameInput.FillAsync(Helper.User1.Username);
@@ -42,16 +46,9 @@ public class AuthTests : PageTest
         await loginButton.IsEnabledAsync();
         await loginButton.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*home"));
-        
+
         await Page.GotoAsync("http://localhost:4200/login");
-        
+
         await Expect(Page).ToHaveURLAsync(new Regex(".*home"));
-    }
-    
-    [TearDown]
-    public async Task TearDown()
-    {
-        await Helper.TriggerRebuild();
-        await Page.CloseAsync();
     }
 }

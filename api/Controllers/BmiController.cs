@@ -24,9 +24,8 @@ public class BmiController(BmiService service) : Controller
             Log.Error(e, "Error getting latest BMI");
             return BadRequest("Error getting latest BMI");
         }
-        
     }
-    
+
     [HttpGet]
     public IActionResult GetAllBmi()
     {
@@ -41,6 +40,5 @@ public class BmiController(BmiService service) : Controller
             Log.Error(e, "Error getting all BMI");
             return BadRequest("Error getting all BMI");
         }
-        
     }
 }

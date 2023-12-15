@@ -2,18 +2,19 @@
 
 public class BmiTests
 {
-    private HttpClient _httpClient = null!;
     private const string Url = "http://localhost:5000/api/v1/bmi";
+    private HttpClient _httpClient = null!;
     private Faker<WeightInput> _weightFaker = null!;
+
     [SetUp]
     public async Task Setup()
     {
         await Helper.TriggerRebuild();
         await Helper.InsertUser1();
-        
+
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());
-        
+
         _weightFaker = new Faker<WeightInput>()
             .RuleFor(u => u.Weight, f => Math.Round(f.Random.Decimal(50, 200), 2))
             .RuleFor(u => u.Date, f => f.Date.Past().Date)
@@ -25,7 +26,8 @@ public class BmiTests
     {
         var weight = _weightFaker.Generate();
         await using var conn = Helper.OpenConnection();
-        await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
 
         const int height = 180;
         const decimal targetWeight = 80.0m;
@@ -43,17 +45,18 @@ public class BmiTests
         {
             throw new Exception(e.Message);
         }
-        
+
         BmiCommandModel responseObject;
         try
         {
-            responseObject = JsonConvert.DeserializeObject<BmiCommandModel>(await response.Content.ReadAsStringAsync())!;
+            responseObject =
+                JsonConvert.DeserializeObject<BmiCommandModel>(await response.Content.ReadAsStringAsync())!;
         }
         catch (Exception e)
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             var bmi = decimal.Round(weight.Weight / (height / 100m * height / 100m), 2);
@@ -79,17 +82,19 @@ public class BmiTests
     {
         await using var conn = Helper.OpenConnection();
         var weights = new List<WeightInput>();
-        for (int i = 0; i < 50; i++)
+        for (var i = 0; i < 50; i++)
         {
             WeightInput weight;
             do
             {
-                 weight = _weightFaker.Generate();
+                weight = _weightFaker.Generate();
             } while (weights.Exists(w => w.Date == weight.Date));
+
             weights.Add(weight);
-            await conn.ExecuteAsync("INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+            await conn.ExecuteAsync(
+                "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
         }
-        
+
         const int height = 180;
         const decimal targetWeight = 80.0m;
         await conn.ExecuteAsync(
@@ -106,17 +111,18 @@ public class BmiTests
         {
             throw new Exception(e.Message);
         }
-        
+
         BmiCommandModel[] responseObject;
         try
         {
-            responseObject = JsonConvert.DeserializeObject<BmiCommandModel[]>(await response.Content.ReadAsStringAsync())!;
+            responseObject =
+                JsonConvert.DeserializeObject<BmiCommandModel[]>(await response.Content.ReadAsStringAsync())!;
         }
         catch (Exception e)
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             var expected = weights.Select(w =>
@@ -134,12 +140,12 @@ public class BmiTests
                         _ => "Obese"
                     }
                 };
-            }); 
+            });
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().BeEquivalentTo(expected);
-        }   
+        }
     }
-    
+
     [TearDown]
     public async Task TearDown()
     {

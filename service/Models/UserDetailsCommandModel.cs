@@ -6,8 +6,8 @@ public class UserDetailsCommandModel
 {
     public string? Firstname { get; set; }
     public string? Lastname { get; set; }
-    [Required][Range(150, maximum:250)] public required int Height { get; set; }
-    [Required][Range(30, maximum:350)] public required decimal TargetWeight { get; set; }
+    [Required] [Range(150, 250)] public required int Height { get; set; }
+    [Required] [Range(30, 350)] public required decimal TargetWeight { get; set; }
     [Required] public DateTime? TargetDate { get; set; }
     public decimal? LossPerWeek { get; set; }
 }

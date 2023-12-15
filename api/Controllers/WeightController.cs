@@ -26,13 +26,13 @@ public class WeightController(WeightService weightService) : Controller
                 Date = weight.Date,
                 Difference = weight.Difference
             };
-            return Ok(weightDto); 
-        } catch (Exception e)
+            return Ok(weightDto);
+        }
+        catch (Exception e)
         {
             Log.Error(e, "Error adding weight");
             return BadRequest("Error adding weight");
         }
-        
     }
 
     [HttpPut]
@@ -50,7 +50,8 @@ public class WeightController(WeightService weightService) : Controller
                 Difference = weight.Difference
             };
             return Ok(weightDto);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Log.Error(e, "Error updating weight");
             return BadRequest("Error updating weight");
@@ -73,7 +74,8 @@ public class WeightController(WeightService weightService) : Controller
                 Difference = weight.Difference
             });
             return Ok(weightDtos);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Log.Error(e, "Error getting weights");
             return BadRequest("Error getting weights");
@@ -96,14 +98,14 @@ public class WeightController(WeightService weightService) : Controller
                 Difference = weight.Difference
             };
             return Ok(weightDto);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Log.Error(e, "Error deleting weight");
             return BadRequest("Error deleting weight");
         }
-        
     }
-    
+
     [HttpPost("multiple")]
     public IActionResult AddMultipleWeights([FromBody] WeightInputCommandModel[] weights)
     {
@@ -117,9 +119,10 @@ public class WeightController(WeightService weightService) : Controller
                 Date = weight.Date,
                 Difference = weight.Difference
             }));
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
-            Log.Error(e,"Error adding multiple weights");
+            Log.Error(e, "Error adding multiple weights");
             return BadRequest("Error adding multiple weights");
         }
     }
