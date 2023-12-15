@@ -17,10 +17,12 @@ Log.Information("Starting web application");
 builder.Host.UseSerilog();
 builder.Services.AddNpgsqlDataSource(
     Utilities.FormatConnectionString(
-        Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!),
-    dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
+        Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStrings__WebApiDatabase")!)
+    , dataSourceBuilder => dataSourceBuilder.EnableParameterLogging()
+);
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJwt();
+builder.Services.AddSingleton<CsvService>();
 builder.Services.AddSingleton<IRepository<User>, UserRepository>();
 builder.Services.AddSingleton<IRepository<UserDetails>, UserDetailsRepository>();
 builder.Services.AddSingleton<UserDetailsService>();

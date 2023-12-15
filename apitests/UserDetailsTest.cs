@@ -1,39 +1,42 @@
-﻿
-
-using System.Net;
+﻿using System.Net;
 
 namespace apitests;
 
 public class UserDetailsTest
 {
-    private HttpClient _httpClient = null!;
-    private Faker<UserDetails> _faker = null!;
-    [SetUp]
-    public void Setup()
+    public enum TestCases
     {
-        Helper.TriggerRebuild();
-        Helper.InsertUser1();
-        
+        Height,
+        TargetWeight
+    }
+
+    private Faker<UserDetailsCommandModel> _faker = null!;
+    private HttpClient _httpClient = null!;
+
+    [SetUp]
+    public async Task Setup()
+    {
+        await Helper.TriggerRebuild();
+        await Helper.InsertUser1();
+
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());
-        
-        _faker = new Faker<UserDetails>()
-            .RuleFor(u => u.Height, f => f.Random.Int(150, 250))
-            .RuleFor(u => u.TargetWeight, f => Math.Round(f.Random.Decimal(50, 200), 2))
-            .RuleFor(u => u.TargetDate, f => f.Date.Future().Date.OrNull(f, 0.2f))
-            .RuleFor(u => u.LossPerWeek, f => Math.Round(f.Random.Decimal(0.1m, 5.0m), 2).OrNull(f, 0.2f))
-            .RuleFor(u => u.Firstname, f => f.Person.FirstName.OrNull(f, 0.2f))
-            .RuleFor(u => u.Lastname, f => f.Person.LastName.OrNull(f, 0.2f))
-            .RuleFor(u => u.UserId, f => 1);
-        
-        
+
+        _faker = new Faker<UserDetailsCommandModel>()
+                .RuleFor(u => u.Height, f => f.Random.Int(150, 250))
+                .RuleFor(u => u.TargetWeight, f => Math.Round(f.Random.Decimal(50, 200), 2))
+                .RuleFor(u => u.TargetDate, f => f.Date.Future().Date)
+                .RuleFor(u => u.LossPerWeek, f => Math.Round(f.Random.Decimal(0.1m, 5.0m), 2).OrNull(f, 0.2f))
+                .RuleFor(u => u.Firstname, f => f.Person.FirstName.OrNull(f, 0.2f))
+                .RuleFor(u => u.Lastname, f => f.Person.LastName.OrNull(f, 0.2f))
+            ;
     }
-    
+
     [Test]
     public async Task TestAddUserDetails()
     {
         var userDetails = _faker.Generate();
-        
+
         HttpResponseMessage response;
         try
         {
@@ -44,7 +47,7 @@ public class UserDetailsTest
         {
             throw new Exception(e.Message);
         }
-        
+
         UserDetails? responseObject;
         try
         {
@@ -54,38 +57,28 @@ public class UserDetailsTest
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Should().BeEquivalentTo(userDetails);
+            userDetails.Should().BeEquivalentTo(responseObject, options => options.Excluding(u => u!.UserId));
         }
     }
 
-    public enum TestCases
-    {
-        Height,
-        TargetWeight
-    }
-    
     [TestCase(TestCases.Height, TestName = "TestMissingParameterTargetWeight")]
     [TestCase(TestCases.TargetWeight, TestName = "TestMissingParameterHeight")]
     public async Task TestMissingParameters(TestCases testCases)
     {
         var userDetails = _faker.Generate();
-        
+
         HttpResponseMessage response;
         try
         {
             object body;
             if (testCases == TestCases.Height)
-            {
-                body = new {userDetails.TargetWeight};
-            }
+                body = new { userDetails.TargetWeight };
             else
-            {
-                body = new {userDetails.Height};
-            }
+                body = new { userDetails.Height };
             response = await _httpClient.PostAsJsonAsync("http://localhost:5000/api/v1/profile", body);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
         }
@@ -93,14 +86,14 @@ public class UserDetailsTest
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeFalse();
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
-    
+
     [TestCase]
     [TestCase(5000, 100, TestName = "TestInvalidParametersHeightMax")]
     [TestCase(25, 100, TestName = "TestInvalidParametersTargetHeightMin")]
@@ -111,7 +104,7 @@ public class UserDetailsTest
         var userDetails = _faker.Generate();
         userDetails.Height = height;
         userDetails.TargetWeight = targetWeight;
-        
+
         HttpResponseMessage response;
         try
         {
@@ -122,21 +115,23 @@ public class UserDetailsTest
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeFalse();
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
+
     [Test]
     public async Task TestGetUserDetails()
     {
         var userDetails = _faker.Generate();
 
-        const string sql = $@"INSERT INTO weight_tracker.user_details (user_id, firstname, lastname, height_cm, target_weight_kg, target_date, loss_per_week) 
+        const string sql =
+            $@"INSERT INTO weight_tracker.user_details (user_id, firstname, lastname, height_cm, target_weight_kg, target_date, loss_per_week) 
         VALUES (
-                @{nameof(UserDetails.UserId)},
+                1,
                 @{nameof(UserDetails.Firstname)},
                 @{nameof(UserDetails.Lastname)},
                 @{nameof(UserDetails.Height)},
@@ -146,7 +141,7 @@ public class UserDetailsTest
         );";
         await using var conn = Helper.OpenConnection();
         await conn.ExecuteAsync(sql, userDetails);
-        
+
         HttpResponseMessage response;
         try
         {
@@ -157,7 +152,7 @@ public class UserDetailsTest
         {
             throw new Exception(e.Message);
         }
-        
+
         UserDetails? responseObject;
         try
         {
@@ -167,7 +162,7 @@ public class UserDetailsTest
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
@@ -182,7 +177,7 @@ public class UserDetailsTest
 
         const string sql =
             $@"INSERT INTO weight_tracker.user_details (user_id, firstname, lastname, height_cm, target_weight_kg, target_date, loss_per_week) VALUES (
-                @{nameof(UserDetails.UserId)},
+                1,
                 @{nameof(UserDetails.Firstname)},
                 @{nameof(UserDetails.Lastname)},
                 @{nameof(UserDetails.Height)},
@@ -192,10 +187,10 @@ public class UserDetailsTest
         );";
         await using var conn = Helper.OpenConnection();
         await conn.ExecuteAsync(sql, userDetails);
-        
-        
+
+
         userDetails = _faker.Generate();
-        
+
         HttpResponseMessage response;
         try
         {
@@ -206,7 +201,7 @@ public class UserDetailsTest
         {
             throw new Exception(e.Message);
         }
-        
+
         UserDetails? responseObject;
         try
         {
@@ -216,18 +211,18 @@ public class UserDetailsTest
         {
             throw new Exception(e.Message);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Should().BeEquivalentTo(userDetails);
+            userDetails.Should().BeEquivalentTo(responseObject, options => options.Excluding(u => u!.UserId));
         }
     }
-    
+
     [TearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
         _httpClient.Dispose();
     }
 }

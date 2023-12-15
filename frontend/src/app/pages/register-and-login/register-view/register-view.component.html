@@ -1,9 +1,9 @@
 <div class="hero min-h-screen w-screen bg-base-200">
   <div class="hero-content flex-col lg:flex-row-reverse lg:gap-10">
     <div class="text-center lg:text-left">
-      <h1 class="text-5xl font-bold">Register now!</h1>
-      <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-        quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+      <h1 class="text-5xl font-bold whitespace-nowrap">Register now!</h1>
+      <!--      <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem-->
+      <!--        quasi. In deleniti eaque aut repudiandae et a id nisi.</p>-->
     </div>
     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
       <form [formGroup]="registerForm" class="card-body">
@@ -11,36 +11,41 @@
           <label class="label">
             <span class="label-text">* Email</span>
           </label>
-          <input class="input input-bordered" formControlName="email" placeholder="Email" autocomplete="email" type="email"/>
+          <input autocomplete="email" class="input input-bordered" data-testid="emailInput" formControlName="email"
+                 placeholder="Email" type="email"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Username</span>
           </label>
-          <input class="input input-bordered" formControlName="username" autocomplete="off" placeholder="Username"/>
+          <input autocomplete="off" class="input input-bordered" data-testid="usernameInput" formControlName="username"
+                 placeholder="Username"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Password</span>
           </label>
-          <input class="input input-bordered" formControlName="password" autocomplete="new-password" placeholder="Password 4+ chars"
+          <input autocomplete="new-password" class="input input-bordered" data-testid="passwordInput"
+                 formControlName="password" placeholder="Password 4+ chars"
                  type="password"/>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">* Confirm Password</span>
           </label>
-          <input [ngClass]="passwordMatching ? '' :'input-error'" class="input input-bordered"
+          <input [ngClass]="{'input-error':!passwordMatching}" autocomplete="new-password"
+                 class="input input-bordered"
+                 data-testid="confirmPasswordInput"
                  formControlName="confirmPassword"
-                 autocomplete="new-password"
                  placeholder="Confirm Password" type="password"/>
         </div>
 
         <div class="form-control mt-6">
-          <button (click)="register()" [disabled]="registerForm.invalid" class="btn btn-primary">Register
+          <button (click)="register()" [disabled]="registerForm.invalid" class="btn btn-primary"
+                  data-testid="registerButton">Register
           </button>
         </div>
-        <a href="../login">
+        <a data-testid="loginLink" href="../login">
           <div class="text-center pt-4">
             <h3 class="text-xl">Already have an account?</h3>
             <p class="py-0.5">Login here</p>

@@ -1,8 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Net;
-using Bogus.DataSets;
-using Microsoft.AspNetCore.Routing;
-using NUnit.Framework.Internal;
+﻿using System.Net;
 
 namespace apitests;
 
@@ -13,10 +9,10 @@ public class StatisticsTests
     private HttpClient _httpClient = null!;
 
     [SetUp]
-    public void Setup()
+    public async Task Setup()
     {
-        Helper.TriggerRebuild();
-        Helper.InsertUser1();
+        await Helper.TriggerRebuild();
+        await Helper.InsertUser1();
 
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());
@@ -509,10 +505,8 @@ public class StatisticsTests
             }
         };
         foreach (var weight in weights)
-        {
             await conn.ExecuteAsync(
                 "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
-        }
 
         const int height = 180;
         await conn.ExecuteAsync(
@@ -543,7 +537,8 @@ public class StatisticsTests
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Should().Be(decimal.Round((startWeight - currentWeight) / (startWeight - targetWeight) * 100, 2));
+            responseObject.Should()
+                .Be(decimal.Round((startWeight - currentWeight) / (startWeight - targetWeight) * 100, 2));
         }
     }
 
@@ -597,7 +592,8 @@ public class StatisticsTests
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Should().Be(startDate.Date.AddDays(decimal.ToDouble((startWeight - targetWeight) / averageLoss))); 
+            responseObject.Should()
+                .Be(startDate.Date.AddDays(decimal.ToDouble((startWeight - targetWeight) / averageLoss)));
         }
     }
 
@@ -650,16 +646,17 @@ public class StatisticsTests
 
         using (new AssertionScope())
         {
-            var expected = (startWeight - inputSize * averageLoss) / (height / 100m * height / 100m) - startWeight / (height / 100m * height / 100m);
+            var expected = (startWeight - inputSize * averageLoss) / (height / 100m * height / 100m) -
+                           startWeight / (height / 100m * height / 100m);
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().Be(decimal.Round(expected, 2));
         }
     }
 
     [TearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        Helper.TriggerRebuild();
+        await Helper.TriggerRebuild();
         _httpClient.Dispose();
     }
 }

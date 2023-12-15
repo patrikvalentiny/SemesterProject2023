@@ -1,0 +1,42 @@
+<div class="flex flex-col items-center justify-start gap-4 h-full lg:py-8 py-4 lg:px-4 px-2">
+  <div class="flex flex-col gap-2 items-start justify-center w-full h-2/5">
+    <div class="flex flex-row items-center justify-between w-full h-full">
+      <div class="flex flex-col gap-2 items-start justify-center w-full h-full">
+        <h1 class="text-2xl font-bold">Paste data from excel here!</h1>
+        <p>Paste data without header in order Date in format (yyyy/mm/dd) and Weight in kg</p>
+      </div>
+      <button (click)="downloadCsv()" class="btn btn-accent ">Export your data</button>
+    </div>
+    <textarea [formControl]="dataInput" class="textarea textarea-bordered w-full h-full no-scrollbar"
+              data-testid="dataInputArea"
+              placeholder="Paste data here"></textarea>
+    <button (click)="parseData()" [disabled]="dataInput.invalid" class="btn btn-secondary lg:w-48 w-full ml-auto"
+            data-testid="parseButton">Parse
+    </button>
+  </div>
+
+  <div class="flex flex-col gap-2 items-center justify-between w-full h-full overflow-y-auto ">
+    <div class="w-full h-full overflow-y-auto overflow-x-hidden">
+      <table class="table table-xs table-pin-cols table-pin-rows bg-base-100 h-full p-2">
+        <thead class="h-12">
+        <tr>
+          <th class="w-24">Date</th>
+          <th>Weight</th>
+        </tr>
+        </thead>
+        <tbody data-testid="tableBody">
+          @for (weight of weights;track weight.date) {
+            <tr>
+              <th>{{ weight.date | date:"yyyy-MM-dd" }}</th>
+              <td>{{ weight.weight }}kg</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <button (click)="uploadData()" [disabled]="weights.length === 0" class="btn btn-primary lg:w-48 w-full ml-auto"
+            data-testid="uploadDataButton">Upload
+    </button>
+
+  </div>
+</div>

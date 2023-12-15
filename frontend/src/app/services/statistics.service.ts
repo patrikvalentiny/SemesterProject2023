@@ -7,10 +7,11 @@ import {WeightDto} from "../dtos/weight-dto";
 @Injectable({
   providedIn: 'root'
 })
-export class StatisticsService implements OnInit{
-  http: HttpClient = inject(HttpClient);
+export class StatisticsService implements OnInit {
+  private readonly http: HttpClient = inject(HttpClient);
 
-  constructor() { }
+  constructor() {
+  }
 
   async ngOnInit() {
   }
@@ -87,7 +88,7 @@ export class StatisticsService implements OnInit{
     }
   }
 
-  async getBmiChange(){
+  async getBmiChange() {
     try {
       const call = this.http.get<number>(environment.baseUrl + "/statistics/bmiChange");
       return await firstValueFrom<number>(call);
@@ -96,7 +97,7 @@ export class StatisticsService implements OnInit{
     }
   }
 
-  async getAverageDailyLoss(){
+  async getAverageDailyLoss() {
     try {
       const call = this.http.get<number>(environment.baseUrl + "/statistics/averageLoss");
       return await firstValueFrom<number>(call);
@@ -105,7 +106,7 @@ export class StatisticsService implements OnInit{
     }
   }
 
-  async getAverageWeeklyLoss(){
+  async getAverageWeeklyLoss() {
     try {
       const call = this.http.get<number>(environment.baseUrl + "/statistics/averageLossPerWeek");
       return await firstValueFrom<number>(call);

@@ -1,4 +1,4 @@
 export interface WeightInput {
-    weight: number;
-    date: Date;
+  weight: number;
+  date: Date;
 }

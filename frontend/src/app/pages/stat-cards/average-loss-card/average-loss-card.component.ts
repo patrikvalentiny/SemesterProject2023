@@ -6,15 +6,21 @@ import {StatisticsService} from "../../../services/statistics.service";
   templateUrl: './average-loss-card.component.html',
   styleUrl: './average-loss-card.component.css'
 })
-export class AverageLossCardComponent  implements OnInit{
-  private readonly statService: StatisticsService = inject(StatisticsService);
+export class AverageLossCardComponent implements OnInit {
   averageWeeklyLoss: number = 0.0;
   averageDailyLoss: number = 0.0;
+  private readonly statService: StatisticsService = inject(StatisticsService);
 
   async ngOnInit() {
-    const averageLoss = await this.statService.getAverageDailyLoss();
-    const averageLossWeekly = await this.statService.getAverageWeeklyLoss();
-    this.averageDailyLoss = averageLoss!;
-    this.averageWeeklyLoss = averageLossWeekly!;
+    try {
+      const averageLoss = await this.statService.getAverageDailyLoss();
+      const averageLossWeekly = await this.statService.getAverageWeeklyLoss();
+      this.averageDailyLoss = averageLoss!;
+      this.averageWeeklyLoss = averageLossWeekly!;
+    } catch (e) {
+      //caught by interceptor
+      return;
+    }
+
   }
 }

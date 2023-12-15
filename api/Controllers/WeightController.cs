@@ -1,7 +1,7 @@
 ﻿using api.Dtos;
 using api.Filters;
-using infrastructure.DataModels;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using service.Models;
 using service.Services;
 
@@ -17,14 +17,22 @@ public class WeightController(WeightService weightService) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        var weight = weightService.AddWeight(model, data.UserId);
-        var weightDto = new WeightDto
+        try
         {
-            Weight = weight.Weight,
-            Date = weight.Date,
-            Difference = weight.Difference
-        };
-        return Ok(weightDto);
+            var weight = weightService.AddWeight(model, data.UserId);
+            var weightDto = new WeightDto
+            {
+                Weight = weight.Weight,
+                Date = weight.Date,
+                Difference = weight.Difference
+            };
+            return Ok(weightDto);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error adding weight");
+            return BadRequest("Error adding weight");
+        }
     }
 
     [HttpPut]
@@ -32,14 +40,22 @@ public class WeightController(WeightService weightService) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        var weight = weightService.UpdateWeight(model, data.UserId);
-        var weightDto = new WeightDto
+        try
         {
-            Weight = weight.Weight,
-            Date = weight.Date,
-            Difference = weight.Difference
-        };
-        return Ok(weightDto);
+            var weight = weightService.UpdateWeight(model, data.UserId);
+            var weightDto = new WeightDto
+            {
+                Weight = weight.Weight,
+                Date = weight.Date,
+                Difference = weight.Difference
+            };
+            return Ok(weightDto);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error updating weight");
+            return BadRequest("Error updating weight");
+        }
     }
 
 
@@ -48,14 +64,22 @@ public class WeightController(WeightService weightService) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        var weights = weightService.GetAllWeightForUser(data.UserId);
-        var weightDtos = weights.Select(weight => new WeightDto
+        try
         {
-            Weight = weight.Weight,
-            Date = weight.Date,
-            Difference = weight.Difference
-        });
-        return Ok(weightDtos);
+            var weights = weightService.GetAllWeightForUser(data.UserId);
+            var weightDtos = weights.Select(weight => new WeightDto
+            {
+                Weight = weight.Weight,
+                Date = weight.Date,
+                Difference = weight.Difference
+            });
+            return Ok(weightDtos);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error getting weights");
+            return BadRequest("Error getting weights");
+        }
     }
 
 
@@ -64,13 +88,42 @@ public class WeightController(WeightService weightService) : Controller
     {
         var data = HttpContext.GetSessionData();
         if (data == null) return Unauthorized();
-        var weight = weightService.DeleteWeight(date, data.UserId);
-        var weightDto = new WeightDto
+        try
         {
-            Weight = weight.Weight,
-            Date = weight.Date,
-            Difference = weight.Difference
-        };
-        return Ok(weightDto);
+            var weight = weightService.DeleteWeight(date, data.UserId);
+            var weightDto = new WeightDto
+            {
+                Weight = weight.Weight,
+                Date = weight.Date,
+                Difference = weight.Difference
+            };
+            return Ok(weightDto);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error deleting weight");
+            return BadRequest("Error deleting weight");
+        }
+    }
+
+    [HttpPost("multiple")]
+    public IActionResult AddMultipleWeights([FromBody] WeightInputCommandModel[] weights)
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(weightService.AddMultipleWeights(weights, data.UserId).Select(weight => new WeightDto
+            {
+                Weight = weight.Weight,
+                Date = weight.Date,
+                Difference = weight.Difference
+            }));
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error adding multiple weights");
+            return BadRequest("Error adding multiple weights");
+        }
     }
 }

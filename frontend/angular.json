@@ -33,7 +33,10 @@
               "node_modules/apexcharts/dist/apexcharts.min.js"
             ],
             "serviceWorker": true,
-            "ngswConfigPath": "ngsw-config.json"
+            "ngswConfigPath": "ngsw-config.json",
+            "allowedCommonJsDependencies": [
+              "apexcharts"
+            ]
           },
           "configurations": {
             "production": {

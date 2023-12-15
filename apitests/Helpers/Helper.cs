@@ -1,13 +1,14 @@
 ﻿using System.Data.Common;
-using Dapper;
+using System.Security.Cryptography;
+using System.Text;
 using infrastructure;
+using Konscious.Security.Cryptography;
 using Npgsql;
 
 namespace apitests;
 
 public static class Helper
 {
-    public static int UserId => 1;
     private static readonly DbDataSource DataSource;
 
     private static readonly string RebuildScript = @"
@@ -39,7 +40,7 @@ create table weight_tracker.passwords
 create table weight_tracker.weights
 (
     weight  real      not null,
-    date    timestamp not null,
+    date    date not null,
     user_id integer   not null
         constraint user_weights_users_id_fk
             references weight_tracker.users
@@ -63,6 +64,15 @@ create table weight_tracker.user_details
 );
 ";
 
+    public static readonly User User1 = new()
+    {
+        Id = 1,
+        Username = "testUserHelper",
+        Email = "testUserHelper@test.test"
+    };
+
+    public static readonly string UserPassword = "testPasswordHelper";
+
     static Helper()
     {
         DataSource =
@@ -71,12 +81,14 @@ create table weight_tracker.user_details
         DataSource.OpenConnection().Close();
     }
 
-    public static void TriggerRebuild()
+    public static int UserId => 1;
+
+    public static async Task TriggerRebuild()
     {
-        using var conn = DataSource.OpenConnection();
+        await using var conn = DataSource.OpenConnection();
         try
         {
-            conn.Execute(RebuildScript);
+            await conn.ExecuteAsync(RebuildScript);
         }
         catch (Exception e)
         {
@@ -94,11 +106,42 @@ create table weight_tracker.user_details
         return Environment.GetEnvironmentVariable("ASPNETCORE_TestJwt");
     }
 
-    public static void InsertUser1()
+    public static async Task InsertUser1()
     {
-        const string sql =
-            "INSERT INTO weight_tracker.users (id, username, email) VALUES (1, 'testUserHelper', 'testUserHelper@test.test')";
-        using var conn = Helper.OpenConnection();
-        conn.Execute(sql);
+        var sql =
+            "INSERT INTO weight_tracker.users (id, username, email) VALUES (@Id, @Username, @Email)";
+
+        await using var conn = OpenConnection();
+        try
+        {
+            await conn.ExecuteAsync(sql, User1);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(@"THERE WAS AN ERROR INSERTING USER 1", e);
+        }
+
+        sql =
+            "insert into weight_tracker.passwords (user_id, password_hash, salt, algorithm) values (@Id, @Password, @Salt, 'argon2id')";
+        using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(UserPassword));
+        hashAlgo.Salt = RandomNumberGenerator.GetBytes(128);
+        hashAlgo.MemorySize = 12288;
+        hashAlgo.Iterations = 3;
+        hashAlgo.DegreeOfParallelism = 1;
+        try
+        {
+            await conn.ExecuteAsync(sql, new
+            {
+                User1.Id,
+                Password = Convert.ToBase64String(await hashAlgo.GetBytesAsync(256)),
+                Salt = Convert.ToBase64String(hashAlgo.Salt)
+            });
+        }
+        catch (Exception e)
+        {
+            throw new Exception(@"THERE WAS AN ERROR INSERTING USER 1 PASSWORD", e);
+        }
+
+        await conn.CloseAsync();
     }
 }
