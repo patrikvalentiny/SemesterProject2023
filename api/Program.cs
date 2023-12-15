@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment())
 
 var allowedOrigins = app.Environment.IsDevelopment()
     ? new List<string> { "http://localhost:4200", "http://localhost:5000" }
-    : new List<string> { "https://weighttrackerpatval.azurewebsites.net", "https://semesterproject2023-7161a.web.app" };
+    : new List<string> { "https://weighttrackerpatval.azurewebsites.net", "https://semesterproject2023-7161a.web.app", "https://patrikvalentiny.github.io/WeightTracker" };
 app.UseCors(policyBuilder => policyBuilder.SetIsOriginAllowed(origin => allowedOrigins.Contains(origin))
     .AllowAnyMethod()
     .AllowAnyHeader());
