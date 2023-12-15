@@ -1,10 +1,18 @@
 <div class="flex flex-col items-center justify-start gap-4 h-full lg:py-8 py-4 lg:px-4 px-2">
   <div class="flex flex-col gap-2 items-start justify-center w-full h-2/5">
-    <h1 class="text-2xl font-bold">Paste data from excel here!</h1>
-    <p>Paste data without header in order Date in format (yyyy/mm/dd) and Weight in kg</p>
-    <textarea data-testid="dataInputArea" [formControl]="dataInput" class="textarea textarea-bordered w-full h-full no-scrollbar"
+    <div class="flex flex-row items-center justify-between w-full h-full">
+      <div class="flex flex-col gap-2 items-start justify-center w-full h-full">
+        <h1 class="text-2xl font-bold">Paste data from excel here!</h1>
+        <p>Paste data without header in order Date in format (yyyy/mm/dd) and Weight in kg</p>
+      </div>
+      <button class="btn btn-accent " (click)="downloadCsv()">Export your data</button>
+    </div>
+    <textarea data-testid="dataInputArea" [formControl]="dataInput"
+              class="textarea textarea-bordered w-full h-full no-scrollbar"
               placeholder="Paste data here"></textarea>
-    <button data-testid="parseButton" class="btn btn-secondary lg:w-48 w-full ml-auto" (click)="parseData()" [disabled]="dataInput.invalid">Parse</button>
+    <button data-testid="parseButton" class="btn btn-secondary lg:w-48 w-full ml-auto" (click)="parseData()"
+            [disabled]="dataInput.invalid">Parse
+    </button>
   </div>
 
   <div class="flex flex-col gap-2 items-center justify-between w-full h-full overflow-y-auto ">
@@ -26,7 +34,9 @@
         </tbody>
       </table>
     </div>
-    <button data-testid="uploadDataButton" class="btn btn-primary lg:w-48 w-full ml-auto" (click)="uploadData()" [disabled]="weights.length === 0">Upload</button>
+    <button data-testid="uploadDataButton" class="btn btn-primary lg:w-48 w-full ml-auto" (click)="uploadData()"
+            [disabled]="weights.length === 0">Upload
+    </button>
 
   </div>
 </div>

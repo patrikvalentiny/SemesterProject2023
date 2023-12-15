@@ -56,4 +56,12 @@ export class PasteDataFromExcelComponent {
     }
 
   }
+
+  async downloadCsv(){
+    try {
+      await this.weightService.getWeightsCsv();
+    } catch (e) {
+      this.toastService.error("Error downloading csv")
+    }
+  }
 }

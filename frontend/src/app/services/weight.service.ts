@@ -6,7 +6,7 @@ import {HotToastService} from "@ngneat/hot-toast";
 import {WeightDto} from "../dtos/weight-dto";
 import {Bmi} from "../dtos/bmi";
 import {WeightInput} from "../dtos/weight-input";
-
+import * as FileSaver from "file-saver-es";
 @Injectable({
   providedIn: 'root'
 })
@@ -99,6 +99,17 @@ export class WeightService {
     try {
       const call = this.httpClient.post<WeightDto[]>(environment.baseUrl + "/weight/multiple", weights);
       await firstValueFrom<WeightDto[]>(call);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getWeightsCsv() {
+    try {
+      const call = this.httpClient.get(environment.baseUrl + "/csv", {responseType: "blob"});
+      const response= await firstValueFrom<Blob>(call);
+      const file = new File([response], "weights.csv", {type: "text/csv;charset=utf-8"});
+      FileSaver.saveAs(file);
     } catch (e) {
       throw e;
     }
