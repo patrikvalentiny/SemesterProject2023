@@ -1,4 +1,5 @@
-﻿using infrastructure.DataModels;
+﻿using api.Filters;
+using infrastructure.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using service;
@@ -62,4 +63,23 @@ public class AccountController(AccountService accountService, JwtService jwtServ
             return BadRequest("Error issuing token");
         }
     }
+    
+    [RequireAuthentication]
+    [HttpDelete]
+    public IActionResult DeleteUser()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            
+            return Ok(accountService.DeleteUser(data.UserId));
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error deleting user");
+            return BadRequest("Error deleting user");
+        }
+    }
+    
 }

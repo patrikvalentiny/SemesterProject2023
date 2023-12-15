@@ -219,6 +219,38 @@ public class UserDetailsTest
         }
     }
 
+
+    [Test]
+    public async Task TestDeleteUser()
+    {
+        var user = Helper.User1;
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.DeleteAsync("http://localhost:5000/api/v1/account");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        User? responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        using (new AssertionScope())
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            user.Should().BeEquivalentTo(responseObject);
+        }
+    }
     [TearDown]
     public async Task TearDown()
     {

@@ -27,6 +27,7 @@ export class AccountDetailsComponent implements OnInit {
   private readonly userService = inject(UserDetailsService);
   private readonly toast = inject(HotToastService);
 
+
   constructor() {
   }
 
@@ -55,4 +56,13 @@ export class AccountDetailsComponent implements OnInit {
     }
 
   }
+
+  async deleteAccount(){
+    try {
+      await this.userService.deleteProfile();
+      this.toast.success("Account deleted")
+    } catch (e) {
+      return;
+    }
+  };
 }
