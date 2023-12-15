@@ -1,7 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../../services/weight.service";
 import {WeightDto} from "../../../dtos/weight-dto";
-import {startWith} from "rxjs";
 
 @Component({
   selector: 'app-weights-table',
@@ -29,4 +28,7 @@ export class WeightsTableComponent implements OnInit {
   setColStart(weight: WeightDto) {
     return "col-start-" + (this.days.indexOf(new Date(weight.date).toLocaleDateString("en-US", {weekday: "short"})) + 1);
   }
+
+  protected readonly Array = Array;
+  protected readonly length = length;
 }

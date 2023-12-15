@@ -134,12 +134,13 @@ export class TrendLineChartComponent implements OnInit {
     await this.userService.getProfile();
 
     const targetWeight = this.userService.user!.targetWeight;
-    const targetDate = this.userService.user!.targetDate;
+    const targetDate = new Date(this.userService.user!.targetDate);
 
     const weights = await this.statService.getTrend();
     const weightNums = weights.map(w => w.weight);
 
     const startDate = new Date(weights[0].date);
+    const today = new Date();
     const endDate = new Date(weights.at(-1)!.date);
     const maxWeight = Math.max(...weightNums) + 2;
     let minWeight = Math.min(...weightNums) - 2;

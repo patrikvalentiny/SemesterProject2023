@@ -9,19 +9,28 @@
   <div class="w-full h-full overflow-y-auto rounded-b-box no-scrollbar snap-y bg-transparent">
     <div class="grid grid-cols-7 gap-0.5 my-2">
 
-@for(weight of weightService.weights; track weight.date){
-  <div (click)="setEditingWeight(weight.date)"
-       [ngClass]="{
+      @if (weightService.weights.length === 0) {
+        <div class="col-span-7 text-center text-sm text-neutral">No weights recorded</div>
+      }
+<!--      without this padding the grid will not work-->
+      @if (weightService.weights.length < 7) {
+        @for (i of Array.from({length: (7 - weightService.weights.length)});track i) {
+          <div class="col-span-1"></div>
+        }
+      }
+      @for (weight of weightService.weights;track weight.date) {
+        <div (click)="setEditingWeight(weight.date)"
+             [ngClass]="{
                  'bg-neutral':weight.date === selectedDate,
                   }"
-       class=" bg-base-100 stat place-items-center w-full rounded-md snap-start px-0 hover:bg-base-300 col-span-1 {{setColStart(weight)}}">
-    <div class="stat-title lg:text-lg text-xs">{{ weight.date.toString() | date : 'd/M/yy' }}</div>
-    <div class="stat-value lg:text-2xl text-base">{{ weight.weight.toFixed(1) }}</div>
-    <div [ngClass]="(weight.difference ?? 0) > 0 ? 'text-error' : 'text-success'" class="stat-desc text-xs">
-      {{ weight.difference?.toFixed(1) ?? 0 }}kg
-    </div>
-  </div>
-}
+             class=" bg-base-100 stat place-items-center w-full rounded-md snap-start px-0 hover:bg-base-300 col-span-1 {{setColStart(weight)}}">
+          <div class="stat-title lg:text-lg text-xs">{{ weight.date.toString() | date : 'd/M/yy' }}</div>
+          <div class="stat-value lg:text-2xl text-base">{{ weight.weight.toFixed(1) }}</div>
+          <div [ngClass]="(weight.difference ?? 0) > 0 ? 'text-error' : 'text-success'" class="stat-desc text-xs">
+            {{ weight.difference?.toFixed(1) ?? 0 }}kg
+          </div>
+        </div>
+      }
 
 
     </div>
