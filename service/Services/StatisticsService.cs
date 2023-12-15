@@ -25,6 +25,7 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         
         // get target date
         var targetDate = user.TargetDate ?? newestWeightInput.Date; // if target date is null, use last input date
+        targetDate = targetDate < DateTime.Today.Date ? DateTime.Today.Date.AddDays(30) : targetDate; // if target date is in the past, use today
         // create list of dates from first date to target date
         var dates = new List<DateTime>();
         for (var dt = oldestWeightInput.Date; dt <= targetDate; dt = dt.AddDays(1))
@@ -122,7 +123,7 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
     public WeightInput? GetPredictedWeightOnTargetDate(int dataUserId)
     {
         var currentTrend = GetCurrentTrend(dataUserId).ToList();
-        if (currentTrend.Count == 0) throw new Exception("No weights found");
+        if (currentTrend.Count == 0) throw new Exception("No trend weights found");
         var user = userDetailsRepository.GetById(dataUserId);
         if (user == null) throw new Exception("User details not found");
         if (currentTrend.Count == 1) return currentTrend.First();

@@ -140,7 +140,7 @@ export class TrendLineChartComponent implements OnInit {
     const weightNums = weights.map(w => w.weight);
 
     const startDate = new Date(weights[0].date);
-    const endDate = new Date(targetDate);
+    const endDate = new Date(weights.at(-1)!.date);
     const maxWeight = Math.max(...weightNums) + 2;
     let minWeight = Math.min(...weightNums) - 2;
     minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;

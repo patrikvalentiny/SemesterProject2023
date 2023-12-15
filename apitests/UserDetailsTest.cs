@@ -7,7 +7,7 @@ namespace apitests;
 public class UserDetailsTest
 {
     private HttpClient _httpClient = null!;
-    private Faker<UserDetails> _faker = null!;
+    private Faker<UserDetailsCommandModel> _faker = null!;
     [SetUp]
     public async Task Setup()
     {
@@ -17,14 +17,14 @@ public class UserDetailsTest
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GetToken());
         
-        _faker = new Faker<UserDetails>()
+        _faker = new Faker<UserDetailsCommandModel>()
             .RuleFor(u => u.Height, f => f.Random.Int(150, 250))
             .RuleFor(u => u.TargetWeight, f => Math.Round(f.Random.Decimal(50, 200), 2))
             .RuleFor(u => u.TargetDate, f => f.Date.Future().Date.OrNull(f, 0.2f))
             .RuleFor(u => u.LossPerWeek, f => Math.Round(f.Random.Decimal(0.1m, 5.0m), 2).OrNull(f, 0.2f))
             .RuleFor(u => u.Firstname, f => f.Person.FirstName.OrNull(f, 0.2f))
             .RuleFor(u => u.Lastname, f => f.Person.LastName.OrNull(f, 0.2f))
-            .RuleFor(u => u.UserId, f => 1);
+            ;
         
         
     }
@@ -58,7 +58,7 @@ public class UserDetailsTest
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Should().BeEquivalentTo(userDetails);
+            userDetails.Should().BeEquivalentTo(responseObject, options => options.Excluding(u => u!.UserId));
         }
     }
 
@@ -136,7 +136,7 @@ public class UserDetailsTest
 
         const string sql = $@"INSERT INTO weight_tracker.user_details (user_id, firstname, lastname, height_cm, target_weight_kg, target_date, loss_per_week) 
         VALUES (
-                @{nameof(UserDetails.UserId)},
+                1,
                 @{nameof(UserDetails.Firstname)},
                 @{nameof(UserDetails.Lastname)},
                 @{nameof(UserDetails.Height)},
@@ -182,7 +182,7 @@ public class UserDetailsTest
 
         const string sql =
             $@"INSERT INTO weight_tracker.user_details (user_id, firstname, lastname, height_cm, target_weight_kg, target_date, loss_per_week) VALUES (
-                @{nameof(UserDetails.UserId)},
+                1,
                 @{nameof(UserDetails.Firstname)},
                 @{nameof(UserDetails.Lastname)},
                 @{nameof(UserDetails.Height)},
@@ -220,7 +220,7 @@ public class UserDetailsTest
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
-            responseObject.Should().BeEquivalentTo(userDetails);
+            userDetails.Should().BeEquivalentTo(responseObject, options => options.Excluding(u => u!.UserId));
         }
     }
     

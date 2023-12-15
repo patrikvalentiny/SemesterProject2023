@@ -177,7 +177,7 @@ public class StatisticsController(StatisticsService service) : Controller
         catch (Exception e)
         {
             Log.Error(e, "Error getting predicted target weight");
-            return BadRequest(e.Message);
+            return BadRequest("Error getting predicted target weight");
         }
         
     }
