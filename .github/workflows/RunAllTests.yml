@@ -36,9 +36,8 @@ jobs:
 
       - name: Build PlaywrightTests
         run: |
-          cd api/
+          cd E2ETests/ 
           dotnet build
-          cd ../E2ETests/ 
           pwsh bin/Debug/net8.0/playwright.ps1 install
 
       - name: Run API and PlaywrightTests
@@ -48,7 +47,7 @@ jobs:
           dotnet run &
           cd ../frontend
           npm run start &
-          sleep 20
+          sleep 5
           cd ..
           dotnet test
           # Kill the API process running on port 5000
