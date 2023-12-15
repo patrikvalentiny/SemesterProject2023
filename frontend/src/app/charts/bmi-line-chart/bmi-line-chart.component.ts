@@ -108,6 +108,21 @@ export class BmiLineChartComponent implements OnInit {
         curve: "smooth",
       },
       annotations: {
+        xaxis:[
+          {
+            x: new Date().setHours(0,0,0,0),
+            strokeDashArray: 0,
+            borderColor: "#333",
+            label: {
+              borderColor: "#333",
+              style: {
+                color: "#fff",
+                background: "#00000000"
+              },
+              text: "Today"
+            }
+          }
+        ],
         yaxis: [{
           yAxisIndex: 0,
           y: 29.99,
