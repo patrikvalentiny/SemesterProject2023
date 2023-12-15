@@ -1,0 +1,83 @@
+{
+  "configVersion": 1,
+  "timestamp": 1702664550391,
+  "index": "/WeightTracker/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/WeightTracker/favicon.ico",
+        "/WeightTracker/index.html",
+        "/WeightTracker/main.6b1ce69cd27aebf2.js",
+        "/WeightTracker/manifest.webmanifest",
+        "/WeightTracker/polyfills.5e8943f1447b4620.js",
+        "/WeightTracker/runtime.ff77cb90a6839348.js",
+        "/WeightTracker/scripts.e6659fb639dc488f.js",
+        "/WeightTracker/styles.638febabedfbe1c1.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/WeightTracker/assets/icons/icon-128x128.png",
+        "/WeightTracker/assets/icons/icon-144x144.png",
+        "/WeightTracker/assets/icons/icon-152x152.png",
+        "/WeightTracker/assets/icons/icon-192x192.png",
+        "/WeightTracker/assets/icons/icon-384x384.png",
+        "/WeightTracker/assets/icons/icon-512x512.png",
+        "/WeightTracker/assets/icons/icon-72x72.png",
+        "/WeightTracker/assets/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/WeightTracker/assets/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
+    "/WeightTracker/assets/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
+    "/WeightTracker/assets/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
+    "/WeightTracker/assets/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
+    "/WeightTracker/assets/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
+    "/WeightTracker/assets/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
+    "/WeightTracker/assets/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
+    "/WeightTracker/assets/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "/WeightTracker/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/WeightTracker/index.html": "a4b90dd87b5dd79865b7783795da165314682275",
+    "/WeightTracker/main.6b1ce69cd27aebf2.js": "445d17de439e1b0c5528627edb8b328bb0d7d27d",
+    "/WeightTracker/manifest.webmanifest": "0e2b33de8c2b0b578ff4a41ad327964e33d5ebec",
+    "/WeightTracker/polyfills.5e8943f1447b4620.js": "90431ec3baf683b5915e9ad0b0e541e75283f646",
+    "/WeightTracker/runtime.ff77cb90a6839348.js": "e5fcd3075e5636392eea7a5ae78a3cb6bfdeb444",
+    "/WeightTracker/scripts.e6659fb639dc488f.js": "413e46b898bc82273b83bd007297a8bd01385d35",
+    "/WeightTracker/styles.638febabedfbe1c1.css": "aca75e8c5214ad783914ed7a072a450261dc3f66"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
