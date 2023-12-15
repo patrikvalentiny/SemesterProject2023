@@ -36,8 +36,9 @@ jobs:
 
       - name: Build PlaywrightTests
         run: |
-          cd E2ETests/
+          cd api/
           dotnet build
+          cd ../E2ETests/ 
           pwsh bin/Debug/net8.0/playwright.ps1 install
 
       - name: Run API and PlaywrightTests
