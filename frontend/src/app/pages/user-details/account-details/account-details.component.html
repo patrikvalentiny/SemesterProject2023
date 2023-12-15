@@ -30,4 +30,24 @@
   <button (click)="updateDetails()" [disabled]="formGroup.invalid" class="btn btn-primary w-full max-w-sm"
           data-testid="updateDetailsButton">Update
   </button>
+
+  <button onclick="deleteModal.showModal()" [disabled]="formGroup.invalid" class="btn btn-error w-full max-w-sm"
+          data-testid="updateDetailsButton">Delete account
+  </button>
+  <dialog class="modal lg:pl-40" id="deleteModal">
+    <div class="modal-box shadow-2xl shadow-accent flex flex-col gap-3 items-center justify-center">
+      <h3 class="font-bold text-lg">Are you sure you want to delete your account ?</h3>
+      <p>Please make sure to download your data first !</p>
+      <form class="flex flex-row gap-4 w-full items-center justify-between h-full" method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button (click)="deleteAccount()" class="btn btn-error flex-1">Delete</button>
+        <button class="btn flex-1">Close</button>
+      </form>
+    </div>
+    <form class="modal-backdrop" method="dialog">
+      <button>close</button>
+    </form>
+  </dialog>
 </div>
+
+

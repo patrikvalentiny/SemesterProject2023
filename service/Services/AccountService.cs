@@ -47,4 +47,9 @@ public class AccountService(
     {
         return userRepository.GetById(data.UserId);
     }
+
+    public User? DeleteUser(int dataUserId)
+    {
+        return userRepository.Delete(dataUserId);
+    }
 }

@@ -5,6 +5,8 @@ import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
 import {FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
+import {User} from "../dtos/user";
+import {TokenService} from "./token.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ export class UserDetailsService {
   user: UserDetails | null = null;
   private readonly httpClient = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly tokenService = inject(TokenService);
 
   async getProfile() {
     try {
@@ -46,5 +49,17 @@ export class UserDetailsService {
       throw e;
     }
 
+  }
+
+  async deleteProfile() {
+    try {
+      const call = this.httpClient.delete<User>(environment.baseUrl + "/account");
+      await firstValueFrom<User>(call);
+      this.user = null;
+      this.tokenService.clearToken();
+      await this.router.navigate(["/login"])
+    } catch (e) {
+      throw e;
+    }
   }
 }
