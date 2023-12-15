@@ -9,19 +9,20 @@
   <div class="w-full h-full overflow-y-auto rounded-b-box no-scrollbar snap-y bg-transparent">
     <div class="grid grid-cols-7 gap-0.5 my-2">
 
-
-      <div (click)="setEditingWeight(weight.date)" *ngFor="let weight of weightService.weights"
-           [ngClass]="{
+@for(weight of weightService.weights; track weight.date){
+  <div (click)="setEditingWeight(weight.date)"
+       [ngClass]="{
                  'bg-neutral':weight.date === selectedDate,
-
                   }"
-           class="bg-base-100 stat place-items-center w-full rounded-md snap-start px-0 hover:bg-base-300 col-span-1 col-start-{{setColStart(weight)}}">
-        <div class="stat-title lg:text-lg text-xs">{{ weight.date.toString() | date : 'd/M/yy' }}</div>
-        <div class="stat-value lg:text-2xl text-base">{{ weight.weight.toFixed(1) }}</div>
-        <div [ngClass]="(weight.difference ?? 0) > 0 ? 'text-error' : 'text-success'" class="stat-desc text-xs">
-          {{ weight.difference?.toFixed(1) ?? 0 }}kg
-        </div>
-      </div>
+       class=" bg-base-100 stat place-items-center w-full rounded-md snap-start px-0 hover:bg-base-300 col-span-1 {{setColStart(weight)}}">
+    <div class="stat-title lg:text-lg text-xs">{{ weight.date.toString() | date : 'd/M/yy' }}</div>
+    <div class="stat-value lg:text-2xl text-base">{{ weight.weight.toFixed(1) }}</div>
+    <div [ngClass]="(weight.difference ?? 0) > 0 ? 'text-error' : 'text-success'" class="stat-desc text-xs">
+      {{ weight.difference?.toFixed(1) ?? 0 }}kg
+    </div>
+  </div>
+}
+
 
     </div>
   </div>
