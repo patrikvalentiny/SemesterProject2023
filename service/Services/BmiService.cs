@@ -6,11 +6,12 @@ namespace service.Services;
 
 public class BmiService(WeightRepository weightRepository, IRepository<UserDetails> userDetailsRepository)
 {
-    public BmiCommandModel? GetLatestBmi(int dataUserId)
+    public BmiCommandModel GetLatestBmi(int dataUserId)
     {
         var weight = weightRepository.GetLatestWeightForUser(dataUserId);
+        if (weight == null) throw new Exception("No weight found");
         var userDetails = userDetailsRepository.GetById(dataUserId);
-        if (weight == null || userDetails == null) return null;
+        if (userDetails == null) throw new Exception("No user details found");
         var heightInMeters = userDetails.Height / 100m;
         var bmi = weight.Weight / (heightInMeters * heightInMeters);
         return new BmiCommandModel
@@ -24,8 +25,9 @@ public class BmiService(WeightRepository weightRepository, IRepository<UserDetai
     public IEnumerable<BmiCommandModel>? GetAllBmiForUser(int dataUserId)
     {
         var weights = weightRepository.GetAllWeightsForUser(dataUserId);
+        if (weights == null) throw new Exception("No weights found");
         var userDetails = userDetailsRepository.GetById(dataUserId);
-        if (userDetails == null) return null;
+        if (userDetails == null) throw new Exception("No user details found");
         var heightInMeters = userDetails.Height / 100m;
         return weights.Select(weight => new BmiCommandModel
         {

@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom, Subject} from "rxjs";
 import {environment} from "../../environments/environment";
@@ -12,7 +12,7 @@ import * as FileSaver from "file-saver-es";
 })
 export class WeightService {
   weights: WeightDto[] = [];
-  editingWeight = new Subject<WeightDto>();
+  editingWeight = signal<WeightDto | null>(null);
   private readonly toastService = inject(HotToastService);
   private readonly httpClient: HttpClient = inject(HttpClient);
 
@@ -74,7 +74,7 @@ export class WeightService {
   }
 
   setEditingWeight(date: Date) {
-    this.editingWeight.next(this.weights.find(i => i.date === date)!);
+    this.editingWeight.set(this.weights.find(i => i.date === date)!);
   }
 
   async getLatestBmi() {
@@ -82,7 +82,7 @@ export class WeightService {
       const call = this.httpClient.get<Bmi>(environment.baseUrl + "/bmi/latest");
       return await firstValueFrom<Bmi>(call);
     } catch (e) {
-      return;
+      throw e;
     }
   }
 
@@ -91,7 +91,7 @@ export class WeightService {
       const call = this.httpClient.get<Bmi[]>(environment.baseUrl + "/bmi");
       return await firstValueFrom<Bmi[]>(call);
     } catch (e) {
-      return;
+      throw e;
     }
   }
 

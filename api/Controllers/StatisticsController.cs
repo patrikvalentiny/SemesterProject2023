@@ -1,6 +1,7 @@
 ﻿using api.Dtos;
 using api.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using service.Services;
 
 namespace api.Controllers;
@@ -22,7 +23,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting current trend");
+            return BadRequest("Error getting current trend");
         }
         
     }
@@ -38,7 +40,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting current total loss");
+            return BadRequest("Error getting current total loss");
         }
         
     }
@@ -54,7 +57,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting average loss");
+            return BadRequest("Error getting average loss");
         }
         
     }
@@ -70,7 +74,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting average loss per week");
+            return BadRequest("Error getting average loss per week");
         }
         
     }
@@ -86,7 +91,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting days in");
+            return BadRequest("Error getting days in");
         }
         
     }
@@ -102,7 +108,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting days to target");
+            return BadRequest("Error getting days to target");
         }
         
     }
@@ -118,7 +125,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting weight to go");
+            return BadRequest("Error getting weight to go");
         }
         
     }
@@ -134,7 +142,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting percentage lost");
+            return BadRequest("Error getting percentage lost");
         }
         
     }
@@ -150,7 +159,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting predicted target date");
+            return BadRequest("Error getting predicted target date");
         }
         
     }
@@ -166,6 +176,7 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
+            Log.Error(e, "Error getting predicted target weight");
             return BadRequest(e.Message);
         }
         
@@ -182,7 +193,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting BMI change");
+            return BadRequest("Error getting BMI change");
         }
         
     }
@@ -204,7 +216,8 @@ public class StatisticsController(StatisticsService service) : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            Log.Error(e, "Error getting lowest weight");
+            return BadRequest("Error getting lowest weight");
         }
         
     }
