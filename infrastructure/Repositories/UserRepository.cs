@@ -74,7 +74,7 @@ RETURNING
     {
         const string sql = $@"
 DELETE FROM weight_tracker.users
-WHERE id = @userId
+WHERE id = @id
 RETURNING
     id AS {nameof(User.Id)},
     username AS {nameof(User.Username)},
