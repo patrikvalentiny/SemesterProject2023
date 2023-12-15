@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {FormControl, Validators} from "@angular/forms";
 import {WeightDto} from "../../dtos/weight-dto";
 import {WeightService} from "../../services/weight.service";
 import {HotToastService} from "@ngneat/hot-toast";
@@ -15,25 +15,34 @@ export class PasteDataFromExcelComponent {
   private readonly weightService = inject(WeightService);
   private readonly toastService = inject(HotToastService);
   private readonly router = inject(Router);
-  dataInput:FormControl<string | null> = new FormControl(null);
+  dataInput:FormControl<string | null> = new FormControl(null, [Validators.required]);
   weights:WeightDto[] = [];
   constructor() {
   }
 
   async parseData(){
-    this.weights = [];
-    const data = this.dataInput.value!;
-    const lines = data.split("\n");
-    for(let i = 0; i < lines.length; i++){
-      const line = lines[i];
-      const cells = line.split("\t");
-      const weight:WeightDto = {
-        weight: Number(cells[1]),
-        date: new Date(cells[0])
-      };
-      weight.date.setUTCFullYear(weight.date.getFullYear(), weight.date.getMonth(), weight.date.getDate());
-      weight.date.setUTCHours(0,0,0,0);
-      this.weights.push(weight);
+    try {
+      this.weights = [];
+      const data = this.dataInput.value!;
+      const lines = data.split("\n");
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const cells = line.split("\t");
+        const weight: WeightDto = {
+          weight: Number(cells[1]),
+          date: new Date(cells[0])
+        };
+        // needed because catch does not catch errors in datePipe transform
+        if (isNaN(weight.weight) || isNaN(weight.date.getTime())) {
+          this.toastService.error("Invalid data format");
+          return;
+        }
+        weight.date.setUTCFullYear(weight.date.getFullYear(), weight.date.getMonth(), weight.date.getDate());
+        weight.date.setUTCHours(0, 0, 0, 0);
+        this.weights.push(weight);
+      }
+    } catch (e) {
+      this.toastService.error("Something went wrong during parsing");
     }
   }
 
@@ -43,8 +52,16 @@ export class PasteDataFromExcelComponent {
       this.toastService.success("Data successfully uploaded");
       await this.router.navigate(["/home"]);
     } catch (e) {
-      return;
+      this.toastService.error("Error uploading data")
     }
 
+  }
+
+  async downloadCsv(){
+    try {
+      await this.weightService.getWeightsCsv();
+    } catch (e) {
+      this.toastService.error("Error downloading csv")
+    }
   }
 }

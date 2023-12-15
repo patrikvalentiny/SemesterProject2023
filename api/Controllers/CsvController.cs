@@ -26,4 +26,20 @@ public class CsvController(CsvService csvService) : Controller
             return BadRequest("Error parsing CSV file");
         }
     }
+    
+    [HttpGet]
+    public IActionResult DownloadCsv()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return File(csvService.CreateCsv(data.UserId), "text/csv", "weights.csv");
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error creating CSV file");
+            return BadRequest("Error creating CSV file");
+        }
+    }
 }

@@ -47,12 +47,14 @@ public class FeaturesTests : PageTest
         var uploadDataButton = Page.GetByTestId("uploadDataButton");
         await uploadDataButton.IsVisibleAsync();
         await uploadDataButton.IsDisabledAsync();
+        var parseButton = Page.GetByTestId("parseButton");
+        await parseButton.IsVisibleAsync();
+        await parseButton.IsDisabledAsync();
         
         await dataInputArea.IsVisibleAsync();
         await dataInputArea.FillAsync(
             "2023/12/06\t103\n2023/12/07\t103.1\n2023/12/08\t103.2\n2023/12/09\t102.7\n2023/12/10\t103.5\n2023/12/11\t103.2\n2023/12/12\t103.2\n2023/12/13\t103.7\n2023/12/14\t102.8");
-        var parseButton = Page.GetByTestId("parseButton");
-        await parseButton.IsVisibleAsync();
+        
         await parseButton.IsEnabledAsync();
         await parseButton.ClickAsync();
         
