@@ -120,7 +120,7 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         return weights.First().Date.AddDays(Decimal.ToDouble(daysToTarget));
     }
     
-    public WeightInput? GetPredictedWeightOnTargetDate(int dataUserId)
+    public WeightInput GetPredictedWeightOnTargetDate(int dataUserId)
     {
         var currentTrend = GetCurrentTrend(dataUserId).ToList();
         if (currentTrend.Count == 0) throw new Exception("No trend weights found");
@@ -128,7 +128,7 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         if (user == null) throw new Exception("User details not found");
         if (currentTrend.Count == 1) return currentTrend.First();
         var targetDate = user.TargetDate ?? currentTrend.Last().Date;
-        return currentTrend.FirstOrDefault(x => x.Date == targetDate);
+        return currentTrend.FirstOrDefault(x => x.Date == targetDate, currentTrend.Last());
     }
 
     public decimal BmiChange(int dataUserId)
