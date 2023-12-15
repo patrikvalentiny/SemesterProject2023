@@ -13,13 +13,13 @@ Compared to other apps the open source nature assures you that your data is not 
 ## Base Features
 
 - [X] User registration and authentication
-- [ ] Record and update weight measurements
-- [ ] Set and track weight loss goals
-- [ ] Visualize weight loss progress with charts
-- [ ] View weight loss statistics and trends
-- [ ] User-friendly interface for easy data entry
-- [ ] Export and import weight data (CSV)
-- [ ] Secure data storage in a PostgresSQL database
+- [X] Record and update weight measurements
+- [X] Set and track weight loss goals
+- [X] Visualize weight loss progress with charts
+- [X] View weight loss statistics and trends
+- [X] User-friendly interface for easy data entry
+- [X] Export and import weight data (CSV)
+- [X] Secure data storage in a PostgresSQL database
 
 ## Additional Features
 - [ ] Mobile-responsive design for on-the-go tracking
