@@ -19,7 +19,7 @@ export class PredictedStatsCardComponent implements OnInit {
     try {
       this.predictedTargetWeight = await this.statService.getPredictedTargetWeight();
       this.predictedTargetDate = new Date(await this.statService.getPredictedTargetDate());
-    } catch (e){
+    } catch (e) {
       //caught by interceptor
       return;
     }

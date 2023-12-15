@@ -21,7 +21,7 @@ export class BmiStatsCardComponent implements OnInit {
     try {
       this.bmi = await this.weightService.getLatestBmi();
       this.bmiChange = await this.statService.getBmiChange();
-    } catch (e){
+    } catch (e) {
       //caught by interceptor
       return;
     }

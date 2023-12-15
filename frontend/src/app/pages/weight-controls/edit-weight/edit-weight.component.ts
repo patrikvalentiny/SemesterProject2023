@@ -11,19 +11,21 @@ import {HotToastService} from "@ngneat/hot-toast";
   styleUrls: ['./edit-weight.component.css']
 })
 export class EditWeightComponent implements OnInit {
-  private readonly weightService: WeightService = inject(WeightService);
-  private readonly toast: HotToastService = inject(HotToastService);
-
-  numberInput: FormControl<number | null> = new FormControl(this.weightService.editingWeight()?.weight ?? null, [Validators.required, Validators.min(20.0), Validators.max(600.0)]);
-  dateInput: FormControl<string | null> = new FormControl({value: this.weightService.editingWeight()?.date.toString() ?? null, disabled: true}, [Validators.required]);
   editingWeight: WeightDto | null = null;
   formGroup = new FormGroup({
     numberInput: this.numberInput,
     dateInput: this.dateInput,
     // timeInput: this.timeInput
   })
-  // timeInput = new FormControl('', [Validators.required]);
+  private readonly weightService: WeightService = inject(WeightService);
+  numberInput: FormControl<number | null> = new FormControl(this.weightService.editingWeight()?.weight ?? null, [Validators.required, Validators.min(20.0), Validators.max(600.0)]);
+  dateInput: FormControl<string | null> = new FormControl({
+    value: this.weightService.editingWeight()?.date.toString() ?? null,
+    disabled: true
+  }, [Validators.required]);
+  private readonly toast: HotToastService = inject(HotToastService);
 
+  // timeInput = new FormControl('', [Validators.required]);
 
   constructor() {
     // bind signals to form

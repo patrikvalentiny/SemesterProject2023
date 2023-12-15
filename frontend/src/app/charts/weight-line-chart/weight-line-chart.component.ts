@@ -108,9 +108,9 @@ export class WeightLineChartComponent implements OnInit {
       },
       annotations: {
         yaxis: [],
-        xaxis:[
+        xaxis: [
           {
-            x: new Date().setHours(0,0,0,0),
+            x: new Date().setHours(0, 0, 0, 0),
             strokeDashArray: 0,
             borderColor: "#333",
             label: {

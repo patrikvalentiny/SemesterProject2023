@@ -116,7 +116,7 @@ export class DaysProgressBarChartComponent implements OnInit {
       const daysToGo = await this.statService.getDaysToGo();
       const daysIn = await this.statService.getDayIn();
       this.chartOptions.series = [daysIn, daysToGo];
-    } catch (e){
+    } catch (e) {
       this.toast.error("Could not load days progress");
     }
 

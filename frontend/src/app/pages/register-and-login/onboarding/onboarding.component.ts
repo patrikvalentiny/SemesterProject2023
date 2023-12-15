@@ -10,15 +10,12 @@ import {HotToastService} from "@ngneat/hot-toast";
   styleUrl: './onboarding.component.css'
 })
 export class OnboardingComponent {
-  private readonly userService:UserDetailsService = inject(UserDetailsService);
-  private readonly toast = inject(HotToastService);
   heightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetWeightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetDateInput: FormControl<string | null> = new FormControl(null, [Validators.required]);
   firstName: FormControl<string | null> = new FormControl(null);
   lastName: FormControl<string | null> = new FormControl(null);
   lossPerWeek: FormControl<number | null> = new FormControl(null);
-
   formGroup = new FormGroup({
     height: this.heightInput,
     targetWeight: this.targetWeightInput,
@@ -27,6 +24,8 @@ export class OnboardingComponent {
     lastName: this.lastName,
     lossPerWeek: this.lossPerWeek
   })
+  private readonly userService: UserDetailsService = inject(UserDetailsService);
+  private readonly toast = inject(HotToastService);
 
   constructor() {
   }

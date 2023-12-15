@@ -21,7 +21,7 @@ export class CurrentStatsCardComponent implements OnInit {
     try {
       this.currentWeight = await this.weightService.getLatestWeight();
       this.lowestWeight = await this.statService.getLowestWeight();
-    } catch (e){
+    } catch (e) {
       //caught by interceptor
       return;
     }

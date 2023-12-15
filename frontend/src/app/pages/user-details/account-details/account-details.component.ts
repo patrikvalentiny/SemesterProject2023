@@ -10,15 +10,12 @@ import {HotToastService} from "@ngneat/hot-toast";
   styleUrl: './account-details.component.css'
 })
 export class AccountDetailsComponent implements OnInit {
-  private readonly userService = inject(UserDetailsService);
-  private readonly toast = inject(HotToastService);
   heightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetWeightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);
   targetDateInput: FormControl<string | null> = new FormControl(null);
   firstName: FormControl<string | null> = new FormControl(null);
   lastName: FormControl<string | null> = new FormControl(null);
   lossPerWeek: FormControl<number | null> = new FormControl(null);
-
   formGroup = new FormGroup({
     height: this.heightInput,
     targetWeight: this.targetWeightInput,
@@ -27,6 +24,8 @@ export class AccountDetailsComponent implements OnInit {
     lastName: this.lastName,
     lossPerWeek: this.lossPerWeek
   })
+  private readonly userService = inject(UserDetailsService);
+  private readonly toast = inject(HotToastService);
 
   constructor() {
   }
@@ -51,7 +50,7 @@ export class AccountDetailsComponent implements OnInit {
     try {
       await this.userService.updateProfile(this.formGroup)
       this.toast.success("Profile updated")
-    } catch (e){
+    } catch (e) {
       return;
     }
 

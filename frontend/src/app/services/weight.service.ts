@@ -1,12 +1,13 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {firstValueFrom, Subject} from "rxjs";
+import {firstValueFrom} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HotToastService} from "@ngneat/hot-toast";
 import {WeightDto} from "../dtos/weight-dto";
 import {Bmi} from "../dtos/bmi";
 import {WeightInput} from "../dtos/weight-input";
 import * as FileSaver from "file-saver-es";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -107,7 +108,7 @@ export class WeightService {
   async getWeightsCsv() {
     try {
       const call = this.httpClient.get(environment.baseUrl + "/csv", {responseType: "blob"});
-      const response= await firstValueFrom<Blob>(call);
+      const response = await firstValueFrom<Blob>(call);
       const file = new File([response], "weights.csv", {type: "text/csv;charset=utf-8"});
       FileSaver.saveAs(file);
     } catch (e) {

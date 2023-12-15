@@ -18,7 +18,7 @@ export class DaysStatsCardComponent implements OnInit {
     try {
       this.daysToGo = await this.statService.getDaysToGo();
       this.dayIn = await this.statService.getDayIn();
-    } catch (e){
+    } catch (e) {
       //caught by interceptor
       return;
     }
