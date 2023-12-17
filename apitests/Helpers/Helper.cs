@@ -5,7 +5,7 @@ using infrastructure;
 using Konscious.Security.Cryptography;
 using Npgsql;
 
-namespace apitests;
+namespace apitests.Helpers;
 
 public static class Helper
 {
@@ -29,6 +29,8 @@ create table weight_tracker.users
 create table weight_tracker.passwords
 (
     user_id       integer     not null
+        constraint passwords_pk
+            primary key
         constraint passwords_users_userid_fk
             references weight_tracker.users
             on update cascade on delete cascade,
@@ -39,9 +41,9 @@ create table weight_tracker.passwords
 
 create table weight_tracker.weights
 (
-    weight  real      not null,
-    date    date not null,
-    user_id integer   not null
+    weight  real    not null,
+    date    date    not null,
+    user_id integer not null
         constraint user_weights_users_id_fk
             references weight_tracker.users
             on update cascade on delete cascade,
@@ -51,7 +53,9 @@ create table weight_tracker.weights
 
 create table weight_tracker.user_details
 (
-    user_id          integer
+    user_id          integer not null
+        constraint user_details_pk
+            primary key
         constraint user_details_users_id_fk
             references weight_tracker.users
             on update cascade on delete cascade,

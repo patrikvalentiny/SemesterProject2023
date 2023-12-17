@@ -1,4 +1,6 @@
-﻿namespace apitests;
+﻿using apitests.Helpers;
+
+namespace apitests;
 
 public class BmiTests
 {
