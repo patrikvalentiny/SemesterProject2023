@@ -2,7 +2,7 @@
   <div class="w-full h-4 bg-transparent drop-shadow">
     <div class="grid grid-cols-7 gap-0.5">
       @for (day of days;track day) {
-        <label class="text-center text-sm">
+        <label class="text-center text-sm col-span-1">
           {{ day }}
         </label>
       }
@@ -10,22 +10,28 @@
   </div>
   <div class="w-full h-full overflow-y-auto rounded-b-box no-scrollbar snap-y bg-transparent">
     <div class="grid grid-cols-7 gap-0.5 my-2">
-
-      @if (weightService.weights.length === 0) {
-        <div class="col-span-7 text-center text-sm text-neutral">No weights recorded</div>
-      }
-      @for (weight of weightService.weights; track weight.date) {
+      @for (weight of weightService.weights;track weight.date) {
+        <!--tried to return the class itself but tailwind probably does not compile the css if its not explicitly stated-->
         <div (click)="setEditingWeight(weight.date)"
              [ngClass]="{
                  'bg-neutral':weight.date === selectedDate,
+                 'col-start-1':setColStart(weight, 1),
+                  'col-start-2':setColStart(weight, 2),
+                  'col-start-3':setColStart(weight, 3),
+                  'col-start-4':setColStart(weight, 4),
+                  'col-start-5':setColStart(weight, 5),
+                  'col-start-6':setColStart(weight, 6),
+                  'col-start-7':setColStart(weight, 7),
                   }"
-             class="bg-base-100 stat place-items-center rounded-md snap-start px-0 hover:bg-base-300 col-span-1 {{setColStart(weight)}} ">
+             class="bg-base-100 stat place-items-center rounded-md snap-start px-0 hover:bg-base-300 col-span-1">
           <div class="stat-title lg:text-lg text-xs">{{ weight.date.toString() | date : 'd/M/yy' }}</div>
           <div class="stat-value lg:text-2xl text-base">{{ weight.weight.toFixed(1) }}</div>
           <div [ngClass]="(weight.difference ?? 0) > 0 ? 'text-error' : 'text-success'" class="stat-desc text-xs">
             {{ weight.difference?.toFixed(1) ?? 0 }}kg
           </div>
         </div>
+      } @empty {
+        <div class="col-span-7 text-center text-sm text-neutral">No weights recorded</div>
       }
 
 
