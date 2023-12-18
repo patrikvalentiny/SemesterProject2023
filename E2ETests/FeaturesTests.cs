@@ -1,4 +1,5 @@
 ﻿using apitests;
+using apitests.Helpers;
 
 namespace E2ETests;
 
