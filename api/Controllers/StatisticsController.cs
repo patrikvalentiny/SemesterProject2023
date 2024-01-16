@@ -224,4 +224,20 @@ public class StatisticsController(StatisticsService service) : Controller
             return BadRequest("Error getting calculated daily loss");
         }
     }
+    
+    [HttpGet("calculatedWeeklyLoss")]
+    public IActionResult GetCalculatedWeeklyLoss()
+    {
+        var data = HttpContext.GetSessionData();
+        if (data == null) return Unauthorized();
+        try
+        {
+            return Ok(service.CalculatedWeeklyLoss(data.UserId));
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error getting calculated weekly loss");
+            return BadRequest("Error getting calculated weekly loss");
+        }
+    }
 }

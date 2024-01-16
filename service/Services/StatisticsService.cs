@@ -164,4 +164,9 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         var dailyLoss = neededLoss / totalDays;
         return decimal.Round(dailyLoss, 2);
     }
+
+    public decimal CalculatedWeeklyLoss(int dataUserId)
+    {
+        return CalculatedDailyLoss(dataUserId) * 7;
+    }
 }
