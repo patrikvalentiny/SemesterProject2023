@@ -149,4 +149,24 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         if (weights.Count == 0) throw new Exception("No weights found");
         return weights.OrderBy(x => x.Weight).First();
     }
+
+    public decimal CalculatedDailyLoss(int dataUserId)
+    {
+        // calculate needed loss to achieve target weight by target date
+        var user = userDetailsRepository.GetById(dataUserId);
+        if (user == null) throw new Exception("User details not found");
+        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
+        if (weights.Count == 0) throw new Exception("No weights found");
+        var totalDays = (user.TargetDate! - weights.First().Date).Value.Days;
+        var lastWeight = weights.Last().Weight;
+        var targetWeight = user.TargetWeight;
+        var neededLoss = lastWeight - targetWeight;
+        var dailyLoss = neededLoss / totalDays;
+        return decimal.Round(dailyLoss, 2);
+    }
+
+    public decimal CalculatedWeeklyLoss(int dataUserId)
+    {
+        return CalculatedDailyLoss(dataUserId) * 7;
+    }
 }

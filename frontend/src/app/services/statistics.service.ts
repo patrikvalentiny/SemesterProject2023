@@ -123,4 +123,22 @@ export class StatisticsService implements OnInit {
       throw e;
     }
   }
+
+  async getCalculatedDailyLoss() {
+    try {
+      const call = this.http.get<number>(environment.baseUrl + "/statistics/calculatedDailyLoss");
+      return await firstValueFrom<number>(call);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getCalculatedWeeklyLoss() {
+    try {
+      const call = this.http.get<number>(environment.baseUrl + "/statistics/calculatedWeeklyLoss");
+      return await firstValueFrom<number>(call);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

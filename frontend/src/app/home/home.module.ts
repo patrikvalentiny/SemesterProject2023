@@ -7,6 +7,7 @@ import {WeightControlsModule} from '../pages/weight-controls/weight-controls.mod
 import {PagesModule} from "../pages/pages.module";
 import {ChartsModule} from "../charts/charts.module";
 import {StatCardsModule} from "../pages/stat-cards/stat-cards.module";
+import {CalculatedLossCardComponent} from "../pages/stat-cards/calculated-loss-card/calculated-loss-card.component";
 
 
 @NgModule({
@@ -18,14 +19,15 @@ import {StatCardsModule} from "../pages/stat-cards/stat-cards.module";
     HomeSkeletonComponent,
     HomeViewComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    WeightControlsModule,
-    PagesModule,
-    ChartsModule,
-    StatCardsModule,
-  ]
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        WeightControlsModule,
+        PagesModule,
+        ChartsModule,
+        StatCardsModule,
+        CalculatedLossCardComponent,
+    ]
 })
 export class HomeModule {
 }
