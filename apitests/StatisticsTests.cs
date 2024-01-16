@@ -654,6 +654,58 @@ public class StatisticsTests
         }
     }
 
+    [TestCase]
+    [TestCase(90, 80, 100)]
+    public async Task CalculatedLossTest(decimal startWeight = 100, decimal targetWeight = 80, int dateDiff = 10)
+    {
+        await using var conn = Helper.OpenConnection();
+        var weight = new WeightInput
+        {
+            Weight = 100,
+            Date = DateTime.Today.Date,
+            UserId = 1
+        };
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)", weight);
+
+
+        const int height = 180;
+        await conn.ExecuteAsync(
+            "INSERT INTO weight_tracker.user_details (height_cm, target_weight_kg, user_id, target_date) VALUES (@Height, @TargetWeight, @UserId, @TargetDate)",
+            new
+            {
+                Height = height, TargetWeight = targetWeight, UserId = 1, TargetDate = DateTime.Today.AddDays(dateDiff)
+            });
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(Url + "/calculatedDailyLoss");
+            TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        decimal responseObject;
+        try
+        {
+            responseObject = JsonConvert.DeserializeObject<decimal>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+
+        using (new AssertionScope())
+        {
+            var expected = (weight.Weight - targetWeight) / dateDiff;
+            response.IsSuccessStatusCode.Should().BeTrue();
+            responseObject.Should().Be(decimal.Round(expected, 2));
+        }
+    }
+
     [TearDown]
     public async Task TearDown()
     {
