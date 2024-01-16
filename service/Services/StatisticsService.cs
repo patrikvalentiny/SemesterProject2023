@@ -157,7 +157,7 @@ public class StatisticsService(WeightRepository weightRepository, IRepository<Us
         if (user == null) throw new Exception("User details not found");
         var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
         if (weights.Count == 0) throw new Exception("No weights found");
-        var totalDays = (user.TargetDate! - weights.First().Date).Value.Days;
+        var totalDays = (user.TargetDate! - DateTime.Today.Date).Value.Days;
         var lastWeight = weights.Last().Weight;
         var targetWeight = user.TargetWeight;
         var neededLoss = lastWeight - targetWeight;
