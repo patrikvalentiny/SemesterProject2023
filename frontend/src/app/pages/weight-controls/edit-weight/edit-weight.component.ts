@@ -1,14 +1,17 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
 import {WeightService} from "../../../services/weight.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from "@angular/forms";
 import {WeightDto} from "../../../dtos/weight-dto";
 import {WeightInput} from "../../../dtos/weight-input";
 import {HotToastService} from "@ngneat/hot-toast";
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-weight',
-  templateUrl: './edit-weight.component.html',
-  styleUrls: ['./edit-weight.component.css']
+    selector: 'app-edit-weight',
+    templateUrl: './edit-weight.component.html',
+    styleUrls: ['./edit-weight.component.css'],
+    standalone: true,
+    imports: [ReactiveFormsModule, FormsModule, DatePipe]
 })
 export class EditWeightComponent implements OnInit {
   private readonly weightService: WeightService = inject(WeightService);

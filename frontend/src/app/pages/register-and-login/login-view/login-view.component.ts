@@ -1,11 +1,13 @@
 import {Component, inject} from '@angular/core';
 import {AccountService} from "../../../services/account.service";
-import {FormBuilder, Validators} from "@angular/forms";
+import { FormBuilder, Validators, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
-  selector: 'app-login-view',
-  templateUrl: './login-view.component.html',
-  styleUrls: ['./login-view.component.css']
+    selector: 'app-login-view',
+    templateUrl: './login-view.component.html',
+    styleUrls: ['./login-view.component.css'],
+    standalone: true,
+    imports: [ReactiveFormsModule]
 })
 export class LoginViewComponent {
   private readonly accountService: AccountService = inject(AccountService);

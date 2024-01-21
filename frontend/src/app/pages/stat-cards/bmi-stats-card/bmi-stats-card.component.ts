@@ -4,9 +4,10 @@ import {StatisticsService} from "../../../services/statistics.service";
 import {Bmi} from "../../../dtos/bmi";
 
 @Component({
-  selector: 'app-bmi-stats-card',
-  templateUrl: './bmi-stats-card.component.html',
-  styleUrl: './bmi-stats-card.component.css'
+    selector: 'app-bmi-stats-card',
+    templateUrl: './bmi-stats-card.component.html',
+    styleUrl: './bmi-stats-card.component.css',
+    standalone: true
 })
 export class BmiStatsCardComponent implements OnInit {
   weightService: WeightService = inject(WeightService);

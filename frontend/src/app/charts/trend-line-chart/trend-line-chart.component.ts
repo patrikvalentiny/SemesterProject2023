@@ -1,18 +1,5 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {
-  ApexAnnotations,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexDataLabels,
-  ApexMarkers,
-  ApexStroke,
-  ApexTheme,
-  ApexTitleSubtitle,
-  ApexTooltip,
-  ApexXAxis,
-  ApexYAxis,
-  ChartComponent
-} from "ng-apexcharts";
+import { ApexAnnotations, ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexMarkers, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
 import {StatisticsService} from "../../services/statistics.service";
@@ -34,9 +21,11 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-trend-line-chart',
-  templateUrl: './trend-line-chart.component.html',
-  styleUrl: './trend-line-chart.component.css'
+    selector: 'app-trend-line-chart',
+    templateUrl: './trend-line-chart.component.html',
+    styleUrl: './trend-line-chart.component.css',
+    standalone: true,
+    imports: [NgApexchartsModule]
 })
 export class TrendLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
