@@ -105,9 +105,6 @@ public class RegisterTests
             Password = password,
             Email = email
         };
-        await using var conn = Helper.OpenConnection();
-        await conn.ExecuteAsync("INSERT INTO weight_tracker.users (username, email) VALUES (@Username, @Email)", user);
-
 
         const string url = "http://localhost:5000/api/v1/account/register";
 

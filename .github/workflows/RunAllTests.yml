@@ -1,3 +1,5 @@
+# GitHub Actions workflow for running all tests
+
 name: Run All Tests
 
 on:
@@ -11,50 +13,70 @@ on:
 
 jobs:
   runAllTests:
+    # Set the type of machine to run on
     runs-on: ubuntu-latest
+    # Timeout after 10 minutes
     timeout-minutes: 10
 
     steps:
+        # Check out the repository's code to the runner machine
       - name: Checkout the code
         uses: actions/checkout@v4
 
+        # Set up the .NET Core environment with version 8.0.x
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
+        # Sets up the Node.js environment with the latest version
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 'latest'
 
+        # Navigates to the frontend directory, installs npm dependencies, and builds the frontend
       - name: Build Frontend
         run: |
+          # Change directory to frontend
           cd frontend/
+          # Install npm dependencies
           npm install
+          # Build the frontend
           npm run build
 
+        # Navigates to the E2ETests directory, builds the PlaywrightTests using .NET, and installs Playwright dependencies using PowerShell
       - name: Build PlaywrightTests
         run: |
-          cd E2ETests/ 
+          # Change directory to E2ETests
+          cd E2ETests/
+          # Build the PlaywrightTests
           dotnet build
+          # Install Playwright dependencies
           pwsh bin/Debug/net8.0/playwright.ps1 install
 
+        # Runs API and frontend, waits for 5 seconds, runs tests, and then stops the API and frontend
       - name: Run API and PlaywrightTests
         run: |
           # Start the API in the background
           cd api
           dotnet run &
+          # Change directory to frontend
           cd ../frontend
+          # Start the frontend in the background
           npm run start &
+          # Allow time for services to start
           sleep 5
+          # Change directory back to the root
           cd ..
+          # Run all tests
           dotnet test
           # Kill the API process running on port 5000
           kill -9 $(lsof -t -i:5000)
           # Kill the frontend process running on port 4200
           kill -9 $(lsof -t -i:4200)
         env:
+          # Set environment variables required for the API and tests, including secrets
           ASPNETCORE_ENVIRONMENT: Development
           ASPNETCORE_ConnectionStrings__WebApiDatabase: ${{ secrets.WEBAPIDATABASE }}
           ASPNETCORE_JWT__Secret: ${{ secrets.JWTSECRET }}
