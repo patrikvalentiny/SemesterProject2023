@@ -1,13 +1,15 @@
 import {Component, inject} from '@angular/core';
 import {UserDetailsService} from "../../../services/user-details.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
-  host: {class: 'h-full'},
-  selector: 'app-onboarding',
-  templateUrl: './onboarding.component.html',
-  styleUrl: './onboarding.component.css'
+    host: { class: 'h-full' },
+    selector: 'app-onboarding',
+    templateUrl: './onboarding.component.html',
+    styleUrl: './onboarding.component.css',
+    standalone: true,
+    imports: [ReactiveFormsModule]
 })
 export class OnboardingComponent {
   heightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);

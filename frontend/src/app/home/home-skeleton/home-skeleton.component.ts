@@ -1,13 +1,16 @@
 import {Component, inject, OnInit} from '@angular/core';
 
 import {AccountService} from "../../services/account.service";
-import {NavigationEnd, Router} from "@angular/router";
+import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
 import {User} from "../../dtos/user";
+import { NgIf, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-home-skeleton',
-  templateUrl: './home-skeleton.component.html',
-  styleUrls: ['./home-skeleton.component.css']
+    selector: 'app-home-skeleton',
+    templateUrl: './home-skeleton.component.html',
+    styleUrls: ['./home-skeleton.component.css'],
+    standalone: true,
+    imports: [NgIf, NgClass, RouterOutlet]
 })
 export class HomeSkeletonComponent implements OnInit {
   readonly accountService = inject(AccountService);

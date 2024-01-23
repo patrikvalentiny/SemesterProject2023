@@ -1,18 +1,5 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {
-  ApexAnnotations,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexDataLabels,
-  ApexMarkers,
-  ApexStroke,
-  ApexTheme,
-  ApexTitleSubtitle,
-  ApexTooltip,
-  ApexXAxis,
-  ApexYAxis,
-  ChartComponent
-} from "ng-apexcharts";
+import { ApexAnnotations, ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexMarkers, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
 import {HotToastService} from "@ngneat/hot-toast";
@@ -33,9 +20,11 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-weight-line-chart',
-  templateUrl: './weight-line-chart.component.html',
-  styleUrl: './weight-line-chart.component.css'
+    selector: 'app-weight-line-chart',
+    templateUrl: './weight-line-chart.component.html',
+    styleUrl: './weight-line-chart.component.css',
+    standalone: true,
+    imports: [NgApexchartsModule]
 })
 export class WeightLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;

@@ -1,15 +1,6 @@
 import {Component, inject, OnInit, ViewChild} from "@angular/core";
 
-import {
-  ApexChart,
-  ApexDataLabels,
-  ApexLegend,
-  ApexNonAxisChartSeries,
-  ApexPlotOptions,
-  ApexTheme,
-  ApexTooltip,
-  ChartComponent
-} from "ng-apexcharts";
+import { ApexChart, ApexDataLabels, ApexLegend, ApexNonAxisChartSeries, ApexPlotOptions, ApexTheme, ApexTooltip, ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
 import {HotToastService} from "@ngneat/hot-toast";
 
@@ -26,9 +17,11 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-weight-progress-bar-chart',
-  templateUrl: './weight-progress-bar-chart.component.html',
-  styleUrl: './weight-progress-bar-chart.component.css'
+    selector: 'app-weight-progress-bar-chart',
+    templateUrl: './weight-progress-bar-chart.component.html',
+    styleUrl: './weight-progress-bar-chart.component.css',
+    standalone: true,
+    imports: [NgApexchartsModule]
 })
 export class WeightProgressBarChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;

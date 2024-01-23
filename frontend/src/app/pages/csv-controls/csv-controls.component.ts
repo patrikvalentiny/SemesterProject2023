@@ -3,9 +3,10 @@ import {CsvService} from "../../services/csv.service";
 import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
-  selector: 'app-csv-controls',
-  templateUrl: './csv-controls.component.html',
-  styleUrl: './csv-controls.component.css'
+    selector: 'app-csv-controls',
+    templateUrl: './csv-controls.component.html',
+    styleUrl: './csv-controls.component.css',
+    standalone: true
 })
 export class CsvControlsComponent {
   file: File | null = null;

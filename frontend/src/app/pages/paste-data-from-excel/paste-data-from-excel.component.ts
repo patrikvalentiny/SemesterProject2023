@@ -1,15 +1,18 @@
 import {Component, inject} from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
+import { FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
 import {WeightDto} from "../../dtos/weight-dto";
 import {WeightService} from "../../services/weight.service";
 import {HotToastService} from "@ngneat/hot-toast";
 import {Router} from "@angular/router";
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-paste-data-from-excel',
-  host: {class: 'h-full'},
-  templateUrl: './paste-data-from-excel.component.html',
-  styleUrl: './paste-data-from-excel.component.css'
+    selector: 'app-paste-data-from-excel',
+    host: { class: 'h-full' },
+    templateUrl: './paste-data-from-excel.component.html',
+    styleUrl: './paste-data-from-excel.component.css',
+    standalone: true,
+    imports: [ReactiveFormsModule, DatePipe]
 })
 export class PasteDataFromExcelComponent {
   dataInput: FormControl<string | null> = new FormControl(null, [Validators.required]);

@@ -1,13 +1,15 @@
 import {Component, inject} from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
+import { FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
 import {WeightService} from "../../../services/weight.service";
 import {Router} from "@angular/router";
 import {WeightInput} from "../../../dtos/weight-input";
 
 @Component({
-  selector: 'app-onboarding-weight',
-  templateUrl: './onboarding-weight.component.html',
-  styleUrl: './onboarding-weight.component.css'
+    selector: 'app-onboarding-weight',
+    templateUrl: './onboarding-weight.component.html',
+    styleUrl: './onboarding-weight.component.css',
+    standalone: true,
+    imports: [ReactiveFormsModule]
 })
 export class OnboardingWeightComponent {
   weightService: WeightService = inject(WeightService);
