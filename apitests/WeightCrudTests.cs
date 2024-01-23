@@ -21,7 +21,9 @@ public class WeightCrudTests
 
         _weightFaker = new Faker<WeightInputCommandModel>()
             .RuleFor(w => w.Weight, f => Math.Round(f.Random.Decimal(50, 200), 2))
-            .RuleFor(w => w.Date, f => f.Date.Past().Date);
+            .RuleFor(w => w.Date, f => f.Date.Past().Date)
+            .RuleFor(w => w.BodyFatPercentage, f => f.Random.Float(5F, 50F).OrNull(f, 0.8f))
+            .RuleFor(w => w.SkeletalMuscleWeight, f => f.Random.Float(20f, 80F).OrNull(f, 0.8f));
     }
 
     [Test]
@@ -40,10 +42,10 @@ public class WeightCrudTests
             throw new Exception(e.Message);
         }
 
-        WeightInput? responseObject;
+        WeightDto? responseObject;
         try
         {
-            responseObject = JsonConvert.DeserializeObject<WeightInput>(await response.Content.ReadAsStringAsync());
+            responseObject = JsonConvert.DeserializeObject<WeightDto>(await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
         {
@@ -55,6 +57,8 @@ public class WeightCrudTests
             response.IsSuccessStatusCode.Should().BeTrue();
             weight.Weight.Should().Be(responseObject!.Weight);
             weight.Date.Date.Should().Be(responseObject.Date);
+            weight.BodyFatPercentage.Should().Be(responseObject.BodyFatPercentage);
+            weight.SkeletalMuscleWeight.Should().Be(responseObject.SkeletalMuscleWeight);
         }
     }
 
@@ -104,7 +108,7 @@ public class WeightCrudTests
     {
         var weights = new List<WeightInputCommandModel>();
         const string sql =
-            "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)";
+            "INSERT INTO weight_tracker.weights (weight, date, user_id, body_fat_percentage, skeletal_muscle_kg) VALUES (@Weight, @Date, @UserId, @bodyFat, @skeletalMuscle)";
         await using var conn = Helper.OpenConnection();
         for (var i = 0; i < 10; i++)
         {
@@ -115,7 +119,7 @@ public class WeightCrudTests
             } while (weights.Exists(w => w.Date == weight.Date));
 
             weights.Add(weight);
-            await conn.ExecuteAsync(sql, new { weight.Weight, weight.Date, Helper.UserId });
+            await conn.ExecuteAsync(sql, new { weight.Weight, weight.Date, Helper.UserId, bodyFat = weight.BodyFatPercentage, skeletalMuscle = weight.SkeletalMuscleWeight });
         }
 
 
@@ -198,9 +202,9 @@ public class WeightCrudTests
         var weight = _weightFaker.Generate();
 
         const string sql =
-            "INSERT INTO weight_tracker.weights (weight, date, user_id) VALUES (@Weight, @Date, @UserId)";
+            "INSERT INTO weight_tracker.weights (weight, date, user_id, body_fat_percentage, skeletal_muscle_kg) VALUES (@Weight, @Date, @UserId, @bodyFat, @skeletalMuscle)";
         await using var conn = Helper.OpenConnection();
-        await conn.ExecuteAsync(sql, new { weight.Weight, weight.Date, Helper.UserId });
+        await conn.ExecuteAsync(sql, new { weight.Weight, weight.Date, Helper.UserId, bodyFat = weight.BodyFatPercentage, skeletalMuscle = weight.SkeletalMuscleWeight });
 
         HttpResponseMessage response;
         try
@@ -213,10 +217,10 @@ public class WeightCrudTests
             throw new Exception(e.Message);
         }
 
-        WeightInput? responseObject;
+        WeightDto? responseObject;
         try
         {
-            responseObject = JsonConvert.DeserializeObject<WeightInput>(await response.Content.ReadAsStringAsync());
+            responseObject = JsonConvert.DeserializeObject<WeightDto>(await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
         {
@@ -227,7 +231,7 @@ public class WeightCrudTests
         {
             response.IsSuccessStatusCode.Should().BeTrue();
             weight.Should().BeEquivalentTo(responseObject,
-                options => options.Excluding(o => o!.UserId).Excluding(o => o!.Difference));
+                options => options.Excluding(o => o!.Difference));
         }
     }
 
