@@ -12,7 +12,9 @@ public class WeightService(WeightRepository weightRepository)
         {
             Weight = model.Weight,
             Date = model.Date,
-            UserId = userId
+            UserId = userId,
+            BodyFatPercentage = model.BodyFatPercentage,
+            SkeletalMuscleWeight = model.SkeletalMuscleWeight
         };
         return weightRepository.Create(latestWeight);
     }
@@ -36,7 +38,9 @@ public class WeightService(WeightRepository weightRepository)
         {
             Weight = model.Weight,
             Date = model.Date,
-            UserId = userId
+            UserId = userId,
+            BodyFatPercentage = model.BodyFatPercentage,
+            SkeletalMuscleWeight = model.SkeletalMuscleWeight
         };
         return weightRepository.Update(latestWeight);
     }

@@ -24,7 +24,9 @@ public class WeightController(WeightService weightService) : Controller
             {
                 Weight = weight.Weight,
                 Date = weight.Date,
-                Difference = weight.Difference
+                Difference = weight.Difference,
+                BodyFatPercentage = weight.BodyFatPercentage,
+                SkeletalMuscleWeight = weight.SkeletalMuscleWeight
             };
             return Ok(weightDto);
         }
@@ -47,7 +49,9 @@ public class WeightController(WeightService weightService) : Controller
             {
                 Weight = weight.Weight,
                 Date = weight.Date,
-                Difference = weight.Difference
+                Difference = weight.Difference,
+                BodyFatPercentage = weight.BodyFatPercentage,
+                SkeletalMuscleWeight = weight.SkeletalMuscleWeight
             };
             return Ok(weightDto);
         }
@@ -71,7 +75,9 @@ public class WeightController(WeightService weightService) : Controller
             {
                 Weight = weight.Weight,
                 Date = weight.Date,
-                Difference = weight.Difference
+                Difference = weight.Difference,
+                BodyFatPercentage = weight.BodyFatPercentage,
+                SkeletalMuscleWeight = weight.SkeletalMuscleWeight
             });
             return Ok(weightDtos);
         }
@@ -95,7 +101,9 @@ public class WeightController(WeightService weightService) : Controller
             {
                 Weight = weight.Weight,
                 Date = weight.Date,
-                Difference = weight.Difference
+                Difference = weight.Difference,
+                BodyFatPercentage = weight.BodyFatPercentage,
+                SkeletalMuscleWeight = weight.SkeletalMuscleWeight
             };
             return Ok(weightDto);
         }
@@ -117,7 +125,9 @@ public class WeightController(WeightService weightService) : Controller
             {
                 Weight = weight.Weight,
                 Date = weight.Date,
-                Difference = weight.Difference
+                Difference = weight.Difference,
+                BodyFatPercentage = weight.BodyFatPercentage,
+                SkeletalMuscleWeight = weight.SkeletalMuscleWeight
             }));
         }
         catch (Exception e)
