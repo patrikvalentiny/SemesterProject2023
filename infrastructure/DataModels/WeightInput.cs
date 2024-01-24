@@ -8,6 +8,6 @@ public class WeightInput
     [Required] public required DateTime Date { get; set; }
     [Required] public required int UserId { get; set; }
     public decimal? Difference { get; set; }
-    public float? BodyFatPercentage { get; set; }
-    public float? SkeletalMuscleWeight { get; set; }
+    public decimal? BodyFatPercentage { get; set; }
+    public decimal? SkeletalMuscleWeight { get; set; }
 }

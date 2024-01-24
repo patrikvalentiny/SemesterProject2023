@@ -31,6 +31,8 @@ export class EditWeightComponent implements OnInit {
 
 
   // timeInput = new FormControl('', [Validators.required]);
+  bodyFatInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0.0), Validators.max(80.0)])
+  skeletalMuscleInput: FormControl<number | null>  = new FormControl(null, [Validators.required, Validators.min(0.0), Validators.max(200.0)]);
 
   constructor() {
     // bind signals to form
@@ -51,7 +53,9 @@ export class EditWeightComponent implements OnInit {
     try {
       const weight: WeightInput = {
         weight: this.numberInput.value!,
-        date: new Date(this.dateInput.value!)
+        date: new Date(this.dateInput.value!),
+        bodyFatPercentage: this.bodyFatInput.value,
+        skeletalMuscleWeight: this.skeletalMuscleInput.value
       }
       await this.weightService.putWeight(weight);
       this.editingWeight!.weight = weight.weight;
@@ -68,6 +72,8 @@ export class EditWeightComponent implements OnInit {
       this.numberInput.setValue(data.weight);
       this.dateInput.setValue(data.date.toLocaleString().substring(0, 10));
       // this.timeInput.setValue(data.date.toLocaleString().substring(11, 16));
+      this.bodyFatInput.setValue(data.bodyFatPercentage ??  null);
+      this.skeletalMuscleInput.setValue(data.skeletalMuscleWeight ?? null);
       this.editingWeight = data;
       return data;
     } catch (e) {
