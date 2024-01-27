@@ -22,11 +22,10 @@ Compared to other apps the open source nature assures you that your data is not 
 - [X] Secure data storage in a PostgresSQL database
 
 ## Additional Features
-- [ ] Mobile-responsive design for on-the-go tracking
+- [X] Mobile-responsive design for on-the-go tracking
 - [ ] Track daily calorie intake
 - [ ] Track nutrition (External API / LLM for estimated caloric intake)
 - [ ] Track exercise (Possible integration with external APIs
-- [ ] Whatever else I come up with along the way
 ## License
 
 This project is licensed under the GNU Affero General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
