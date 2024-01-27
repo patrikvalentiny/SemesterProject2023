@@ -1,23 +1,9 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import { ApexAnnotations, ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexMarkers, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, NgApexchartsModule } from "ng-apexcharts";
+import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
 import {HotToastService} from "@ngneat/hot-toast";
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  theme: ApexTheme;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis[];
-  title: ApexTitleSubtitle;
-  stroke: ApexStroke;
-  dataLabels: ApexDataLabels;
-  annotations: ApexAnnotations;
-  colors: string[];
-  tooltip: ApexTooltip;
-  markers: ApexMarkers;
-};
+import {AxisChartOptions, defaultAxisChartOptions} from "../chart-helper";
 
 @Component({
     selector: 'app-weight-line-chart',
@@ -28,7 +14,7 @@ export type ChartOptions = {
 })
 export class WeightLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptions: Partial<AxisChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
   private readonly toast = inject(HotToastService);
@@ -42,10 +28,13 @@ export class WeightLineChartComponent implements OnInit {
           size: 6
         }
       },
-      colors: ["#dca54c"],
       series: [
         {
           name: "Weight",
+          data: [0]
+        },
+        {
+          name: "Body Fat",
           data: [0]
         }
       ],
@@ -81,19 +70,8 @@ export class WeightLineChartComponent implements OnInit {
           title: {text: "Weight (kg)"},
         }
       ],
-      dataLabels: {
-        enabled: false
-      },
-      theme: {
-        mode: "dark",
-        palette: "palette10"
-      },
       title: {
         text: "Your weight history"
-      },
-      stroke: {
-        show: true,
-        curve: "smooth",
       },
       annotations: {
         yaxis: [],
@@ -118,9 +96,9 @@ export class WeightLineChartComponent implements OnInit {
         y: {
           formatter(val: number, opts?: any): string {
             if (opts.dataPointIndex === 0) {
-              return val + "kg";
+              return val + " kg";
             }
-            return val + "kg (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1]).toFixed(2) + ")";
+            return val + " kg (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1]).toFixed(2) + ")";
           }
         }
       }
@@ -144,12 +122,20 @@ export class WeightLineChartComponent implements OnInit {
       let minWeight = Math.min(...weightNums) - 2;
       minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
       this.chartOptions.yaxis![0].max = maxWeight;
-      this.chartOptions.yaxis![0].min = minWeight;
+      this.chartOptions.yaxis![0].min = 0;
       this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight) / 10) + 2;
 
       const seriesData = weights.map(weight => ({
         x: new Date(weight.date).getTime(),
         y: weight.weight
+      }));
+      const bodyFatData = weights.filter(weight => weight.bodyFatPercentage).map(weight => ({
+        x: new Date(weight.date).getTime(),
+        y: (weight.weight * (weight.bodyFatPercentage! ?? 0) / 100).toFixed(1)
+      }));
+      const skeletalMuscleData = weights.filter(weight => weight.skeletalMuscleWeight).map(weight => ({
+        x: new Date(weight.date).getTime(),
+        y: weight.skeletalMuscleWeight! ?? 0
       }));
 
 
@@ -158,6 +144,14 @@ export class WeightLineChartComponent implements OnInit {
           name: "Weight",
           data: seriesData
         },
+        {
+          name: "Body Fat",
+          data: bodyFatData
+        },
+        {
+          name: "Skeletal Muscle",
+          data: skeletalMuscleData
+        }
       ];
       this.chartOptions.xaxis = {
         type: "datetime",
@@ -196,4 +190,5 @@ export class WeightLineChartComponent implements OnInit {
     }
   }
 
+  protected readonly defaultAxisChartOptions = defaultAxisChartOptions;
 }

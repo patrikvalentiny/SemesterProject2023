@@ -47,6 +47,8 @@ create table weight_tracker.weights
         constraint user_weights_users_id_fk
             references weight_tracker.users
             on update cascade on delete cascade,
+    body_fat_percentage real,
+    skeletal_muscle_kg  real,
     constraint weights_pk
         primary key (user_id, date)
 );

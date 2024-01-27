@@ -1,20 +1,10 @@
 import {Component, inject, OnInit, ViewChild} from "@angular/core";
 
-import { ApexChart, ApexDataLabels, ApexLegend, ApexNonAxisChartSeries, ApexPlotOptions, ApexTheme, ApexTooltip, ChartComponent, NgApexchartsModule } from "ng-apexcharts";
+import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
 import {HotToastService} from "@ngneat/hot-toast";
+import {NonAxisChartOptions} from "../chart-helper";
 
-export type ChartOptions = {
-  series: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  labels: string[];
-  plotOptions: ApexPlotOptions;
-  colors: string[];
-  theme: ApexTheme;
-  dataLabels: ApexDataLabels;
-  tooltip: ApexTooltip;
-  legend: ApexLegend;
-};
 
 @Component({
     selector: 'app-weight-progress-bar-chart',
@@ -25,7 +15,7 @@ export type ChartOptions = {
 })
 export class WeightProgressBarChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptions: Partial<NonAxisChartOptions>;
   private readonly statService: StatisticsService = inject(StatisticsService);
   private readonly toast = inject(HotToastService);
 

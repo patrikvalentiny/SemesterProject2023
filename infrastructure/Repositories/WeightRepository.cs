@@ -8,29 +8,33 @@ public class WeightRepository(DbDataSource dataSource)
 {
     public WeightInput Create(WeightInput entity)
     {
-        var sql = $@"INSERT INTO weight_tracker.weights (weight, date, user_id) 
-VALUES (@weight, @date, @user_id) ON CONFLICT (user_id, date) DO UPDATE SET weight = @weight, date = @date
+        var sql = $@"INSERT INTO weight_tracker.weights (weight, date, user_id, body_fat_percentage, skeletal_muscle_kg) 
+VALUES (@weight, @date, @user_id, @bodyFat, @skeletalMuscle) ON CONFLICT (user_id, date) DO UPDATE SET weight = @weight, date = @date, body_fat_percentage = @bodyFat, skeletal_muscle_kg = @skeletalMuscle
 RETURNING 
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
-    user_id as {nameof(WeightInput.UserId)};";
+    user_id as {nameof(WeightInput.UserId)},
+    body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)};";
 
         using var conn = dataSource.OpenConnection();
         return conn.QueryFirst<WeightInput>(sql,
-            new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId });
+            new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId, bodyFat = entity.BodyFatPercentage, skeletalMuscle = entity.SkeletalMuscleWeight });
     }
 
     public WeightInput Update(WeightInput entity)
     {
         var sql =
-            $@"UPDATE weight_tracker.weights SET weight = @weight WHERE date = @date AND user_id = @user_id RETURNING
+            $@"UPDATE weight_tracker.weights SET weight = @weight,body_fat_percentage = @bodyFat, skeletal_muscle_kg = @skeletalMuscle WHERE date = @date AND user_id = @user_id RETURNING
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
-    user_id as {nameof(WeightInput.UserId)};";
+    user_id as {nameof(WeightInput.UserId)},
+    body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)};";
 
         using var conn = dataSource.OpenConnection();
         return conn.QueryFirst<WeightInput>(sql,
-            new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId });
+            new { weight = entity.Weight, date = entity.Date, user_id = entity.UserId, bodyFat = entity.BodyFatPercentage, skeletalMuscle = entity.SkeletalMuscleWeight });
     }
 
     public WeightInput Delete(DateTime date, int userId)
@@ -38,7 +42,9 @@ RETURNING
         var sql = $@"DELETE FROM weight_tracker.weights WHERE date = @date AND user_id = @user_id RETURNING 
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
-    user_id as {nameof(WeightInput.UserId)};";
+    user_id as {nameof(WeightInput.UserId)},
+    body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)}";
         using var conn = dataSource.OpenConnection();
         return conn.QueryFirst<WeightInput>(sql, new { date, user_id = userId });
     }
@@ -48,7 +54,9 @@ RETURNING
         var sql = $@"SELECT
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
-    user_id as {nameof(WeightInput.UserId)}
+    user_id as {nameof(WeightInput.UserId)},
+    body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)}
 FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date;";
 
         using var conn = dataSource.OpenConnection();
@@ -60,7 +68,9 @@ FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date;";
         var sql = $@"SELECT
     weight as {nameof(WeightInput.Weight)}, 
     date as {nameof(WeightInput.Date)}, 
-    user_id as {nameof(WeightInput.UserId)}
+    user_id as {nameof(WeightInput.UserId)},
+    body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)}
 FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date DESC LIMIT 1;";
 
         using var conn = dataSource.OpenConnection();

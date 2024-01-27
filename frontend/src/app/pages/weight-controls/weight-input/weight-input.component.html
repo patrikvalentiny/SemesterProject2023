@@ -1,5 +1,4 @@
 <div class="flex flex-col lg:py-8 py-4 lg:px-4 px-2 w-full h-full items-center justify-center">
-  <app-weight-line-chart class="w-full"></app-weight-line-chart>
   <!-- Input Number -->
   <div class="flex w-full items-center justify-center">
     <div class="flex flex-col gap-4 items-center justify-center h-full py-8 w-72">
@@ -8,6 +7,7 @@
         <input [formControl]="dateInput" class="input input-bordered w-full text-center" type="date"/>
         <!--    <input [formControl]="timeInput" type="time" class = "input input-bordered w-5/6 max-w-xs"/>-->
       </div>
+      <!--      number input with increment and decrement buttons-->
       <div class="py-4 px-6  inline-block bg-base-300 rounded-full w-full">
         <div class="flex items-center justify-between gap-x-1.5 w-full">
           <button (click)="decrement()" class="btn btn-active btn-neutral bg- rounded-full justify-center items-center "
@@ -20,12 +20,12 @@
           </button>
           <div class="flex flex-col w-full items-center justify-center">
             <div>
-              <input [formControl]="numberInput"
+              <input [formControl]="weightInput"
                      class="p-0  w-24 h-14 text-3xl text-center bg-transparent border-0 base-content"
                      placeholder="0.0" step='0.1' type="number" value="0.0">
               <label>kg</label>
             </div>
-            <label class="text-center">{{ (numberInput.value! - dayBeforeWeight!).toFixed(1) }}kg</label>
+            <label class="text-center">{{ (weightInput.value! - dayBeforeWeight?.weight!).toFixed(1) }}kg</label>
 
           </div>
           <button (click)="increment()" class="btn btn-active btn-neutral rounded-full justify-center items-center">
@@ -38,7 +38,21 @@
           </button>
         </div>
       </div>
-      <button (click)="saveWeight()" [disabled]="numberInput.invalid" class="btn btn-primary w-full h-2">Save</button>
+      <div class="flex flex-col w-9/12">
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">📏 Body Fat Percentage (%)</span>
+        </div>
+        <input [formControl]="bodyFatInput" type="number" placeholder="%" class="input input-bordered w-full max-w-xs" />
+      </label>
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">💪 Skeletal Muscle Mass (kg)</span>
+        </div>
+        <input [formControl]="skeletalMuscleInput" type="number" placeholder="kg" class="input input-bordered w-full max-w-xs" />
+      </label>
+      </div>
+      <button (click)="saveWeight()" [disabled]="weightInput.invalid" class="btn btn-primary w-full h-2">Save</button>
     </div>
     <!-- End Input Number -->
   </div>

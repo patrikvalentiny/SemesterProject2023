@@ -1,23 +1,10 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import { ApexAnnotations, ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexMarkers, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent, NgApexchartsModule } from "ng-apexcharts";
+import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
 import {HotToastService} from "@ngneat/hot-toast";
+import {AxisChartOptions, defaultAxisChartOptions} from "../chart-helper";
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  theme: ApexTheme;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis[];
-  title: ApexTitleSubtitle;
-  stroke: ApexStroke;
-  dataLabels: ApexDataLabels;
-  annotations: ApexAnnotations;
-  colors: string[];
-  tooltip: ApexTooltip;
-  markers: ApexMarkers;
-};
 
 @Component({
     selector: 'app-bmi-line-chart',
@@ -28,7 +15,7 @@ export type ChartOptions = {
 })
 export class BmiLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptions: Partial<AxisChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
   private readonly toast = inject(HotToastService);
@@ -84,19 +71,8 @@ export class BmiLineChartComponent implements OnInit {
         }
 
       ],
-      dataLabels: {
-        enabled: false
-      },
-      theme: {
-        mode: "dark",
-        palette: "palette10"
-      },
       title: {
         text: "Your BMI history"
-      },
-      stroke: {
-        show: true,
-        curve: "smooth",
       },
       annotations: {
         xaxis: [
@@ -171,9 +147,9 @@ export class BmiLineChartComponent implements OnInit {
         y: {
           formatter(val: number, opts?: any): string {
             if (opts.dataPointIndex === 0) {
-              return val + "BMI";
+              return val + "kg/m<sup>2</sup>";
             }
-            return val + "BMI (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1]).toFixed(2) + ")";
+            return val + " kg/m<sup>2</sup> (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1]).toFixed(2) + ")";
 
           }
         },
@@ -269,4 +245,6 @@ export class BmiLineChartComponent implements OnInit {
       this.toast.error("Could not load BMI chart data");
     }
   }
+
+  protected readonly defaultAxisChartOptions = defaultAxisChartOptions;
 }
