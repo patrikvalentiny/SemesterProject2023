@@ -40,7 +40,7 @@ export type NonAxisChartOptions = {
 export type ChartOptions = AxisChartOptions | NonAxisChartOptions;
 
 export const defaultAxisChartOptions: Partial<AxisChartOptions>= {
-  colors: ["#dca54c"],
+  colors: ["#dca54c", "#152747", "#513448"],
   stroke: {
     show: true,
     curve: "smooth",

@@ -32,6 +32,10 @@ export class WeightLineChartComponent implements OnInit {
         {
           name: "Weight",
           data: [0]
+        },
+        {
+          name: "Body Fat",
+          data: [0]
         }
       ],
       chart: {
@@ -118,12 +122,20 @@ export class WeightLineChartComponent implements OnInit {
       let minWeight = Math.min(...weightNums) - 2;
       minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
       this.chartOptions.yaxis![0].max = maxWeight;
-      this.chartOptions.yaxis![0].min = minWeight;
+      this.chartOptions.yaxis![0].min = 0;
       this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight) / 10) + 2;
 
       const seriesData = weights.map(weight => ({
         x: new Date(weight.date).getTime(),
         y: weight.weight
+      }));
+      const bodyFatData = weights.filter(weight => weight.bodyFatPercentage).map(weight => ({
+        x: new Date(weight.date).getTime(),
+        y: (weight.weight * (weight.bodyFatPercentage! ?? 0) / 100).toFixed(1)
+      }));
+      const skeletalMuscleData = weights.filter(weight => weight.skeletalMuscleWeight).map(weight => ({
+        x: new Date(weight.date).getTime(),
+        y: weight.skeletalMuscleWeight! ?? 0
       }));
 
 
@@ -132,6 +144,14 @@ export class WeightLineChartComponent implements OnInit {
           name: "Weight",
           data: seriesData
         },
+        {
+          name: "Body Fat",
+          data: bodyFatData
+        },
+        {
+          name: "Skeletal Muscle",
+          data: skeletalMuscleData
+        }
       ];
       this.chartOptions.xaxis = {
         type: "datetime",
