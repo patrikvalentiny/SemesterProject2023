@@ -1,13 +1,15 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {UserDetailsService} from "../../../services/user-details.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from "@angular/forms";
 import {UserDetails} from "../../../dtos/user-details";
 import {HotToastService} from "@ngneat/hot-toast";
 
 @Component({
-  selector: 'app-account-details',
-  templateUrl: './account-details.component.html',
-  styleUrl: './account-details.component.css'
+    selector: 'app-account-details',
+    templateUrl: './account-details.component.html',
+    styleUrl: './account-details.component.css',
+    standalone: true,
+    imports: [ReactiveFormsModule, FormsModule]
 })
 export class AccountDetailsComponent implements OnInit {
   heightInput: FormControl<number | null> = new FormControl(null, [Validators.required, Validators.min(0)]);

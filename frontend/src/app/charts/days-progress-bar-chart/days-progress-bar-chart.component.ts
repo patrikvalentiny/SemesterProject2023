@@ -1,38 +1,20 @@
 import {Component, inject, OnInit, ViewChild} from "@angular/core";
 
-import {
-  ApexChart,
-  ApexDataLabels,
-  ApexLegend,
-  ApexNonAxisChartSeries,
-  ApexPlotOptions,
-  ApexTheme,
-  ApexTooltip,
-  ChartComponent
-} from "ng-apexcharts";
+import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {StatisticsService} from "../../services/statistics.service";
 import {HotToastService} from "@ngneat/hot-toast";
-
-export type ChartOptions = {
-  series: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  labels: string[];
-  plotOptions: ApexPlotOptions;
-  colors: string[];
-  theme: ApexTheme;
-  dataLabels: ApexDataLabels;
-  tooltip: ApexTooltip;
-  legend: ApexLegend;
-};
+import {NonAxisChartOptions} from "../chart-helper";
 
 @Component({
-  selector: 'app-days-progress-bar-chart',
-  templateUrl: './days-progress-bar-chart.component.html',
-  styleUrl: './days-progress-bar-chart.component.css'
+    selector: 'app-days-progress-bar-chart',
+    templateUrl: './days-progress-bar-chart.component.html',
+    styleUrl: './days-progress-bar-chart.component.css',
+    standalone: true,
+    imports: [NgApexchartsModule]
 })
 export class DaysProgressBarChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptions: Partial<NonAxisChartOptions>;
   private readonly statService: StatisticsService = inject(StatisticsService);
   private readonly toast = inject(HotToastService);
 

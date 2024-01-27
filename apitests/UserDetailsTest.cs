@@ -127,6 +127,7 @@ public class UserDetailsTest
     [Test]
     public async Task TestGetUserDetails()
     {
+        // Arrange
         var userDetails = _faker.Generate();
 
         const string sql =
@@ -143,6 +144,7 @@ public class UserDetailsTest
         await using var conn = Helper.OpenConnection();
         await conn.ExecuteAsync(sql, userDetails);
 
+        // Act
         HttpResponseMessage response;
         try
         {
@@ -164,6 +166,7 @@ public class UserDetailsTest
             throw new Exception(e.Message);
         }
 
+        // Assert
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();

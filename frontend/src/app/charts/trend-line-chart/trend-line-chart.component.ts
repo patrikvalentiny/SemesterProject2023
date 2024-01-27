@@ -1,46 +1,22 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {
-  ApexAnnotations,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexDataLabels,
-  ApexMarkers,
-  ApexStroke,
-  ApexTheme,
-  ApexTitleSubtitle,
-  ApexTooltip,
-  ApexXAxis,
-  ApexYAxis,
-  ChartComponent
-} from "ng-apexcharts";
+import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
 import {StatisticsService} from "../../services/statistics.service";
 import {HotToastService} from "@ngneat/hot-toast";
+import {AxisChartOptions, defaultAxisChartOptions} from "../chart-helper";
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  theme: ApexTheme;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis[];
-  title: ApexTitleSubtitle;
-  stroke: ApexStroke;
-  dataLabels: ApexDataLabels;
-  annotations: ApexAnnotations;
-  colors: string[];
-  tooltip: ApexTooltip;
-  markers: ApexMarkers;
-};
 
 @Component({
-  selector: 'app-trend-line-chart',
-  templateUrl: './trend-line-chart.component.html',
-  styleUrl: './trend-line-chart.component.css'
+    selector: 'app-trend-line-chart',
+    templateUrl: './trend-line-chart.component.html',
+    styleUrl: './trend-line-chart.component.css',
+    standalone: true,
+    imports: [NgApexchartsModule]
 })
 export class TrendLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptions: Partial<AxisChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
   private readonly statService: StatisticsService = inject(StatisticsService);
@@ -54,7 +30,6 @@ export class TrendLineChartComponent implements OnInit {
           size: 6
         }
       },
-      colors: ["#dca54c"],
       series: [
         {
           name: "Weight",
@@ -93,19 +68,8 @@ export class TrendLineChartComponent implements OnInit {
           title: {text: "Weight (kg)"},
         }
       ],
-      dataLabels: {
-        enabled: false
-      },
-      theme: {
-        mode: "dark",
-        palette: "palette10"
-      },
       title: {
         text: "Weight Prediction"
-      },
-      stroke: {
-        show: true,
-        curve: "smooth",
       },
       annotations: {
         xaxis: [
@@ -205,4 +169,5 @@ export class TrendLineChartComponent implements OnInit {
     }
   }
 
+  protected readonly defaultAxisChartOptions = defaultAxisChartOptions;
 }

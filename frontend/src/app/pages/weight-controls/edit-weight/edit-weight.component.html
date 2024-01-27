@@ -41,6 +41,21 @@
           </svg>
         </button>
       </div>
+
+    </div>
+    <div class="flex flex-col w-9/12">
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">📏 Body Fat Percentage (%)</span>
+        </div>
+        <input [formControl]="bodyFatInput" type="number" placeholder="%" class="input input-bordered w-full max-w-xs" />
+      </label>
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">💪 Skeletal Muscle Mass (kg)</span>
+        </div>
+        <input [formControl]="skeletalMuscleInput" type="number" placeholder="kg" class="input input-bordered w-full max-w-xs" />
+      </label>
     </div>
     <button (click)="saveWeight()" [disabled]="formGroup.invalid || editingWeight === null"
             class="btn btn-primary w-full">
@@ -51,6 +66,7 @@
     </button>
   </div>
   <!-- End Input Number -->
+<!--  delete confirm modal-->
   <dialog class="modal lg:pl-40" id="deleteModal">
     <div class="modal-box shadow-2xl shadow-accent">
       <h3 class="font-bold text-lg">Are you sure you want to delete this record?</h3>

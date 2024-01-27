@@ -15,13 +15,6 @@ public class LoginTest : PageTest
         await Page.GotoAsync("http://localhost:4200");
     }
 
-    [TearDown]
-    public async Task TearDown()
-    {
-        await Page.CloseAsync();
-        await Helper.TriggerRebuild();
-    }
-
     [Test]
     public async Task UserCanLogin()
     {
@@ -39,5 +32,12 @@ public class LoginTest : PageTest
         await loginButton.IsEnabledAsync();
         await loginButton.ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(".*home"));
+    }
+    
+    [TearDown]
+    public async Task TearDown()
+    {
+        await Page.CloseAsync();
+        await Helper.TriggerRebuild();
     }
 }

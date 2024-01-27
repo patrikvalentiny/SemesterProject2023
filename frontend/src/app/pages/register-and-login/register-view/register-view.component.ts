@@ -1,12 +1,15 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import { FormBuilder, Validators, ReactiveFormsModule } from "@angular/forms";
 import {AccountService} from "../../../services/account.service";
 import {HotToastService} from "@ngneat/hot-toast";
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-register-view',
-  templateUrl: './register-view.component.html',
-  styleUrls: ['./register-view.component.css']
+    selector: 'app-register-view',
+    templateUrl: './register-view.component.html',
+    styleUrls: ['./register-view.component.css'],
+    standalone: true,
+    imports: [ReactiveFormsModule, NgClass]
 })
 export class RegisterViewComponent implements OnInit {
   passwordMatching: boolean = true;
