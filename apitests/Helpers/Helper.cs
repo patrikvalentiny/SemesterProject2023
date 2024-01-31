@@ -68,6 +68,19 @@ create table weight_tracker.user_details
     lastname         varchar(128),
     loss_per_week    real
 );
+
+create table weight_tracker.journeys
+(
+    id         serial
+        constraint journeys_pk
+            primary key,
+    user_id    integer               not null
+        constraint journeys_users_id_fk
+            references weight_tracker.users,
+    start_date date                  not null,
+    end_date   date                  not null
+    selected   boolean default false not null,
+);
 ";
 
     public static readonly User User1 = new()
