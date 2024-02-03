@@ -3,9 +3,9 @@
     <div class="flex flex-row items-center justify-between w-full h-full">
       <div class="flex flex-col gap-2 items-start justify-center w-full h-full">
         <h1 class="text-2xl font-bold">Paste data from excel here!</h1>
-        <p>Paste data without header in order Date in format (yyyy/mm/dd) and Weight in kg</p>
+        <p>Paste data without header in order <b>Date in format (yyyy/mm/dd), Weight (kg), </b><i>Body Fat (%), Skeletal Muscle (kg)</i><br><sub>Body Fat (%) and Skeletal Muscle (kg) are optional</sub></p>
       </div>
-      <button (click)="downloadCsv()" class="btn btn-accent ">Export your data</button>
+      <button (click)="downloadCsv()" class="btn btn-accent">Export your data</button>
     </div>
     <textarea [formControl]="dataInput" class="textarea textarea-bordered w-full h-full no-scrollbar"
               data-testid="dataInputArea"
@@ -20,8 +20,11 @@
       <table class="table table-xs table-pin-cols table-pin-rows bg-base-100 h-full p-2">
         <thead class="h-12">
         <tr>
-          <th class="w-24">Date</th>
-          <th>Weight</th>
+          <th class="w-6">Date</th>
+          <th class="w-6">Weight (kg)</th>
+          <th class="w-6">Body Fat (%)</th>
+          <th class="w-6">Skeletal Muscle (kg)</th>
+
         </tr>
         </thead>
         <tbody data-testid="tableBody">
@@ -29,6 +32,8 @@
             <tr>
               <th>{{ weight.date | date:"yyyy-MM-dd" }}</th>
               <td>{{ weight.weight }}kg</td>
+              <td>{{ weight.bodyFatPercentage}}</td>
+              <td>{{ weight.skeletalMuscleWeight}}</td>
             </tr>
           }
         </tbody>

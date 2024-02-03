@@ -34,7 +34,9 @@ export class PasteDataFromExcelComponent {
         const cells = line.split("\t");
         const weight: WeightDto = {
           weight: Number(cells[1]),
-          date: new Date(cells[0])
+          date: new Date(cells[0]),
+          bodyFatPercentage: Number(cells[2] || null),
+          skeletalMuscleWeight: Number(cells[3] || null)
         };
         // needed because catch does not catch errors in datePipe transform
         if (isNaN(weight.weight) || isNaN(weight.date.getTime())) {
