@@ -23,9 +23,9 @@ export class BmiLineChartComponent implements OnInit {
   constructor() {
     this.chartOptions = {
       markers: {
-        size: 2,
+        size: 1,
         hover: {
-          size: 6
+          size: 3
         }
       },
       colors: ['#dca54c'],
