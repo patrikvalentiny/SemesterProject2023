@@ -22,8 +22,8 @@ public class WeightCrudTests
         _weightFaker = new Faker<WeightInputCommandModel>()
             .RuleFor(w => w.Weight, f => Math.Round(f.Random.Decimal(50, 200), 2))
             .RuleFor(w => w.Date, f => f.Date.Past().Date)
-            .RuleFor(w => w.BodyFatPercentage, f => f.Random.Decimal(5, 80).OrNull(f, 0.8f))
-            .RuleFor(w => w.SkeletalMuscleWeight, f => f.Random.Decimal(5, 120).OrNull(f, 0.8f));
+            .RuleFor(w => w.BodyFatPercentage, f => decimal.Round(f.Random.Decimal(5, 80), 4).OrNull(f, 0.8f))
+            .RuleFor(w => w.SkeletalMuscleWeight, f => decimal.Round(f.Random.Decimal(5, 120), 4).OrNull(f, 0.8f));
     }
 
     [Test]
