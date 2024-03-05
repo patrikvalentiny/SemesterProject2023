@@ -21,10 +21,8 @@ public class WeightService(WeightRepository weightRepository)
 
     public IEnumerable<WeightInput> GetAllWeightForUser(int dataUserId)
     {
-        var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
-        for (var i = 0; i < weights.Count; i++)
-            weights[i].Difference = i == 0 ? 0 : weights[i].Weight - weights[i - 1].Weight;
-        return weights;
+        return weightRepository.GetAllWeightsForUser(dataUserId);
+        
     }
 
     public WeightInput DeleteWeight(DateTime date, int dataUserId)

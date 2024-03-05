@@ -15,7 +15,8 @@ RETURNING
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)},
     body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
-    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)};";
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)},
+    weight - lag(weight, 1) over (partition by user_id order by date) as {nameof(WeightInput.Difference)};";
 
         using var conn = dataSource.OpenConnection();
         return conn.QueryFirst<WeightInput>(sql,
@@ -30,7 +31,8 @@ RETURNING
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)},
     body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
-    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)};";
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)},
+    weight - lag(weight, 1) over (partition by user_id order by date) as {nameof(WeightInput.Difference)};";
 
         using var conn = dataSource.OpenConnection();
         return conn.QueryFirst<WeightInput>(sql,
@@ -44,7 +46,8 @@ RETURNING
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)},
     body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
-    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)}";
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)},
+    weight - lag(weight, 1) over (partition by user_id order by date) as {nameof(WeightInput.Difference)};";
         using var conn = dataSource.OpenConnection();
         return conn.QueryFirst<WeightInput>(sql, new { date, user_id = userId });
     }
@@ -56,7 +59,8 @@ RETURNING
     date as {nameof(WeightInput.Date)}, 
     user_id as {nameof(WeightInput.UserId)},
     body_fat_percentage as {nameof(WeightInput.BodyFatPercentage)},
-    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)}
+    skeletal_muscle_kg as {nameof(WeightInput.SkeletalMuscleWeight)},
+    weight - lag(weight, 1) over (partition by user_id order by date) as {nameof(WeightInput.Difference)}
 FROM weight_tracker.weights WHERE user_id = @user_id ORDER BY date;";
 
         using var conn = dataSource.OpenConnection();
