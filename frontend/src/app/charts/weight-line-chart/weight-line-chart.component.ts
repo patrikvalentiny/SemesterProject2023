@@ -108,12 +108,11 @@ export class WeightLineChartComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      await this.weightService.getWeights();
       await this.userService.getProfile();
       const targetWeight = this.userService.user!.targetWeight;
       const targetDate = new Date(this.userService.user!.targetDate);
 
-      const weights = this.weightService.weights;
+      const weights = await this.weightService.getWeights() ?? [];
       const weightNums = weights.map(w => w.weight);
 
       const trend = await this.statService.getTrend();
@@ -124,9 +123,11 @@ export class WeightLineChartComponent implements OnInit {
       const maxWeight = Math.max(...weightNums) + 2;
       let minWeight = Math.min(...weightNums) - 2;
       minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
-      this.chartOptions.yaxis![0].max = maxWeight;
-      this.chartOptions.yaxis![0].min = minWeight;
-      this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight) / 10) + 2;
+
+      const yaxis = this.chartOptions.yaxis!.at(0)!;
+      yaxis.max = maxWeight;
+      yaxis.min = minWeight;
+      yaxis.tickAmount = Math.ceil((maxWeight - minWeight) / 10) + 2;
 
       const seriesData = weights.map(weight => ({
         x: new Date(weight.date).getTime(),

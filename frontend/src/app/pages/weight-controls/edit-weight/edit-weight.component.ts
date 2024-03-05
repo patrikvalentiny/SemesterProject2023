@@ -85,11 +85,9 @@ export class EditWeightComponent implements OnInit {
 
   async deleteWeight() {
     try {
-      const weight: WeightInput = {
-        weight: this.numberInput.value!,
-        date: new Date(this.dateInput.value!)
-      }
-      await this.weightService.deleteWeight(weight);
+      const date = new Date(this.dateInput.value!)
+
+      await this.weightService.deleteWeight(date);
     } catch (e) {
       //caught by interceptor
       return;

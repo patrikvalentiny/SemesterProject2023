@@ -4,6 +4,7 @@ import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
 import {HotToastService} from "@ngneat/hot-toast";
 import {AxisChartOptions, defaultAxisChartOptions} from "../chart-helper";
+import {WeightDto} from "../../dtos/weight-dto";
 
 
 @Component({
@@ -159,18 +160,18 @@ export class BmiLineChartComponent implements OnInit {
 
   async ngOnInit() {
     try {
-
-
+      const bmi = await this.weightService.getBmi() ?? [];
       await this.userService.getProfile();
+
       const height = this.userService.user!.height / 100;
       const targetWeight = this.userService.user!.targetWeight;
       const targetWeightBmi = targetWeight / (height * height);
       const targetDate = new Date(this.userService.user!.targetDate);
 
-      const bmi = await this.weightService.getBmi() ?? [];
+
       //const bmiNums = bmi!.map(w => w.bmi);
       // range of dates from first in weight to target date
-      const startDate = new Date(this.weightService.weights[0].date);
+      const startDate = new Date(bmi.at(0)!.date);
       const today = new Date();
       const endDate = targetDate > today ? targetDate : today;
 

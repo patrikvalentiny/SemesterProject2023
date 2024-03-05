@@ -51,9 +51,7 @@ export class WeightInputComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const weights = await this.weightService.getWeights();
-      if (weights?.length === 0 || weights === undefined) return;
-      this.dayBeforeWeight = weights.at(-1)!;
+      this.dayBeforeWeight = await this.weightService.getLatestWeight();
       this.weightInput.setValue(this.dayBeforeWeight?.weight ?? 0);
       this.bodyFatInput.setValue(this.dayBeforeWeight?.bodyFatPercentage ?? null);
       this.skeletalMuscleInput.setValue(this.dayBeforeWeight?.skeletalMuscleWeight ?? null);

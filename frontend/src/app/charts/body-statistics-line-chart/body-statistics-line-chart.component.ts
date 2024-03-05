@@ -103,9 +103,7 @@ export class BodyStatisticsLineChartComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      await this.weightService.getWeights();
-
-      const weights = this.weightService.weights;
+      const weights = await this.weightService.getWeights() ?? [];
       const targetDate = new Date(this.userService.user!.targetDate);
       const startDate = new Date(this.weightService.weights[0].date);
       const today = new Date();

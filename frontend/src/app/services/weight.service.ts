@@ -1,4 +1,4 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {inject, Injectable, OnInit, signal} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {environment} from "../../environments/environment";
@@ -11,7 +11,7 @@ import * as FileSaver from "file-saver-es";
 @Injectable({
   providedIn: 'root'
 })
-export class WeightService {
+export class WeightService implements OnInit {
   weights: WeightDto[] = [];
   editingWeight = signal<WeightDto | null>(null);
   private readonly toastService = inject(HotToastService);
@@ -20,13 +20,21 @@ export class WeightService {
   constructor() {
   }
 
+  async ngOnInit() {
+    await this.getWeights();
+  }
+
   async postWeight(weight: WeightInput) {
     try {
       const call = this.httpClient.post<WeightDto>(environment.baseUrl + "/weight", weight);
       const response = await firstValueFrom<WeightDto>(call);
-
       this.toastService.success("Weight successfully added");
-      this.weights.unshift(response);
+      let latest = await this.getLatestWeight();
+      if (latest!.date === weight.date) {
+        await this.putWeight(weight);
+      } else {
+        this.weights.push(response);
+      }
     } catch (e) {
       return;
     }
@@ -34,6 +42,7 @@ export class WeightService {
 
   async getWeights() {
     try {
+      if (this.weights.length > 0) return this.weights;
       const call = this.httpClient.get<WeightDto[]>(environment.baseUrl + "/weight");
       this.weights = await firstValueFrom<WeightDto[]>(call);
       return this.weights;
@@ -42,22 +51,23 @@ export class WeightService {
     }
   }
 
-  async deleteWeight(weight: WeightInput) {
+  async deleteWeight(date: Date) {
     try {
-      const date = weight.date.toISOString().substring(0, 10);
-      const call = this.httpClient.delete<WeightDto>(environment.baseUrl + `/weight/${date}`);
+      const d = date.toISOString().substring(0, 19);
+      const call = this.httpClient.delete<WeightDto>(environment.baseUrl + `/weight/${d}`);
       await firstValueFrom<WeightDto>(call);
-      await this.getWeights();
-      this.toastService.success("Item deleted");
+      const index = this.weights.findIndex(i => i.date.toString() === d);
+      this.weights.splice(index, 1)
+      this.toastService.success("Weight successfully deleted");
     } catch (e) {
-
+      return;
     }
   }
 
   async getLatestWeight() {
     try {
-      await this.getWeights();
-      return this.weights[this.weights.length - 1];
+      const weights = await this.getWeights();
+      return weights!.at(-1)!;
     } catch (e) {
       return;
     }
@@ -66,11 +76,15 @@ export class WeightService {
   async putWeight(weightInput: WeightInput) {
     try {
       const call = this.httpClient.put<WeightDto>(environment.baseUrl + "/weight", weightInput);
-      await firstValueFrom<WeightDto>(call);
-      await this.getWeights();
+      const response = await firstValueFrom<WeightDto>(call);
+      console.log(response);
+      let index = this.weights.findIndex(i => i.date === weightInput.date);
+      this.weights.at(index)!.weight = response.weight;
+
+
       this.toastService.success("Weight successfully updated");
     } catch (e) {
-      throw e;
+      console.log(e);
     }
   }
 

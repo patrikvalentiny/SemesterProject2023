@@ -10,7 +10,7 @@
   </div>
   <div class="w-full h-full overflow-y-auto rounded-b-box no-scrollbar snap-y bg-transparent">
     <div class="grid grid-cols-7 gap-0.5 my-2">
-      @for (weight of weightService.weights; track weight.date) {
+      @for (weight of weightService.weights; track weight) {
         <!--tried to return the class itself but tailwind probably does not compile the css if its not explicitly stated-->
         <div (click)="setEditingWeight(weight.date)"
              [ngClass]="{
