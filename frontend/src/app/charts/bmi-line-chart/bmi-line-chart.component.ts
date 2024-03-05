@@ -168,17 +168,11 @@ export class BmiLineChartComponent implements OnInit {
       const targetDate = new Date(this.userService.user!.targetDate);
 
       const bmi = await this.weightService.getBmi() ?? [];
-      const bmiNums = bmi!.map(w => w.bmi);
+      //const bmiNums = bmi!.map(w => w.bmi);
       // range of dates from first in weight to target date
       const startDate = new Date(this.weightService.weights[0].date);
       const today = new Date();
       const endDate = targetDate > today ? targetDate : today;
-
-      const maxBmi = Math.max(...bmiNums) + 1;
-      let minBmi = Math.min(...bmiNums) - 1;
-      minBmi = minBmi < targetWeightBmi ? minBmi : targetWeightBmi - 1;
-      this.chartOptions.yaxis![0].max = maxBmi;
-      this.chartOptions.yaxis![0].min = minBmi;
 
 
       const seriesData = bmi.map(bmi => ({
@@ -207,7 +201,7 @@ export class BmiLineChartComponent implements OnInit {
         {
           yAxisIndex: 0,
           y: 30,
-          y2: maxBmi,
+          y2: 50,
           borderColor: "#000",
           fillColor: "#ff6f6f",
           opacity: 0.2,
