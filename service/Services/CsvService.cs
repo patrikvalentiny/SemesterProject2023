@@ -19,7 +19,7 @@ public class CsvService(WeightRepository weightRepository)
     public byte[] CreateCsv(int dataUserId)
     {
         var weights = weightRepository.GetAllWeightsForUser(dataUserId).ToList();
-        var weightsStripped = weights.Select(w => new { w.Weight, w.Date.Date });
+        var weightsStripped = weights.Select(w => new { w.Weight, w.Date.Date, w.BodyFatPercentage, w.SkeletalMuscleWeight});
         using var resource = new MemoryStream();
         using var writer = new StreamWriter(resource);
         using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);

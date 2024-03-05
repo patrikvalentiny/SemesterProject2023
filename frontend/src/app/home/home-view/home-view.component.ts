@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { TrendLineChartComponent } from '../../charts/trend-line-chart/trend-line-chart.component';
+import { BodyStatisticsLineChartComponent } from '../../charts/body-statistics-line-chart/body-statistics-line-chart.component';
 import { PredictedStatsCardComponent } from '../../pages/stat-cards/predicted-stats-card/predicted-stats-card.component';
 import { BmiLineChartComponent } from '../../charts/bmi-line-chart/bmi-line-chart.component';
 import { BmiStatsCardComponent } from '../../pages/stat-cards/bmi-stats-card/bmi-stats-card.component';
@@ -16,7 +16,7 @@ import { WeightProgressBarChartComponent } from '../../charts/weight-progress-ba
     templateUrl: './home-view.component.html',
     styleUrls: ['./home-view.component.css'],
     standalone: true,
-    imports: [WeightProgressBarChartComponent, AverageLossCardComponent, CalculatedLossCardComponent, DaysProgressBarChartComponent, CurrentStatsCardComponent, WeightLineChartComponent, BmiStatsCardComponent, BmiLineChartComponent, PredictedStatsCardComponent, TrendLineChartComponent]
+    imports: [WeightProgressBarChartComponent, AverageLossCardComponent, CalculatedLossCardComponent, DaysProgressBarChartComponent, CurrentStatsCardComponent, WeightLineChartComponent, BmiStatsCardComponent, BmiLineChartComponent, PredictedStatsCardComponent, BodyStatisticsLineChartComponent]
 })
 export class HomeViewComponent implements OnInit {
 

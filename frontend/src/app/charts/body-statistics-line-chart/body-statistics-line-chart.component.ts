@@ -2,32 +2,30 @@ import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import { ChartComponent, NgApexchartsModule } from "ng-apexcharts";
 import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
-import {StatisticsService} from "../../services/statistics.service";
 import {HotToastService} from "@ngneat/hot-toast";
 import {AxisChartOptions, defaultAxisChartOptions} from "../chart-helper";
 
 
 @Component({
-    selector: 'app-trend-line-chart',
-    templateUrl: './trend-line-chart.component.html',
-    styleUrl: './trend-line-chart.component.css',
+    selector: 'app-body-statistics-line-chart',
+    templateUrl: './body-statistics-line-chart.component.html',
+    styleUrl: './body-statistics-line-chart.component.css',
     standalone: true,
     imports: [NgApexchartsModule]
 })
-export class TrendLineChartComponent implements OnInit {
+export class BodyStatisticsLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<AxisChartOptions>;
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
-  private readonly statService: StatisticsService = inject(StatisticsService);
   private readonly toast = inject(HotToastService);
 
   constructor() {
     this.chartOptions = {
       markers: {
-        size: 2,
+        size: 1,
         hover: {
-          size: 6
+          size: 3
         }
       },
       series: [
@@ -38,7 +36,7 @@ export class TrendLineChartComponent implements OnInit {
       ],
       chart: {
         id: "trend",
-        height: 200,
+        height: 250,
         type: "area",
         group: "weight",
         background: "rgba(0,0,0,0)",
@@ -69,7 +67,7 @@ export class TrendLineChartComponent implements OnInit {
         }
       ],
       title: {
-        text: "Weight Prediction"
+        text: "Body statistics"
       },
       annotations: {
         xaxis: [
@@ -91,6 +89,14 @@ export class TrendLineChartComponent implements OnInit {
       },
       tooltip: {
         shared: true,
+        y: {
+          formatter(val: number, opts?: any): string {
+            if (opts.dataPointIndex === 0) {
+              return val + " kg";
+            }
+            return val + " kg (" + (val - opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex - 1]).toFixed(2) + ")";
+          }
+        }
       },
     };
   }
@@ -98,36 +104,37 @@ export class TrendLineChartComponent implements OnInit {
   async ngOnInit() {
     try {
       await this.weightService.getWeights();
-      await this.userService.getProfile();
 
-      const targetWeight = this.userService.user!.targetWeight;
-
-
-      const weights = await this.statService.getTrend();
-
-
-      const weightNums = weights.map(w => w.weight);
-
-      const startDate = new Date(weights[0].date);
-      const endDate = new Date(weights.at(-1)!.date);
-      const maxWeight = Math.max(...weightNums) + 2;
-      let minWeight = Math.min(...weightNums) - 2;
-      minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
-      this.chartOptions.yaxis![0].max = maxWeight;
-      this.chartOptions.yaxis![0].min = minWeight;
-      this.chartOptions.yaxis![0].tickAmount = 3;
-
-      const seriesData = weights.map(weight => ({
+      const weights = this.weightService.weights;
+      const targetDate = new Date(this.userService.user!.targetDate);
+      const startDate = new Date(this.weightService.weights[0].date);
+      const today = new Date();
+      const endDate = targetDate > today ? targetDate : today;
+      const bodyFatData = weights.filter(
+        weight => weight.bodyFatPercentage !== null
+      ).map(weight => ({
         x: new Date(weight.date).getTime(),
-        y: weight.weight
+        y: (weight.weight * (weight.bodyFatPercentage! ?? 0) / 100).toFixed(1)
       }));
+      const skeletalMuscleData = weights
+        .filter(
+          weight => weight.skeletalMuscleWeight !== null
+        ).map(weight => ({
+        x: new Date(weight.date).getTime(),
+        y: weight.skeletalMuscleWeight! ?? 0
+      }));
+
 
 
       this.chartOptions.series = [
         {
-          name: "Weight",
-          data: seriesData
+          name: "Body Fat",
+          data: bodyFatData
         },
+        {
+          name: "Skeletal Muscle",
+          data: skeletalMuscleData
+        }
       ];
       this.chartOptions.xaxis = {
         type: "datetime",
@@ -140,29 +147,6 @@ export class TrendLineChartComponent implements OnInit {
         },
         // categories: dates
       };
-
-      this.chartOptions.annotations!.yaxis! = [
-        {
-          yAxisIndex: 0,
-          y: targetWeight,
-          y2: targetWeight + 0.1,
-          borderColor: "#00dbe3",
-          fillColor: "#00dbe3",
-          opacity: 1,
-          label: {
-            position: "left",
-            textAnchor: "start",
-            offsetX: 10,
-            borderColor: "#333",
-            style: {
-              fontSize: "10px",
-              color: "#333",
-              background: "#00dbe3"
-            },
-            text: "Target weight"
-          }
-        }
-      ];
     } catch (e) {
       this.toast.error("Error loading chart")
       return;

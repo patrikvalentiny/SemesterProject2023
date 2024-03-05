@@ -4,13 +4,14 @@ import {WeightService} from "../../services/weight.service";
 import {UserDetailsService} from "../../services/user-details.service";
 import {HotToastService} from "@ngneat/hot-toast";
 import {AxisChartOptions, defaultAxisChartOptions} from "../chart-helper";
+import {StatisticsService} from "../../services/statistics.service";
 
 @Component({
     selector: 'app-weight-line-chart',
     templateUrl: './weight-line-chart.component.html',
     styleUrl: './weight-line-chart.component.css',
     standalone: true,
-    imports: [NgApexchartsModule]
+  imports: [NgApexchartsModule]
 })
 export class WeightLineChartComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
@@ -18,14 +19,14 @@ export class WeightLineChartComponent implements OnInit {
   private readonly weightService: WeightService = inject(WeightService);
   private readonly userService: UserDetailsService = inject(UserDetailsService);
   private readonly toast = inject(HotToastService);
-
+  private readonly statService = inject(StatisticsService);
   constructor() {
 
     this.chartOptions = {
       markers: {
-        size: 2,
+        size: 1,
         hover: {
-          size: 6
+          size: 3
         }
       },
       series: [
@@ -34,7 +35,7 @@ export class WeightLineChartComponent implements OnInit {
           data: [0]
         },
         {
-          name: "Body Fat",
+          name: "Trend",
           data: [0]
         }
       ],
@@ -115,6 +116,8 @@ export class WeightLineChartComponent implements OnInit {
       const weights = this.weightService.weights;
       const weightNums = weights.map(w => w.weight);
 
+      const trend = await this.statService.getTrend();
+
       const startDate = new Date(this.weightService.weights[0].date);
       const today = new Date();
       const endDate = targetDate > today ? targetDate : today;
@@ -122,20 +125,19 @@ export class WeightLineChartComponent implements OnInit {
       let minWeight = Math.min(...weightNums) - 2;
       minWeight = minWeight < targetWeight ? minWeight - 2 : targetWeight - 2;
       this.chartOptions.yaxis![0].max = maxWeight;
-      this.chartOptions.yaxis![0].min = 0;
+      this.chartOptions.yaxis![0].min = minWeight;
       this.chartOptions.yaxis![0].tickAmount = Math.ceil((maxWeight - minWeight) / 10) + 2;
 
       const seriesData = weights.map(weight => ({
         x: new Date(weight.date).getTime(),
         y: weight.weight
       }));
-      const bodyFatData = weights.filter(weight => weight.bodyFatPercentage).map(weight => ({
+
+      const trendDataFuture = trend.filter(
+        w => new Date(w.date) > today
+      ).map(weight => ({
         x: new Date(weight.date).getTime(),
-        y: (weight.weight * (weight.bodyFatPercentage! ?? 0) / 100).toFixed(1)
-      }));
-      const skeletalMuscleData = weights.filter(weight => weight.skeletalMuscleWeight).map(weight => ({
-        x: new Date(weight.date).getTime(),
-        y: weight.skeletalMuscleWeight! ?? 0
+        y: weight.weight
       }));
 
 
@@ -145,12 +147,8 @@ export class WeightLineChartComponent implements OnInit {
           data: seriesData
         },
         {
-          name: "Body Fat",
-          data: bodyFatData
-        },
-        {
-          name: "Skeletal Muscle",
-          data: skeletalMuscleData
+          name: "Future trend",
+          data: trendDataFuture
         }
       ];
       this.chartOptions.xaxis = {
