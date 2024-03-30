@@ -536,3 +536,4 @@ e2e/*.map
 
 # System Files
 
+.env
