@@ -1,0 +1,15 @@
+﻿services:
+  api:
+    image: api
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+        - "8080:8080"
+        - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_ConnectionStrings__WebApiDatabase=${ASPNETCORE_ConnectionStrings__WebApiDatabase}
+      - ASPNETCORE_JWT__Secret=${ASPNETCORE_JWT__Secret}
+      - ASPNETCORE_JWT__Lifetime=${ASPNETCORE_JWT__Lifetime}
