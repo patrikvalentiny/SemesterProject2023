@@ -70,7 +70,7 @@ public class FeaturesTests : PageTest
         var tableRowHeading = Page.Locator("tbody[data-testid='tableBody'] >  tr:nth-of-type(1) > th");
         await tableRowHeading.IsVisibleAsync();
         await Expect(tableRowHeading).ToHaveTextAsync("2023-12-06");
-        var tableRowWeight = Page.Locator("tbody[data-testid='tableBody'] >  tr:nth-of-type(1) > td");
+        var tableRowWeight = Page.Locator("tbody[data-testid='tableBody'] >  tr:nth-of-type(1) > td:nth-of-type(1)");
         await tableRowWeight.IsVisibleAsync();
         await Expect(tableRowWeight).ToHaveTextAsync("103kg");
         await uploadDataButton.IsEnabledAsync();
