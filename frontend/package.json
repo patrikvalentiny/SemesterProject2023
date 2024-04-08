@@ -22,7 +22,7 @@
     "@easepick/bundle": "^1.2.1",
     "@ngneat/hot-toast": "^6.1.0",
     "@ngneat/overview": "^5.1.1",
-    "apexcharts": "^3.46.0",
+    "apexcharts": "^3.48.0",
     "file-saver": "^2.0.5",
     "file-saver-es": "^2.0.5",
     "g": "^2.0.1",
@@ -32,17 +32,17 @@
     "zone.js": "~0.14.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.2.1",
-    "@angular/cli": "^17.2.1",
+    "@angular-devkit/build-angular": "^17.3.3",
+    "@angular/cli": "^17.3.3",
     "@angular/compiler-cli": "^17.3.3",
     "@types/file-saver": "^2.0.7",
     "@types/file-saver-es": "^2.0.3",
     "@types/jasmine": "~4.3.6",
-    "autoprefixer": "^10.4.17",
+    "autoprefixer": "^10.4.19",
     "daisyui": "^3.9.4",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.4"
   },
   "packageManager": "pnpm@8.15.5+sha256.4b4efa12490e5055d59b9b9fc9438b7d581a6b7af3b5675eb5c5f447cee1a589"
 }
