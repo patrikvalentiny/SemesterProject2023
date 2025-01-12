@@ -1,14 +1,14 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "api\api.csproj", "{557CB8BE-D713-496C-B1E2-3D89E7E589AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api", "api\api.csproj", "{557CB8BE-D713-496C-B1E2-3D89E7E589AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "service", "service\service.csproj", "{F3A4A3B6-0478-40E8-A92A-735D60E46533}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "service", "service\service.csproj", "{F3A4A3B6-0478-40E8-A92A-735D60E46533}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure", "infrastructure\infrastructure.csproj", "{DEEDD461-0E1D-49AE-8A72-9B4369ADEFB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure", "infrastructure\infrastructure.csproj", "{DEEDD461-0E1D-49AE-8A72-9B4369ADEFB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apitests", "apitests\apitests.csproj", "{C600D7BA-4F77-43AC-9C86-431F271A5676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "apitests", "apitests\apitests.csproj", "{C600D7BA-4F77-43AC-9C86-431F271A5676}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E2ETests", "E2ETests\E2ETests.csproj", "{6D63457E-FFA3-470F-920F-12B347EEF8CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E2ETests", "E2ETests\E2ETests.csproj", "{6D63457E-FFA3-470F-920F-12B347EEF8CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
