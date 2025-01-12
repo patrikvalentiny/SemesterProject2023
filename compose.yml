@@ -5,8 +5,7 @@
       context: .
       dockerfile: Dockerfile
     ports:
-        - "8080:8080"
-        - "8081:8081"
+        - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_ConnectionStrings__WebApiDatabase=${ASPNETCORE_ConnectionStrings__WebApiDatabase}
